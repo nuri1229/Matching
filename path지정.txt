@@ -1,0 +1,48 @@
+<로그인>
+/Login(화면)
+/api/Login(로그인 요청)
+/api/Login/ForgotYourId(아이디찾기 요청)
+/api/login/ForgotYourPw/(패스워드 찾기 요청)
+
+<회원가입>
+/SignIn/
+/api/SignIn
+
+<matching>
+검색결과 /api/matching/list
+상세보기 /api/matching/view/:(pk)
+신청하기 /matching/apply/
+             /api/matching/apply/
+             /api/matching/apply/list
+
+수락하기 /api/matching/reply/list
+             /api/matching/reply/view
+             /api/matching/reply/process
+
+<user>
+유저정보: /api/user/profile
+유저정보수정: /api/user/profile/update
+회원탈퇴: /api/user/terminated
+유저포폴목록: /api/user/portfolio/list
+유저포폴상세: /api/user/portfolio/view
+유저포폴추가: /api/user/portfolio/create
+유저포폴수정: /api/user/portfolio/update
+유저포폴삭제: /api/user/portfolio/delete
+
+<board>
+/api/board/List
+/api/board/View
+/api/board/Create
+/api/board/Update
+/api/board/Delete
+
+<admin>
+회원관리 /api/admin/Users/
+분석 /api/admin/Analyst/
+
+
+
+
+
+
+
