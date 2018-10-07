@@ -1,33 +1,33 @@
-<·Î±×ÀÎ>
-/Login(È­¸é)
-/api/Login(·Î±×ÀÎ ¿äÃ»)
-/api/Login/ForgotYourId(¾ÆÀÌµğÃ£±â ¿äÃ»)
-/api/login/ForgotYourPw/(ÆĞ½º¿öµå Ã£±â ¿äÃ»)
+ï»¿<ë¡œê·¸ì¸>
+/Login(í™”ë©´)
+/api/Login(ë¡œê·¸ì¸ ìš”ì²­)
+/api/Login/ForgotYourId(ì•„ì´ë””ì°¾ê¸° ìš”ì²­)
+/api/login/ForgotYourPw/(íŒ¨ìŠ¤ì›Œë“œ ì°¾ê¸° ìš”ì²­)
 
-<È¸¿ø°¡ÀÔ>
+<íšŒì›ê°€ì…>
 /SignIn/
 /api/SignIn
 
 <matching>
-°Ë»ö°á°ú /api/matching/list
-»ó¼¼º¸±â /api/matching/view/:(pk)
-½ÅÃ»ÇÏ±â /matching/apply/
+ê²€ìƒ‰ê²°ê³¼ /api/matching/list
+ìƒì„¸ë³´ê¸° /api/matching/view/:(pk)
+ì‹ ì²­í•˜ê¸° /matching/apply/
              /api/matching/apply/
              /api/matching/apply/list
 
-¼ö¶ôÇÏ±â /api/matching/reply/list
+ìˆ˜ë½í•˜ê¸° /api/matching/reply/list
              /api/matching/reply/view
              /api/matching/reply/process
 
 <user>
-À¯ÀúÁ¤º¸: /api/user/profile
-À¯ÀúÁ¤º¸¼öÁ¤: /api/user/profile/update
-È¸¿øÅ»Åğ: /api/user/terminated
-À¯ÀúÆ÷Æú¸ñ·Ï: /api/user/portfolio/list
-À¯ÀúÆ÷Æú»ó¼¼: /api/user/portfolio/view
-À¯ÀúÆ÷ÆúÃß°¡: /api/user/portfolio/create
-À¯ÀúÆ÷Æú¼öÁ¤: /api/user/portfolio/update
-À¯ÀúÆ÷Æú»èÁ¦: /api/user/portfolio/delete
+ìœ ì €ì •ë³´: /api/user/profile
+ìœ ì €ì •ë³´ìˆ˜ì •: /api/user/profile/update
+íšŒì›íƒˆí‡´: /api/user/terminated
+ìœ ì €í¬í´ëª©ë¡: /api/user/portfolio/list
+ìœ ì €í¬í´ìƒì„¸: /api/user/portfolio/view
+ìœ ì €í¬í´ì¶”ê°€: /api/user/portfolio/create
+ìœ ì €í¬í´ìˆ˜ì •: /api/user/portfolio/update
+ìœ ì €í¬í´ì‚­ì œ: /api/user/portfolio/delete
 
 <board>
 /api/board/List
@@ -37,8 +37,8 @@
 /api/board/Delete
 
 <admin>
-È¸¿ø°ü¸® /api/admin/Users/
-ºĞ¼® /api/admin/Analyst/
+íšŒì›ê´€ë¦¬ /api/admin/Users/
+ë¶„ì„ /api/admin/Analyst/
 
 
 
