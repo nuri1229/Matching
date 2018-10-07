@@ -4,9 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+/* Import Router(S) */
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/Users');
 var loginRouter = require('./routes/Login');
+/* Import Router(E) */
 
 var app = express();
 
@@ -20,9 +23,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+/* 라우팅동작구문(S) */
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/Login', loginRouter);
+
+
+
+
+
+
+/* 라우팅동작구문(E) */
+
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
