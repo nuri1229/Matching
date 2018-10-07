@@ -2,12 +2,12 @@
   <div id="Top">
     <nav class="slide-nav aside-nav">
         <ul>
-           <li><a>Home123213</a></li>
+           <li><a href="/">Home123213</a></li>
            <li>
               <a>Product</a>
               <ul>
-                 <li><a>Product 1</a></li>
-                 <li><a>Product 2</a></li>
+                 <li>1</li>
+                 <li>2</li>
                  <li>
                     <a>Product 3</a>
                     <ul>
@@ -21,13 +21,13 @@
            <li>
               <a>Company</a>
               <ul>
-                 <li><a>About</a></li>
+                 <li><a href="/Test">About</a></li>
                  <li><a>Location</a></li>
               </ul>
            </li>
            <li><a>Contact</a></li>
         </ul>
-      </nav>     
+      </nav>
       <!--<section class="slide-content">-->
         <header>
           <!-- LOGO -->
@@ -40,7 +40,6 @@
           </nav>
         </header>
        <section class="text-center">
-           <!-- CAROUSEL --> 
            <div id="carousel">
               <div id="header-carousel" class="owl-carousel owl-theme">
                  <div class="item">
@@ -72,4 +71,3 @@ export default {
   name: 'Top'
 }
 </script>
-

@@ -85,12 +85,6 @@
 
 <script>
 export default {
-  created: function(){
-    this.$http.get('/users')
-    .then((response) => {
-      console.log(response)
-    })
-  },
   name: 'HelloWorld',
   data () {
     return {
