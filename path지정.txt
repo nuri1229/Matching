@@ -5,8 +5,8 @@
 /api/login/ForgotYourPw/(패스워드 찾기 요청)
 
 <회원가입>
-/SignIn/
-/api/SignIn
+/SignUp/
+/api/SignUp
 
 <matching>
 검색결과 /api/matching/list
@@ -37,6 +37,7 @@
 /api/board/Delete
 
 <admin>
+메인  /api/admin/
 회원관리 /api/admin/Users/
 분석 /api/admin/Analyst/
 
