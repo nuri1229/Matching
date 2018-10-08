@@ -6,9 +6,13 @@ var logger = require('morgan');
 
 
 /* Import Router(S) */
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/Users');
-var loginRouter = require('./routes/Login');
+var IndexRouter = require('./routes/index');
+var UsersRouter = require('./routes/Users');
+var LoginRouter = require('./routes/Login');
+var SignUpRouter = require('./route/SignUp');
+var MatchingRouter = require('./route/Matching');
+var AdminRouter = require('./route/Admin');
+var BoardRouter = require('./route/Board');
 /* Import Router(E) */
 
 var app = express();
@@ -25,21 +29,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 /* 라우팅동작구문(S) */
-app.use('/', indexRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/Login', loginRouter);
-
-
-
-
-
-
+app.use('/', IndexRouter);
+app.use('/api/users', UsersRouter);
+app.use('/api/Login', LoginRouter);
+app.use('/api/SignUp', SignUpRouter);
+app.use('/api/Matching', MatchingRouter);
+app.use('/api/Admin', AdminRouter);
+app.use('/api/Board', BoardRouter);
 /* 라우팅동작구문(E) */
-
-
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
