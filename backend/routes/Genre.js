@@ -9,3 +9,5 @@ router.get('/',function(req,res,next){
     console.log('genres = ',genres);
     res.send(genres);
 });
+
+module.exports = router;
