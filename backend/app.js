@@ -16,6 +16,8 @@ var SignUpRouter = require('./routes/SignUp');
 var MatchingRouter = require('./routes/Matching');
 var AdminRouter = require('./routes/Admin');
 var BoardRouter = require('./routes/Board');
+var LocationRouter = require('./routes/Location');
+var GenreRouter = require('./routes/Genre');
 /* Import Router(E) */
 
 var app = express();
@@ -43,6 +45,8 @@ app.use('/api/SignUp', SignUpRouter);
 app.use('/api/Matching', MatchingRouter);
 app.use('/api/Admin', AdminRouter);
 app.use('/api/Board', BoardRouter);
+app.use('/api/Location', LocationRouter);
+app.use('/api/Genre', GenreRouter);
 /* 라우팅동작구문(E) */
 
 // catch 404 and forward to error handler
