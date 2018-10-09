@@ -65,4 +65,48 @@ router.get('/portfolio/delete',function(req,res,next){
 });
 
 
+router.get('/profile', function(req, res, next) {
+ console.log('여기는 프로필');
+
+});
+
+router.get('/profile/update', function(req, res, next) {
+ 
+
+});
+
+router.get('/profile/terminated', function(req, res, next) {
+ 
+
+});
+
+router.get('/profile/portfolio/list', function(req, res, next) {
+ 
+
+});
+
+
+router.get('/profile/portfolio/view', function(req, res, next) {
+ 
+
+});
+
+router.get('/profile/portfolio/create', function(req, res, next) {
+ 
+
+});
+
+router.get('/profile/portfolio/update', function(req, res, next) {
+ 
+
+});
+
+router.get('/profile/portfolio/delete', function(req, res, next) {
+ 
+
+});
+
+
+
+
 module.exports = router;
