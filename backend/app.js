@@ -4,15 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
 /* Import Router(S) */
 var IndexRouter = require('./routes/index');
 var UsersRouter = require('./routes/Users');
 var LoginRouter = require('./routes/Login');
 var SignUpRouter = require('./route/SignUp');
-var MatchingRouter = require('./route/Matching');
-var AdminRouter = require('./route/Admin');
-var BoardRouter = require('./route/Board');
+var MatchingRouter = require('./routes/Matching');
+var AdminRouter = require('./routes/Admin');
+var BoardRouter = require('./routes/Board');
 /* Import Router(E) */
 
 var app = express();

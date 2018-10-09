@@ -2,20 +2,14 @@ var express = require('express');
 var router = express.Router();
 var objLogin = require('./obj/objLogin.js');
 
-//로그인하기
-router.get('/', function(req, res, next) {
-
- var id = req.body.user_id;
- var pw = req.body.user_pw;
- var result=0;
-
- if(id==='admin' && pw==='admin'){
-    result=1;
- }
- 
- res.send(result.toString());
- 
-});
+//로그인하기: 입력값이DB에있는지 없는지, 제대로입력했을시 관리자인지 아닌지.
+router.post('/', function(req, res, next) {
+    console.log('로그인하기');
+     var id = req.body.user_id;
+     var pw = req.body.user_pw;
+     objLogin.CheckId_Pw(req,res,id,pw);
+     
+    });
 
 //ID찾기폼(for Node)
 router.get('/ForgotYourId',function(req,res,next){
