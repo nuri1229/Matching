@@ -47,6 +47,7 @@ app.use('/api/Admin', AdminRouter);
 app.use('/api/Board', BoardRouter);
 app.use('/api/Location', LocationRouter);
 app.use('/api/Genre', GenreRouter);
+
 /* 라우팅동작구문(E) */
 
 // catch 404 and forward to error handler
