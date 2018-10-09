@@ -6,7 +6,7 @@ var objUsers = require('./obj/objUsers.js');
 router.get('/', function(req, res, next) {
   var users = objUsers.users; //JSON ?
   console.log('여기는 Users.js users = ',users);
-  res.send(users);
+  res.send(users);  
 });
 //getAllusers(E)
 
