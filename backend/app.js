@@ -3,6 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');//추가
+
+
+
 
 /* Import Router(S) */
 var IndexRouter = require('./routes/index');
@@ -25,7 +29,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({
+  secret: '@#@$MYSIGN#@$#$',
+  resave: false,
+  saveUninitialized: true
+ }));
 
 /* 라우팅동작구문(S) */
 app.use('/', IndexRouter);
