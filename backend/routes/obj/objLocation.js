@@ -1,10 +1,5 @@
 var db = require('../db/db.js');
 
-
-
-getAllLocation();
-
-
 function getAllLocation(){
 
     var sql = 'select * from tb_location';
@@ -16,3 +11,5 @@ function getAllLocation(){
         }
     });
 }
+
+getAllLocation();

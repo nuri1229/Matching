@@ -9,3 +9,5 @@ router.get('/',function(req,res,next){
     console.log('locations = ',locations);
     res.send(locations);
 });
+
+module.exports = router;
