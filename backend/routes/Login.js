@@ -11,22 +11,15 @@ router.post('/', function(req, res, next) {
      objLogin.CheckId_Pw(req,res,id,pw);
     });
 
-//ID찾기폼(for Node)
-router.get('/ForgotYourId',function(req,res,next){
-    console.log('아이디찾기폼');
-    res.send('ForgotYourId');
-});
-
-//ID찾기Process(for Vue and Node)
+//ID찾기Process
 router.post('/ForgotYourId',function(req,res,next){
-    res.send('MsgObeject');
+    var userName = req.body.user_name;
+    var userEmail = req.body.user_email;
+    console.log('Login.js userName =',userName);
+    console.log('Login.js userEmail =',userEmail);
+    objLogin.searchId(req,res,userName,userEmail);
 });
 
-//PW찾기폼
-router.get('/ForgotYourPw',function(req,res,next){
-    console.log('비번찾기폼');
-    res.send('ForgotYourPw');
-});
 
 //PW찾기Process(for Vue and Node)
 router.post('/ForgotYourPw',function(req,res,next){

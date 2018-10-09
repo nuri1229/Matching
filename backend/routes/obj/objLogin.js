@@ -45,5 +45,38 @@ exports.CheckId_Pw = function(req,res,ID,PW){
     });
 }
 
+//아이디찾기
+exports.searchId=function(req,res,userName,userEmail){
+
+    var user_name = userName;
+    var user_email= userEmail;
+
+    console.log('req.body.user_name =',user_name);
+    console.log('req.body.user_email =',user_email);
+
+    var sql= 'select user_id from tb_user where user_name=? and user_email=?';
+    db.query(sql,[user_name,user_email],function(err,data,fields){
+        
+        if(err){
+            throw err;
+        }else{
+            console.log('data =',data);
+            var result ;
+            if(data.length ==0){
+                console.log('찾는아이디없음');
+                result='찾는아이디없음';
+                res.send(result);
+            }else{
+                console.log('아이디찾음! >>',data[0].user_id);
+                result=data[0].user_id;
+                res.send(result);
+            }
+           
+        }
+    });
+}
+
+
+
 
 
