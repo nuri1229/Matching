@@ -7,8 +7,8 @@ router.post('/', function(req, res, next) {
     console.log('로그인하기');
      var id = req.body.user_id;
      var pw = req.body.user_pw;
+     console.log(id,pw);
      objLogin.CheckId_Pw(req,res,id,pw);
-     
     });
 
 //ID찾기폼(for Node)
