@@ -27,7 +27,8 @@ exports.CheckId_Pw = function(req,res,ID,PW){
             }else{//로그인 성공
                 var sess;
                 sess = req.session;
-                sess.user_info = data[0];//세션담기         
+                sess.user_info = data[0];//세션담기   
+                      
 
                 if(data[0].user_id === 'admin'){
                     var message='admin';                              
