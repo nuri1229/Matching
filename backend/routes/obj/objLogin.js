@@ -21,7 +21,7 @@ exports.CheckId_Pw = function(req,res,ID,PW){
                 
                 result["user_info"]=null;
                 result["message"]=message;
-
+                console.log(result);
                 res.send(result);
 
             }else{//로그인 성공
