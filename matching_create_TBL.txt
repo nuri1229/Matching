@@ -142,9 +142,9 @@ AUTO_INCREMENT=1
 
 -- insert dummy user data 
 insert into tb_user values('aaaaaaaa00000001','nuree','1234','이누리','dev_nuree','nuree@email.com','010-1234-5678','sns_choi',29,1,'M','처음만드는 데이터','S',default,'dev_nuree',default,'dev_nuree');
-insert into tb_user values('aaaaaaaa00000002','choi','1234','최어진','dev_choi','yms3684@naver.com','010-9916-3684','sns_choi',27,2,'M','두번째만드는데이터','D',default,'dev_choi',default,'dev_choi');
-insert into tb_user values('aaaaaaaa00000003','tester3','1234','tester3','dev_tester3','tester3@naver.com','010-1235-6789','sns_tester3',24,17,'M','desctiption3','S',default,'dev_tester3',default,'dev_tester3');
-insert into tb_user values('aaaaaaaa00000004','tester4','1234','tester4','dev_tester4','tester4@naver.com','010-2222-3684','sns_tester4',25,15,'M','desctiption4','S',default,'dev_tester4',default,'dev_tester4');
+insert into tb_user values('aaaaaaaa00000002','choi','1234','최어진','dev_choi','yms3684@naver.com','010-9916-3684','sns_choi',27,1,'M','두번째만드는데이터','D',default,'dev_choi',default,'dev_choi');
+insert into tb_user values('aaaaaaaa00000003','tester3','1234','tester3','dev_tester3','tester3@naver.com','010-1235-6789','sns_tester3',24,1,'M','desctiption3','S',default,'dev_tester3',default,'dev_tester3');
+insert into tb_user values('aaaaaaaa00000004','tester4','1234','tester4','dev_tester4','tester4@naver.com','010-2222-3684','sns_tester4',25,1,'M','desctiption4','S',default,'dev_tester4',default,'dev_tester4');
 
 update tb_user set user_gender='F',updated=now() where user_id='tester3';
 update tb_user set user_desc='처음가입한 테스트 여성글작가 ',updated=now() where user_id='tester3';
@@ -187,9 +187,10 @@ insert into tb_location values(null,'광주',default,'dev_choi',default,'dev_cho
 insert into tb_location values(null,'전북',default,'dev_choi',default,'dev_choi');
 insert into tb_location values(null,'제주',default,'dev_choi',default,'dev_choi');
 
+select * from tb_location;
 
 
--- insert dummy portfolio data tb_portfolio(2018.10.10)
+-- insert dummy portfolio data tb_portfolio
 
 insert into tb_portfolio values ('prtaaaaa00000001','aaaaaaaa00000002',10,'D','FiveMoreHours','테스트1','가상저장소','FiveMoreHours','0','0',default,'choi',default,'choi');
 insert into tb_portfolio values ('prtaaaaa00000002','aaaaaaaa00000002',7,'D','OnePiece1화','테스트2','가상저장소','OnePiece1화','0','0',default,'choi',default,'choi');
@@ -207,5 +208,17 @@ insert into tb_portfolio values ('prtaaaaa00000012','aaaaaaaa00000001',3,'D','�
 
 
 
-select * from tb_location;
+alter table tb_portfolio add po_desc varchar(300) null; 
 
+select po_number,po_title,po_desc from tb_portfolio;
+update tb_portfolio set po_desc='원피스1화' where po_number = 'prtaaaaa00000002';
+update tb_portfolio set po_desc='원피스2화' where po_number = 'prtaaaaa00000003';
+update tb_portfolio set po_desc='원피스3화' where po_number = 'prtaaaaa00000004';
+update tb_portfolio set po_desc='원피스4화' where po_number = 'prtaaaaa00000005';
+update tb_portfolio set po_desc='원피스5화' where po_number = 'prtaaaaa00000006';
+update tb_portfolio set po_desc='영화 신세계를 웹툰으로 각색하였습니다' where po_number = 'prtaaaaa00000007';
+update tb_portfolio set po_desc='나루토1화' where po_number = 'prtaaaaa00000008';
+update tb_portfolio set po_desc='영화 리플포레스트를 웹툰으로 각색하였습니다' where po_number = 'prtaaaaa00000009';
+update tb_portfolio set po_desc='센과치이로의 행방불명을 웹툰으로 제작 ' where po_number = 'prtaaaaa00000010';
+update tb_portfolio set po_desc='짱구는못말려1화 입니다' where po_number = 'prtaaaaa00000011';
+update tb_portfolio set po_desc='짱구는못말려2화 입니다' where po_number = 'prtaaaaa00000012';
