@@ -142,9 +142,9 @@ AUTO_INCREMENT=1
 
 -- insert dummy user data 
 insert into tb_user values('aaaaaaaa00000001','nuree','1234','이누리','dev_nuree','nuree@email.com','010-1234-5678','sns_choi',29,1,'M','처음만드는 데이터','S',default,'dev_nuree',default,'dev_nuree');
-insert into tb_user values('aaaaaaaa00000002','choi','1234','최어진','dev_choi','yms3684@naver.com','010-9916-3684','sns_choi',27,1,'M','두번째만드는데이터','D',default,'dev_choi',default,'dev_choi');
-insert into tb_user values('aaaaaaaa00000003','tester3','1234','tester3','dev_tester3','tester3@naver.com','010-1235-6789','sns_tester3',24,1,'M','desctiption3','S',default,'dev_tester3',default,'dev_tester3');
-insert into tb_user values('aaaaaaaa00000004','tester4','1234','tester4','dev_tester4','tester4@naver.com','010-2222-3684','sns_tester4',25,1,'M','desctiption4','S',default,'dev_tester4',default,'dev_tester4');
+insert into tb_user values('aaaaaaaa00000002','choi','1234','최어진','dev_choi','yms3684@naver.com','010-9916-3684','sns_choi',27,2,'M','두번째만드는데이터','D',default,'dev_choi',default,'dev_choi');
+insert into tb_user values('aaaaaaaa00000003','tester3','1234','tester3','dev_tester3','tester3@naver.com','010-1235-6789','sns_tester3',24,17,'M','desctiption3','S',default,'dev_tester3',default,'dev_tester3');
+insert into tb_user values('aaaaaaaa00000004','tester4','1234','tester4','dev_tester4','tester4@naver.com','010-2222-3684','sns_tester4',25,15,'M','desctiption4','S',default,'dev_tester4',default,'dev_tester4');
 
 update tb_user set user_gender='F',updated=now() where user_id='tester3';
 update tb_user set user_desc='처음가입한 테스트 여성글작가 ',updated=now() where user_id='tester3';
@@ -167,7 +167,7 @@ insert into tb_genre values(null,'스포츠',default,'dev_choi',default,'dev_cho
 
 select * from tb_genre;
 
--- insert dummy location datatb_location
+-- insert dummy location data tb_location
 
 insert into tb_location values(null,'서울',default,'dev_choi',default,'dev_choi');
 insert into tb_location values(null,'경기',default,'dev_choi',default,'dev_choi');
@@ -186,6 +186,26 @@ insert into tb_location values(null,'전남',default,'dev_choi',default,'dev_cho
 insert into tb_location values(null,'광주',default,'dev_choi',default,'dev_choi');
 insert into tb_location values(null,'전북',default,'dev_choi',default,'dev_choi');
 insert into tb_location values(null,'제주',default,'dev_choi',default,'dev_choi');
+
+
+
+-- insert dummy portfolio data tb_portfolio(2018.10.10)
+
+insert into tb_portfolio values ('prtaaaaa00000001','aaaaaaaa00000002',10,'D','FiveMoreHours','테스트1','가상저장소','FiveMoreHours','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000002','aaaaaaaa00000002',7,'D','OnePiece1화','테스트2','가상저장소','OnePiece1화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000003','aaaaaaaa00000002',7,'D','OnePiece2화','테스트3','가상저장소','OnePiece2화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000004','aaaaaaaa00000002',7,'D','OnePiece3화','테스트4','가상저장소','OnePiece3화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000005','aaaaaaaa00000002',7,'D','OnePiece4화','테스트5','가상저장소','OnePiece4화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000006','aaaaaaaa00000002',7,'D','OnePiece5화','테스트6','가상저장소','OnePiece5화','0','0',default,'choi',default,'choi');
+
+insert into tb_portfolio values ('prtaaaaa00000007','aaaaaaaa00000003',8,'D','신세계','테스트7','가상저장소','신세계','0','0',default,'tester3',default,'tester3');
+insert into tb_portfolio values ('prtaaaaa00000008','aaaaaaaa00000001',3,'D','나루토1화','테스트8','가상저장소','나루토1화','0','0',default,'nuree',default,'nuree');
+insert into tb_portfolio values ('prtaaaaa00000009','aaaaaaaa00000003',10,'D','리틀포레스트','테스트9','가상저장소','리플포레스트','0','0',default,'tester3',default,'tester3');
+insert into tb_portfolio values ('prtaaaaa00000010','aaaaaaaa00000003',8,'D','센과치이로의행방불명','테스트10','가상저장소','센과치이로의행방불명','0','0',default,'tester3',default,'tester3');
+insert into tb_portfolio values ('prtaaaaa00000011','aaaaaaaa00000001',3,'D','짱구는못말려1화','테스트11','가상저장소','짱구는못말려1화','0','0',default,'nuree',default,'nuree');
+insert into tb_portfolio values ('prtaaaaa00000012','aaaaaaaa00000001',3,'D','짱구는못말려2화','테스트12','가상저장소','짱구는못말려2화','0','0',default,'nuree',default,'nuree');
+
+
 
 select * from tb_location;
 
