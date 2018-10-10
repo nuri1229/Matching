@@ -1,4 +1,5 @@
 var db = require('../db/db.js');
+var nodemailer = require('nodemailer');
 var sess;
 
 exports.CheckId_Pw = function(req,res,ID,PW){
@@ -77,6 +78,57 @@ exports.searchId=function(req,res,userName,userEmail){
 }
 
 
+exports.searchPw=function(req,res,userId,userName,userEmail){
 
+    console.log('비번찾기들어옴');
+    var user_id = userId;
+    var user_name = userName;
+    var user_email = userEmail;
+
+    console.log('req.body.user_id =',user_id);
+    console.log('req.body.user_name =',user_name);
+    console.log('req.body.user_email =',user_email);
+
+    var sql='select user_pw from tb_user where user_id=? and user_name=? and user_email=?';
+    db.query(sql,[user_id,user_name,user_email],function(err,data,fields){
+        console.log('data ->',data);
+        if(data.length==0){
+            res.send('pw가없습니다.');
+        }else{
+
+            var smtpTransport = nodemailer.createTransport({  
+                service: 'Gmail',
+                auth: {
+                    user: 'johannesedelstein',
+                    pass: 'dark42984298'
+                }
+            });
+            
+            var mailOptions = {  
+                from: '관리자 <johannesedelstein@gmail.com>',
+                to: `${user_email}`,
+                subject: `${user_id}님 요청하신 비밀번호찾기입니다.`,
+                text: '본인이 요청하신경우가 아닌경우, 도용된사례이오니 비밀번호를 변경해주시기바랍니다. '
+            };
+            
+            smtpTransport.sendMail(mailOptions, function(error, response){
+            
+                if (error){
+                    console.log(error);
+                } else {
+                    console.log("Message sent : " + response.message);
+                }
+                
+                smtpTransport.close();
+                res.send('입력하신 이메일로 비밀번호를 전송하였습니다.');
+            });
+
+           
+
+        }
+
+    });
+
+}
 
 

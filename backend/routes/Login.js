@@ -23,7 +23,10 @@ router.post('/ForgotYourId',function(req,res,next){
 
 //PW찾기Process(for Vue and Node)
 router.post('/ForgotYourPw',function(req,res,next){
-    res.send('MsgObeject');
+    var user_id = req.body.user_id;
+    var user_name = req.body.user_name;
+    var user_email= req.body.user_email;
+    objLogin.searchPw(req,res,user_id,user_name,user_email);
 });
 
 module.exports = router;
