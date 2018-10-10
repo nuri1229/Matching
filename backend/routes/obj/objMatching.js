@@ -15,6 +15,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
         u.user_gender,
         u.user_age,
         g.gen_name,
+        p.po_type,
         u.user_type,
         l.location_name,
         p.po_view_count
@@ -51,7 +52,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
                 
             }else{
                 ConditionValue = "'"+FilterConditions[keyName]+"'";
-                console.log('FilterConditions[keyName]->stringfy',ConditionValue);
+                console.log('FilterConditions[keyName]->modified by VARCHR for SQL',ConditionValue);
             }
 
             console.log(`condtions[${i}] key:value ->>`,keyName,' : ',ConditionValue);

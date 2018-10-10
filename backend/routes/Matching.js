@@ -2,15 +2,11 @@ var express = require('express');
 var router = express.Router();
 var objMatching = require('./obj/objMatching.js');
 
-router.get('/search',function(req,res,next){
-  res.render('search');
-});
 
 //검색결과보기
 router.post('/list', function(req, res, next) {
     console.log('여기는 Matching.js 라우터요청');
-    /*만약 Url창에 /matching/list 를 직접치고들어올경우
-    파라미터값을 정해주는 IF문 작성필요*/
+
     var reqGender = req.body.user_gender; //vue parameter값 보고수정
     var reqAge = req.body.user_age; //vue parameter값 보고수정
     var reqGenre = req.body.gen_number; //vue parameter값 보고수정
@@ -18,11 +14,11 @@ router.post('/list', function(req, res, next) {
     var reqLocation = req.body.location_number; //vue parameter값 보고수정
 
     var FilterCondtions = {};
-    if(reqGender !== undefined){FilterCondtions["u.user_gender"]=reqGender;} //sql jon문과연동 string
-    if(reqAge !== undefined){FilterCondtions["u.user_age"]=reqAge;} //sql jon문과연동 string
-    if(reqGenre !== undefined){FilterCondtions["g.gen_number"]=reqGenre;} //sql jon문과연동 string
-    if(reqType !== undefined){FilterCondtions["p.po_type"]=reqType; } //sql jon문과연동 string
-    if(reqLocation !== undefined){FilterCondtions["u.location_number"]=reqLocation;} //sql jon문과연동 string
+    if(reqGender !== undefined){FilterCondtions["u.user_gender"]=reqGender;} //sql jon문과연동 
+    if(reqAge !== undefined){FilterCondtions["u.user_age"]=reqAge;} //sql jon문과연동 
+    if(reqGenre !== undefined){FilterCondtions["g.gen_number"]=reqGenre;} //sql jon문과연동 
+    if(reqType !== undefined){FilterCondtions["p.po_type"]=reqType; } //sql jon문과연동 
+    if(reqLocation !== undefined){FilterCondtions["u.location_number"]=reqLocation;} //sql jon문과연동 
 
     objMatching.getAllportfolios(req,res,FilterCondtions); //암것도없으면 {}로넘어감
 
