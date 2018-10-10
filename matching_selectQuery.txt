@@ -6,6 +6,21 @@ select * from tb_genre;
 -- aaaaaaaa00000001 nuree 
 
 
+insert into tb_portfolio values ('prtaaaaa00000001','aaaaaaaa00000002',10,'D','FiveMoreHours','테스트1','가상저장소','FiveMoreHours','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000002','aaaaaaaa00000002',7,'D','OnePiece1화','테스트2','가상저장소','OnePiece1화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000003','aaaaaaaa00000002',7,'D','OnePiece2화','테스트3','가상저장소','OnePiece2화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000004','aaaaaaaa00000002',7,'D','OnePiece3화','테스트4','가상저장소','OnePiece3화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000005','aaaaaaaa00000002',7,'D','OnePiece4화','테스트5','가상저장소','OnePiece4화','0','0',default,'choi',default,'choi');
+insert into tb_portfolio values ('prtaaaaa00000006','aaaaaaaa00000002',7,'D','OnePiece5화','테스트6','가상저장소','OnePiece5화','0','0',default,'choi',default,'choi');
+
+insert into tb_portfolio values ('prtaaaaa00000007','aaaaaaaa00000003',8,'D','신세계','테스트7','가상저장소','신세계','0','0',default,'tester3',default,'tester3');
+insert into tb_portfolio values ('prtaaaaa00000008','aaaaaaaa00000001',3,'D','나루토1화','테스트8','가상저장소','나루토1화','0','0',default,'nuree',default,'nuree');
+insert into tb_portfolio values ('prtaaaaa00000009','aaaaaaaa00000003',10,'D','리틀포레스트','테스트9','가상저장소','리플포레스트','0','0',default,'tester3',default,'tester3');
+insert into tb_portfolio values ('prtaaaaa00000010','aaaaaaaa00000003',8,'D','센과치이로의행방불명','테스트10','가상저장소','센과치이로의행방불명','0','0',default,'tester3',default,'tester3');
+insert into tb_portfolio values ('prtaaaaa00000011','aaaaaaaa00000001',3,'D','짱구는못말려1화','테스트11','가상저장소','짱구는못말려1화','0','0',default,'nuree',default,'nuree');
+insert into tb_portfolio values ('prtaaaaa00000012','aaaaaaaa00000001',3,'D','짱구는못말려2화','테스트12','가상저장소','짱구는못말려2화','0','0',default,'nuree',default,'nuree');
+
+
 -- 성별,장르,지역,타입,연령대
 
 -- 재료 
