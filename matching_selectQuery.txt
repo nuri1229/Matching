@@ -23,26 +23,3 @@ insert into tb_portfolio values ('prtaaaaa00000012','aaaaaaaa00000001',3,'D','짱
 
 -- 성별,장르,지역,타입,연령대
 
--- 재료 
-select p.po_number,p.po_title,p.created_by,p.updated,u.user_gender,u.user_age,p.gen_number,u.user_type,u.location_number
-from tb_portfolio as p
-	join tb_user as u
-	on p.user_number = u.user_number
-
-
--- 뷰만들기
-create view join_user_po
-as select p.po_number,p.po_title,p.created_by,p.updated,u.user_gender,u.user_age,p.gen_number,u.user_type,u.location_number
-from tb_portfolio as p
-	join tb_user as u
-	on p.user_number = u.user_number
-
-	
--- 뷰활용하기 	
-select * from join_user_po;
-select po_number,po_title,created_by,updated from join_user_po; -- 전체검색
-select po_number,po_title,created_by,updated,user_gender from join_user_po where user_gender='F'; -- 성별검색
-select po_number,po_title,created_by,updated,gen_number from join_user_po where gen_number=7; -- 장르 검색
-select po_number,po_title,created_by,updated,user_age from join_user_po where user_age between 20 and 29; -- 연령대  검색
-select po_number,po_title,created_by,updated,location_number from join_user_po where location_number = 1; -- 지역  검색
-select po_number,po_title,created_by,updated,user_type from join_user_po where user_type = 'S'; -- 타입  검색
