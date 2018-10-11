@@ -22,19 +22,23 @@ router.post('/list', function(req, res, next) {
     var regTextGenre = reqGenre;
     var regTextType = reqType;
     var regTextLocation = reqLocation;
-    regTextGender.replace(/\s/gi, "");
-    regTextAge.replace(/\s/gi, "");
-    regTextGenre.replace(/\s/gi, "");
-    regTextType.replace(/\s/gi, "");
-    regTextLocation.replace(/\s/gi, "");
-
 
     var FilterCondtions = {};
-    if(regTextGender !== ''){FilterCondtions["u.user_gender"]=reqGender;} //sql jon문과연동 
-    if(regTextAge !== ''){FilterCondtions["u.user_age"]=reqAge;} //sql jon문과연동 
-    if(regTextGenre !== ''){FilterCondtions["g.gen_number"]=reqGenre;} //sql jon문과연동 
-    if(regTextType !== ''){FilterCondtions["p.po_type"]=reqType; } //sql jon문과연동 
-    if(regTextLocation !== ''){FilterCondtions["u.location_number"]=reqLocation;} //sql jon문과연동 
+  
+    if(req.body !== undefined){
+    }else{
+      regTextGender.replace(/\s/gi, "");
+      regTextAge.replace(/\s/gi, "");
+      regTextGenre.replace(/\s/gi, "");
+      regTextType.replace(/\s/gi, "");
+      regTextLocation.replace(/\s/gi, "");
+
+      if(regTextGender !== ''){FilterCondtions["u.user_gender"]=reqGender;} //sql jon문과연동 
+      if(regTextAge !== ''){FilterCondtions["u.user_age"]=reqAge;} //sql jon문과연동 
+      if(regTextGenre !== ''){FilterCondtions["g.gen_number"]=reqGenre;} //sql jon문과연동 
+      if(regTextType !== ''){FilterCondtions["p.po_type"]=reqType; } //sql jon문과연동 
+      if(regTextLocation !== ''){FilterCondtions["u.location_number"]=reqLocation;} //sql jon문과연동 
+    }
 
     objMatching.getAllportfolios(req,res,FilterCondtions); //암것도없으면 {}로넘어감
 
