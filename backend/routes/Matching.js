@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var objMatching = require('./obj/objMatching.js');
-
+router.get('/search',function(req,res,next){
+  console.log('검색창폼 진입OK');
+  res.render('search.ejs');
+});
 
 //검색결과보기
 router.post('/list', function(req, res, next) {
-    console.log('여기는 Matching.js 라우터요청');
+    console.log(' 매칭 리스트 진입');
 
     var reqGender = req.body.user_gender; //vue parameter값 보고수정
     var reqAge = req.body.user_age; //vue parameter값 보고수정
@@ -13,12 +16,25 @@ router.post('/list', function(req, res, next) {
     var reqType = req.body.po_type; //vue parameter값 보고수정
     var reqLocation = req.body.location_number; //vue parameter값 보고수정
 
+    /*공백제거단계*/
+    var regTextGender = reqGender;
+    var regTextAge = reqAge;
+    var regTextGenre = reqGenre;
+    var regTextType = reqType;
+    var regTextLocation = reqLocation;
+    regTextGender.replace(/\s/gi, "");
+    regTextAge.replace(/\s/gi, "");
+    regTextGenre.replace(/\s/gi, "");
+    regTextType.replace(/\s/gi, "");
+    regTextLocation.replace(/\s/gi, "");
+
+
     var FilterCondtions = {};
-    if(reqGender !== undefined){FilterCondtions["u.user_gender"]=reqGender;} //sql jon문과연동 
-    if(reqAge !== undefined){FilterCondtions["u.user_age"]=reqAge;} //sql jon문과연동 
-    if(reqGenre !== undefined){FilterCondtions["g.gen_number"]=reqGenre;} //sql jon문과연동 
-    if(reqType !== undefined){FilterCondtions["p.po_type"]=reqType; } //sql jon문과연동 
-    if(reqLocation !== undefined){FilterCondtions["u.location_number"]=reqLocation;} //sql jon문과연동 
+    if(regTextGender !== ''){FilterCondtions["u.user_gender"]=reqGender;} //sql jon문과연동 
+    if(regTextAge !== ''){FilterCondtions["u.user_age"]=reqAge;} //sql jon문과연동 
+    if(regTextGenre !== ''){FilterCondtions["g.gen_number"]=reqGenre;} //sql jon문과연동 
+    if(regTextType !== ''){FilterCondtions["p.po_type"]=reqType; } //sql jon문과연동 
+    if(regTextLocation !== ''){FilterCondtions["u.location_number"]=reqLocation;} //sql jon문과연동 
 
     objMatching.getAllportfolios(req,res,FilterCondtions); //암것도없으면 {}로넘어감
 
