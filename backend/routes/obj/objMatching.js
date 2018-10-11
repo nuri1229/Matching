@@ -58,20 +58,34 @@ exports.getAllportfolios = function(req,res,FilterConditions){
                 console.log(`origin typeof(condtions[${i}]) ->` ,typeof(ConditionValue));
 
                 /*타입변환*/
-                if(keyName === 'g.gen_number' || keyName === 'u.user_age' || keyName === 'u.location_number'){
+                if(keyName === 'g.gen_number' ||  keyName === 'u.location_number'){
+                    console.log('타입변환전 ->',typeof(ConditionValue));
                     ConditionValue = parseInt(ConditionValue);
-                    console.log('타입변환완료 ->',typeof(ConditionValue));
+                    console.log('타입변환후 ->',typeof(ConditionValue));
                 }else{
-                    ConditionValue = "'"+FilterConditions[keyName]+"'";
-                    console.log('FilterConditions[keyName]->modified by VARCHAR for SQL',ConditionValue);
+                    if(keyName === 'u.user_age'){
+                        //아무일없음
+                    }else{
+                        ConditionValue = "'"+FilterConditions[keyName]+"'";
+                        console.log(`FilterConditions["${keyName}"]->modified to VARCHAR for SQL`,ConditionValue);
+                    }
+                    
                 }
 
-                
                 console.log(`condtions[${i}] key:value ->>`,keyName,' : ',ConditionValue);
                     if(i == 0){
-                        whereQuery += keyName +"=" + ConditionValue;
+                        if(keyName === 'u.user_age'){
+                            whereQuery += keyName+' '+ConditionValue;
+                        }else{
+                            whereQuery += keyName +"=" + ConditionValue;
+                        }
+                        
                     }else{
-                        whereQuery +=' and '+ keyName +" = " + ConditionValue;
+                        if(keyName === 'u.user_age'){
+                            whereQuery +=' and '+ keyName +' '+ConditionValue;
+                        }else{
+                            whereQuery +=' and '+ keyName +" = " + ConditionValue;
+                        }
                     }
                 i++;
             }   
