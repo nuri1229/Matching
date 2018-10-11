@@ -12,6 +12,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
     var bodyQuery =`
         p.po_number,
         p.po_title,
+        u.user_id,
         p.created_by,
         p.updated,
         u.user_gender,
