@@ -25,8 +25,9 @@ router.post('/list', function(req, res, next) {
 
     var FilterCondtions = {};
   
-    if(req.body !== undefined){
-    }else{
+    if(req.body == undefined){ //list 초기 로드시
+
+    }else{ //초기로드아닐시
       regTextGender.replace(/\s/gi, "");
       regTextAge.replace(/\s/gi, "");
       regTextGenre.replace(/\s/gi, "");
