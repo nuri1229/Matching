@@ -1,12 +1,15 @@
 ﻿<로그인>
-/Login(화면)
+/Login(화면)   -- 완료
 /api/Login(로그인 요청)
-/api/Login/ForgotYourId(아이디찾기 요청)
-/api/login/ForgotYourPw/(패스워드 찾기 요청)
+/api/Login/ForgotYourId(아이디찾기 요청) -- 완료
+/api/login/ForgotYourPw/(패스워드 찾기 요청) -- 완료
 
 <회원가입>
 /SignUp/
-/api/SignUp
+/api/SignUp 
+/api/SignUp/idDuplicateCheck -- 완료
+/api/SignUp/emailDuplicateCheck -- 완료
+/api/SignUp/nicknameDuplicateCheck -- 완료
 
 <matching>
 검색결과 /api/matching/list

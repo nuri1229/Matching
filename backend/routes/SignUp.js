@@ -32,7 +32,7 @@ router.post('/emailDuplicateCheck',function(req,res,next){
 
     console.log('여기는 이메일중복체크.. ');
     var userEmail = req.body.user_email;
-    console.log('ID = ', ID);
+    console.log('userEmail = ', userEmail);
     db.query('select user_email from tb_user where user_email=?',[userEmail],function(err,data,fields){
         console.log('data = ',data);  
         if(err){
@@ -54,8 +54,8 @@ router.post('/emailDuplicateCheck',function(req,res,next){
 router.post('/nicknameDuplicateCheck',function(req,res,next){
 
     console.log('여기는 닉네임중복체크.. ');
-    var nickname = req.body.user_email;
-    console.log('ID = ', ID);
+    var nickname = req.body.user_nickname;
+    console.log('nickname = ', nickname);
     db.query('select user_nickname from tb_user where user_nickname=?',[nickname],function(err,data,fields){
         console.log('data = ',data);  
         if(err){
