@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import Users from '@/components/Users'
 import SignUp from '@/components/SignUp'
+import matchingList from '@/components/matchingList'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/SignUp',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/matching/list',
+      name: 'matchingList',
+      component: matchingList
     }
   ]
 })

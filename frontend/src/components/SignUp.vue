@@ -232,7 +232,7 @@ export default {
   methods: {
     idDuplicateCheck (userId) {
       this.$http.defaults.headers.post['Content-Type'] = 'application/json'
-      this.$http.post('/api/idDuplicateCheck', {
+      this.$http.post('/api/SignUp/idDuplicateCheck', {
         'user_id': userId
       }).then((res) => {
         alert(res.data)
@@ -240,7 +240,7 @@ export default {
     },
     emailDuplicateCheck (userEmail) {
       this.$http.defaults.headers.post['Content-Type'] = 'application/json'
-      this.$http.post('/api/emailDuplicateCheck', {
+      this.$http.post('/api/SignUp/emailDuplicateCheck', {
         'user_email': userEmail
       }).then((res) => {
         alert(res.data)
@@ -248,7 +248,7 @@ export default {
     },
     nicknameDuplicateCheck (nickname) {
       this.$http.defaults.headers.post['Content-Type'] = 'application/json'
-      this.$http.post('/api/nicknameDuplicateCheck', {
+      this.$http.post('/api/SignUp/nicknameDuplicateCheck', {
         'user_nickname': nickname
       }).then((res) => {
         alert(res.data)
