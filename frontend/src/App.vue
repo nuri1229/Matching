@@ -3,13 +3,14 @@
   <div id="app">
     <nav class="slide-nav aside-nav">
         <ul>
-           <li><a href="/">Home123213</a></li>
+           <li><a href="/">Home</a></li>
            <li>
               <a>Product</a>
               <ul>
                  <li><router-link to="/Login">로그인</router-link></li>
                  <li><router-link to="/admin/Users">가입유저정보</router-link></li>
                  <li><router-link to="/matching/list">유저검색</router-link></li>
+                 <li><router-link to="/user/portfolio/create">포폴업로드</router-link></li>
               </ul>
            </li>
            <li>

@@ -33,14 +33,14 @@
                   <tr>
                     <td>타입</td>
                     <td>
-                      <input type="radio" v-model="searchOption.user_type" value="M"> 스토리작가
-                      <input type="radio" v-model="searchOption.user_type" value="F"> 그림작가
+                      <input type="radio" v-model="searchOption.po_type" value="S"> 스토리
+                      <input type="radio" v-model="searchOption.po_type" value="D"> 그림
                     </td>
                     <td>지역</td>
                     <td>
                       <select v-model="searchOption.location_number">
                         <option v-for="(location, index) in locationList" :key="location.location_number" v-bind:value="location.location_number" v-bind:selected="index==0">
-                          {{index}}/{{location.location_name}}
+                          {{location.location_name}}
                         </option>
                       </select>
                     </td>
@@ -113,13 +113,11 @@ export default {
   },
   methods: {
     testMethod () {
-      alert('testMethod')
       this.$http.defaults.headers.post['Content-Type'] = 'application/json'
       this.$http.post('/api/matching/list', {
         'searchOption': this.searchOption
       }).then((res) => {
         this.portfolioList = res.data
-        alert('then')
       })
     }
   },

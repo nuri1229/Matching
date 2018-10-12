@@ -46,16 +46,13 @@ export default {
         'user_id': userId, 'user_pw': userPw
       }).then((res) => {
         var result = res.data
-        alert('메시지: ' + result.message)
-        alert('유저인포: ' + result.user_info.user_id)
-        /*
-        if (result === 1) {
-          alert('Login Success')
-          location.href = ('/')
+        if (result.message === 'success') {
+          this.$session.start()
+          this.$session.set('user_info', result.user_info)
+          this.$router.replace(this.$route.query.redirect || '/')
         } else {
           alert('Login Failed')
         }
-        */
       })
     },
     modalControl1 () {

@@ -139,7 +139,11 @@
                         지역
                       </td>
                       <td>
-                        <input type="text" v-model="user.location_number" class="form-control">
+                        <select v-model="user.location_number" class="form-control">
+                          <option v-for="location in locationList" :value="location.location_number" :key="location.location_number">
+                            {{location.location_name}}
+                          </option>
+                        </select>
                       </td>
                       <td width="40%">
 
@@ -226,7 +230,8 @@ export default {
         user_gender: '',
         user_desc: '',
         user_type: ''
-      }
+      },
+      locationList: []
     }
   },
   methods: {
@@ -262,6 +267,13 @@ export default {
         alert(res.data)
       })
     }
+  },
+  created () {
+    this.$http.get('/api/location')
+      .then((res) => {
+        this.locationList = res.data
+        this.user.location_number = 1
+      })
   }
 }
 </script>
