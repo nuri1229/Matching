@@ -2,7 +2,7 @@ var db = require('../db/db.js');
 
 exports.InsertUser = function (req,res,UserObject){
     console.log('인서트함수들어옴, 받아온객체내용 ->',UserObject);
-    //vue에서 순서만 잘고치면 while문으로도가능할거같음
+    
     var user_id = UserObject['user_id'];
     var user_pw = UserObject['user_pw']; 
     var user_name = UserObject['user_name']; 
@@ -19,10 +19,26 @@ exports.InsertUser = function (req,res,UserObject){
     console.log('typeof(user_age) -> ',typeof(user_age));
     console.log('typeof(location_number) -> ',typeof(location_number));
     console.log('typeof(user_gender) -> ',typeof(user_gender));
-
-   //맨앞에  물음표하나 더놓고 , 맨앞에 user_number넣어야함 
-    var sql = 'insert into tb_user values("ttt2",?,?,?,?,?,?,?,?,?,?,?,?,default,?,default,?);'; //user_number가없다
-    db.query(sql,[user_id,
+    var AlphabetArr = 
+        ['a','b','c','d','e',
+        'f','g','h','i','j',
+        'k','l','m','n','o',
+        'p','q','r','s','t',
+        'u','v','w','x','y',
+        'z'];
+        var user_number='UIDX';
+        var cnt=0;
+        while(cnt< 12){
+        var AlphabetRandomKey = Math.floor(Math.random()*26); 
+        console.log(AlphabetRandomKey);
+        user_number+=AlphabetArr[AlphabetRandomKey];
+        cnt++;
+        }
+        console.log(user_number);
+   
+    var sql = 'insert into tb_user values(?,?,?,?,?,?,?,?,?,?,?,?,?,default,?,default,?);';
+    db.query(sql,[user_number,
+                user_id,
                 user_pw,
                 user_name,
                 user_nickname,
