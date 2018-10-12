@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('./db/db.js');
+var objSignUP = require('./obj/objSignUp.js');
 
 
 
@@ -73,12 +74,12 @@ router.post('/nicknameDuplicateCheck',function(req,res,next){
 });
 
 
-//회원가입Process
+//SignUp.vue에서옴 parameter= user
 router.post('/', function(req, res, next) {
-    console.log('여기는 회원가입프로세스.. ');
+    console.log('SignUp.vue에서 회원가입요청을 받았습니다! ');
     var user = req.body.user;
-    console.log(user);
-    res.send(user);
+    console.log('SignUp.js 에서 출력됨 user ->',user);
+    objSignUP.InsertUser(req,res,user);
 });
 
 module.exports = router;
