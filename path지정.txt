@@ -22,7 +22,7 @@
              /api/matching/reply/view
              /api/matching/reply/process
 
-<user>
+<users>
 유저정보: /api/user/profile
 유저정보수정: /api/user/profile/update
 회원탈퇴: /api/user/terminated
