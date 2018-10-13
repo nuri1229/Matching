@@ -7,7 +7,7 @@ getAllGenre();
 
 function getAllGenre(){
 
-    var sql = 'select * from tb_genre';
+    var sql = 'SELECT gen_number,gen_name,icon_name FROM tb_genre WHERE icon_name is not null;';
     db.query(sql,function(err,data,fields){
         if(err){
             throw err;
