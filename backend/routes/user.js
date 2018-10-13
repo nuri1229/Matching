@@ -37,6 +37,7 @@ router.get('/portfolio/view',function(req,res,next){
 
 //회원포폴 추가UI
 router.post('/portfolio/create',function(req,res,next){
+<<<<<<< HEAD
 
     //▼공통 변수
     var d= new Date();
@@ -136,6 +137,25 @@ router.post('/portfolio/create',function(req,res,next){
             });//쿼리끝
         }//else끝
     });//업로드 끝
+=======
+    console.log('req.body->',req.body,'\n req.files -> ',req.files);
+    var po_data = req.body.po_data;
+    console.log('po_data ->',po_data);
+    //console.log('req.body.po_data[\'user_id\'] ->',req.body.po_data['user_id']);//undefined
+    //console.log('req.body.po_data.get(\'user_id\') ->',req.body.po_data.get('user_id')); //문법오류
+    //console.log(Object.keys(req.body.po_data)); //0~14
+    //console.log('JSON.stringfy(req.body.po_data).user_id -> ',JSON.stringify(req.body.po_data).user_id);
+    //console.log('typeof(req.body.po_data) -> ',typeof(po_data));
+    console.log('JSON.parse(req.body.po_data)-> ',JSON.parse(req.body.po_data).user_id);
+   /*  var i = 0;
+    while(i<Object.keys(po_data).length){
+      var value =po_data[i];
+      console.log(`value[${i}] ->`,value[i]);
+      i++;
+    } */
+
+    res.send('ddd');
+>>>>>>> master
 });
 
 
