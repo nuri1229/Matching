@@ -63,6 +63,17 @@ router.post('/portfolio/create',function(req,res,next){
         }
       });
       //data파일안에 파일조사하기(E)
+
+      formData.mv(`./data/${convertedFileName}`, function(err) {    
+        if (err){
+          return res.status(500).send(err);
+        }else{
+          console.log('없어서만들어서 넣음');
+          res.send('File uploaded!');
+        }
+      });
+
+
     }
 });
 
