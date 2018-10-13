@@ -80,7 +80,9 @@ export default {
       let uploadData = new FormData()
 
       uploadData.append('uploadData', this.file[0])
-      uploadData.append('po_data', this.po_data)
+
+      let requestData = JSON.stringify(this.po_data)
+      uploadData.append('po_data', requestData)
 
       this.$http.defaults.headers.post['Content-Type'] = 'multipart/form-data'
       this.$http.post('/api/user/portfolio/create', uploadData
