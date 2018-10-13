@@ -82,16 +82,11 @@ export default {
       uploadData.append('uploadData', this.file[0])
       uploadData.append('po_data', this.po_data)
 
-<<<<<<< HEAD
-      this.$http.defaults.headers.post['Content-Type'] = 'multipart/form-data'
-<<<<<<< HEAD
-      this.$http.post('/api/users/portfolio/create', formData
-=======
-=======
+
       this.$http.defaults.headers.post['Content-Type'] = 'multipart/json'
->>>>>>> master
+
       this.$http.post('/api/user/portfolio/create', uploadData
->>>>>>> master
+
       ).then(() => {
         console.log('SUCCESS!!')
       }).catch(() => {
