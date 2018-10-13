@@ -28,8 +28,8 @@
           <!-- LOGO -->
           <nav>
             <div class="line">
-               <div class="s-5 l-2 center">
-                  <img class="full-img" src="/static/img/logo.svg">
+               <div class="s-5 l-2 center" style="color:white;font-size:22px">
+                Webtoonist Matching
                </div>
             </div>
           </nav>

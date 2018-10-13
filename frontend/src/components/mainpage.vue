@@ -4,22 +4,17 @@
           <div id="carousel">
             <div id="header-carousel" class="owl-carousel owl-theme">
                 <div class="item">
-                  <img src="/static/img/header-1.svg" alt="">
-                  <div class="line">
-                      <h2>Amazing responsive carousel</h2>
+                  <div style="width:100%;height:500px;background:#ED5757;line-height:500px;color:white;font-size:44px;">
+                    그림 작가 구하기
                   </div>
                 </div>
                 <div class="item">
-                  <img src="/static/img/header-2.svg" alt="">
-                  <div class="line">
-                      <h2>Fully responsive components</h2>
-                  </div>
+                  <div style="width:100%;height:500px;background:#309EBA;line-height:500px;color:white;font-size:44px;">
+                    스토리 작가 구하기</div>
                 </div>
                 <div class="item">
-                  <img src="/static/img/header-3.svg" alt="">
-                  <div class="line">
-                      <h2>Build new layout in 10 minutes!</h2>
-                  </div>
+                  <div style="width:100%;height:500px;background:#9FBC2E;line-height:500px;color:white;font-size:44px;">
+                    같이 웹툰 그리기</div>
                 </div>
             </div>
           </div>
