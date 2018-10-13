@@ -14,6 +14,7 @@ var AdminRouter = require('./routes/Admin');
 var BoardRouter = require('./routes/Board');
 var LocationRouter = require('./routes/Location');
 var GenreRouter = require('./routes/Genre');
+var UserRouter = require('./routes/user');
 /* Import Router(E) */
 
 var app = express();
@@ -42,6 +43,7 @@ app.use('/api/Admin', AdminRouter);
 app.use('/api/Board', BoardRouter);
 app.use('/api/Location', LocationRouter);
 app.use('/api/Genre', GenreRouter);
+app.use('/api/user',UserRouter);
 /* 라우팅동작구문(E) */
 
 

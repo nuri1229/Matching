@@ -10,5 +10,17 @@ function getAllUsers(){
         exports.users = data;
     });
 }
-
 getAllUsers();
+
+exports.getUserInfoByID = function (req,res,user_id){
+    var sql = 'select * from tb_user where user_id=?';
+    db.query(sql,[user_id],function(err,data,fields){
+        if(err){
+            throw err;
+        }
+       res.send(data);
+    });
+}
+
+
+
