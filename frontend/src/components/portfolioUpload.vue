@@ -35,7 +35,7 @@ export default {
         formData.append('files[' + i + ']', file)
       }
       this.$http.defaults.headers.post['Content-Type'] = 'multipart/form-data'
-      this.$http.post('/api/user/portfolio/create', formData
+      this.$http.post('/api/users/portfolio/create', formData
       ).then(() => {
         console.log('SUCCESS!!')
       }).catch(() => {
