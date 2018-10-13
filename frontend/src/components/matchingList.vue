@@ -129,7 +129,6 @@ export default {
     this.$http.get('/api/genre')
       .then((res) => {
         this.genreList = res.data
-        //alert(genreList[0].gen_name)
       })
     this.$http.post('/api/matching/list')
       .then((res) => {
