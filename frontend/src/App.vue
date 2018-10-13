@@ -7,10 +7,13 @@
            <li>
               <a>Product</a>
               <ul>
-                 <li><router-link to="/Login">로그인</router-link></li>
-                 <li><router-link to="/admin/Users">가입유저정보</router-link></li>
-                 <li><router-link to="/matching/list">유저검색</router-link></li>
-                 <li><router-link to="/user/portfolio/create">포폴업로드</router-link></li>
+                <li>
+                  <router-link v-if="!this.$session.exists()" to="/Login">로그인</router-link>
+                  <a v-else v-on:click="fn_logout()" href="#">로그아웃</a>
+                </li>
+                <li><router-link to="/admin/Users">가입유저정보</router-link></li>
+                <li><router-link to="/matching/list">유저검색</router-link></li>
+                <li><router-link v-if="this.$session.exists()" to="/user/portfolio/create">포폴업로드</router-link></li>
               </ul>
            </li>
            <li>
@@ -52,7 +55,14 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    fn_logout () {
+      alert('logout')
+      this.$session.destroy()
+      window.location.href = '/'
+    }
+  }
 }
 </script>
 

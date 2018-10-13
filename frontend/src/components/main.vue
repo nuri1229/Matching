@@ -1,5 +1,5 @@
 <template>
-  <div class="mainpage">
+  <div class="index">
     <div id="first-block" style="padding-bottom:0px;">
       <div class="line">
             <div class="margin">
@@ -96,7 +96,7 @@
 <script scoped>
 import $ from 'jquery'
 export default {
-  name: 'main',
+  name: 'index',
   data () {
     return {
       genreList: [],
