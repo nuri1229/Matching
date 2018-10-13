@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/Users', function(req, res, next) {
     console.log('여기는 Admin.js User List');
-    res.send('data');
+    var users = objUsers.users;
+    res.send(users);
 });
 
 router.get('/Analyst', function(req, res, next) {
