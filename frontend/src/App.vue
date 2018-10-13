@@ -7,7 +7,6 @@
            <li>
               <a>Product</a>
               <ul>
-                 <li><router-link to="/Login">로그인</router-link></li>
                 <li>
                   <router-link v-if="!this.$session.exists()" to="/Login">로그인</router-link>
                   <a v-else v-on:click="fn_logout()" href="#">로그아웃</a>
