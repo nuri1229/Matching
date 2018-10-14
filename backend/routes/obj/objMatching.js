@@ -13,6 +13,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
         p.po_number,
         p.po_title,
         u.user_id,
+        u.user_nickname,
         p.created_by,
         p.updated,
         u.user_gender,
@@ -21,14 +22,18 @@ exports.getAllportfolios = function(req,res,FilterConditions){
         p.po_type,
         u.user_type,
         l.location_name,
-        p.po_view_count
+        p.po_view_count,
+        p.po_apply_count,
+        p.po_file_path,
+        p.po_file_name,
+        ROUND((p.po_apply_count/p.po_view_count)*100,0) as 'per_selected'
     `;    
     var fromQuery =`from tb_portfolio as p
         join tb_user as u on p.user_number = u.user_number
         join tb_location as l on u.location_number = l.location_number
         join tb_genre as g on p.gen_number = g.gen_number`; 
 
-    var EndingQuery=`;`
+    var EndingQuery=`order by po_apply_count DESC,per_selected DESC;`
 
     if(FilterConditionsLen == 0){ //where절이 필요없으면 
         sql = sql + bodyQuery +fromQuery+ EndingQuery;
