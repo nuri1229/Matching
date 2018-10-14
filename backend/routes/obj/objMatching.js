@@ -33,7 +33,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
         join tb_location as l on u.location_number = l.location_number
         join tb_genre as g on p.gen_number = g.gen_number`; 
 
-    var EndingQuery=`order by po_apply_count DESC,per_selected DESC;`
+    var EndingQuery=` order by po_apply_count DESC,per_selected DESC;`
 
     if(FilterConditionsLen == 0){ //where절이 필요없으면 
         sql = sql + bodyQuery +fromQuery+ EndingQuery;
