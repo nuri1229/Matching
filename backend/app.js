@@ -15,6 +15,7 @@ var BoardRouter = require('./routes/Board');
 var LocationRouter = require('./routes/Location');
 var GenreRouter = require('./routes/Genre');
 var UserRouter = require('./routes/user');
+var MainRouter = require('./routes/Main');
 /* Import Router(E) */
 
 var app = express();
@@ -44,6 +45,7 @@ app.use('/api/Board', BoardRouter);
 app.use('/api/Location', LocationRouter);
 app.use('/api/Genre', GenreRouter);
 app.use('/api/user',UserRouter);
+app.use('/api/Main',MainRouter);
 /* 라우팅동작구문(E) */
 
 
