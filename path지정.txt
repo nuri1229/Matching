@@ -1,4 +1,8 @@
-﻿<로그인>
+﻿<Main>
+/api/Main/PortfolioSelect
+/api/Main/PortfolioDetail
+
+<로그인>
 /Login(화면)   -- 완료
 /api/Login(로그인 요청)
 /api/Login/ForgotYourId(아이디찾기 요청) -- 완료
