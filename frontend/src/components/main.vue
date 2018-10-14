@@ -27,7 +27,7 @@
             <table>
               <tr>
                 <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
+                  <img src="/static/data/testId/20181014185628carousel2.jpg" style="width:100%;height:350px;"/>
                   액션 웹툰 포트폴리오<br>
                   Lee Nuri<br>
                   선택률: 94%
