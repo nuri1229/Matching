@@ -42,8 +42,6 @@ router.get('/portfolio/view',function(req,res,next){
 router.post('/portfolio/create',function(req,res,next){
     console.log('req.body->',req.body,'\n req.files -> ',req.files);
     var po_data=JSON.parse(req.body.po_data);
-      
-
      //▼공통 변수
      var d= new Date();
      var getYear = d.getFullYear() ;
@@ -83,23 +81,24 @@ router.post('/portfolio/create',function(req,res,next){
      console.log('post요청받음 \n넘겨온파일녀석 => ',uploadedData);
      var OrinalFileName= uploadedData.name; //po_file_username
      var ConvertedFileName= Converted+OrinalFileName; //po_file_name
-     var FilePath = `../frontend/static/data/${user_id}`;//po_file_path
+     var ToFrontendPath = __dirname + `\\..\\..\\frontend\\static\\data\\${user_id}` ;;//frontend/static/data/로 넣기위해서만든주소
+     var FilePath = `/static/data/${user_id}`;//po_file_path
      console.log('po_file_username ->',OrinalFileName,'\n',
                  'po_file_name ->',ConvertedFileName,'\n',
                  'po_file_path ->',FilePath);
      
      //▼폴더가 있는지없는지!
-     console.log('Filepath ->',FilePath,'\n 검사들어갑니다!');
+     console.log('ToFrontendPath ->',ToFrontendPath,'\n 검사들어갑니다!');
  
-     if (!fs.existsSync(FilePath)){ //없다면
-         fs.mkdirSync(FilePath);//만든다
+     if (!fs.existsSync(ToFrontendPath)){ //없다면
+         fs.mkdirSync(ToFrontendPath);//만든다
          console.log('경로에 폴더가 없어서 만들었습니다');
      }else{//있다면
          console.log('경로에 이미폴더가 만들어져있습니다');
      }
  
      //▼파일업로드작업
-     uploadedData.mv(`${FilePath}/${ConvertedFileName}`, function(err) {    
+     uploadedData.mv(`${ToFrontendPath}/${ConvertedFileName}`, function(err) {    
          if (err){
            res.send('파일업로드실패');
          }else{ //else시작 
