@@ -26,7 +26,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
         p.po_apply_count,
         p.po_file_path,
         p.po_file_name,
-        ROUND((p.po_apply_count/p.po_view_count)*100,0) as 'per_selected'
+        ROUND((p.po_apply_count/p.po_view_count)*100,1) as 'per_selected'
     `;    
     var fromQuery =`from tb_portfolio as p
         join tb_user as u on p.user_number = u.user_number
