@@ -83,7 +83,7 @@ router.post('/portfolio/create',function(req,res,next){
      console.log('post요청받음 \n넘겨온파일녀석 => ',uploadedData);
      var OrinalFileName= uploadedData.name; //po_file_username
      var ConvertedFileName= Converted+OrinalFileName; //po_file_name
-     var FilePath = `./data/${user_id}`;//po_file_path
+     var FilePath = `../frontend/static/data/${user_id}`;//po_file_path
      console.log('po_file_username ->',OrinalFileName,'\n',
                  'po_file_name ->',ConvertedFileName,'\n',
                  'po_file_path ->',FilePath);
