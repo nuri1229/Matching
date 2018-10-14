@@ -10,7 +10,7 @@
                       <img src="/static/img/icon/all.svg"/>
                       전체
                     </td>
-                    <td v-for="(genre, index) in genreList" v-bind:key="genre.gen_number" v-on:click="fn_search(index+1)">
+                    <td v-for="(genre, index) in genreList" v-bind:key="genre.gen_number" v-on:click="fn_search(index+1,genre.gen_number)">
                       <img v-bind:src="'/static/img/icon/'+genre.icon_name"/>
                       {{genre.gen_name}}
                     </td>
@@ -24,68 +24,24 @@
       <div class="line">
         <div class="margin">
           <div class="s-12 m-12 l-12 margin-bottom">
-            <table>
-              <tr>
-                <td>
-                  <img src="/static/data/testId/20181014185628carousel2.jpg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-                <td>
-                  <img src="/static/img/gallery-1.svg" style="width:100%;height:350px;"/>
-                  액션 웹툰 포트폴리오<br>
-                  Lee Nuri<br>
-                  선택률: 94%
-                </td>
-              </tr>
-            </table>
+              <template v-for="(portfolio, index) in portfolioList">
+                  <div class="inlineDiv" :key="portfolio.po_number" style="width:30%;border:1px solid #f0f0f0;height:450px;background:white;margin-left:15px;margin-bottom:15px;padding:5px;">
+                    <img v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" style="width:100%;height:300px;">
+                    <hr>
+                    <table class="poDesc" style="width=100%">
+                      <tr>
+                        <td style="width:60%;border-bottom:1px solid #f0f0f0">
+                          {{portfolio.user_nickname}}의 {{portfolio.gen_name}} 포트폴리오
+                        </td>
+                        <td rowspan=2 style="font-weight:bold;font-size:22px;">{{portfolio.per_selected}}%</td>
+                      </tr>
+                      <tr>
+                        <td style="background:white;"><b>[{{portfolio.po_title}}]</b></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <br v-if="(index+1)%3==0 && (index+1)>=3" :key="'line'+index">
+                </template>
           </div>
         </div>
       </div>
@@ -100,23 +56,32 @@ export default {
   data () {
     return {
       genreList: [],
-      portfolioList: []
+      portfolioList: [],
+      gen_number: 0
     }
   },
   methods: {
-    fn_search (obj) {
+    fn_search (index, genreNumber) {
       for (var i = 0; i < $('td').length; i++) {
-        if (i === obj) {
+        if (i === index) {
           $('td').eq(i).css('border-bottom', '3px solid #46A6F7')
         } else {
           $('td').eq(i).css('border-bottom', '')
         }
       }
+      this.gen_number = genreNumber
+      this.$http.post('/api/Main/PortfolioSelect', {'gen_number': this.gen_number}).then((res) => {
+        this.portfolioList = res.data
+      })
     }
   },
   created () {
     this.$http.get('/api/genre').then((res) => {
       this.genreList = res.data
+    })
+    this.$http.post('/api/Main/PortfolioSelect', {'gen_number': this.gen_number}).then((res) => {
+      this.portfolioList = res.data
+      //alert(this.portfolioList.length)
     })
   },
   mounted () {
@@ -137,5 +102,11 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+.inlineDiv {
+  display: inline-block;
+}
+.inlineDiv:hover{
+  border: 3px solid black;
 }
 </style>
