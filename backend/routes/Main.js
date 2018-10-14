@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var objMatching = require('./obj/objMatching.js');
 
+//포폴리스트갖고오기
 router.post('/PortfolioSelect',function(req,res,next){
 console.log('메인포폴셀렉들어옴');
 console.log('req.body ->',req.body);
@@ -48,12 +49,26 @@ if(gen_number == undefined){
     }
 }
 
-
 objMatching.getAllportfolios(req,res,FilterCondtions); //암것도없으면 {}로넘어감
-
 
 });
 
 
+//상세보기
+router.post('/PortfolioDetail',function(req,res,next){
+console.log('포폴상세보기진입성공');
+var po_number= req.body.po_number;
+console.log('req.body.po_number ->',po_number);
+var FilterCondtions = {};
+
+if(po_number == undefined){
+
+}else{
+    FilterCondtions["p.po_number"]=po_number;
+}
+
+objMatching.getOneportfolio(req,res,FilterCondtions);
+
+});
 
 module.exports=router;
