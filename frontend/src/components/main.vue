@@ -25,18 +25,18 @@
         <div class="margin">
           <div class="s-12 m-12 l-12 margin-bottom">
               <template v-for="(portfolio, index) in portfolioList">
-                  <div class="inlineDiv" :key="portfolio.po_number" style="width:30%;border:1px solid #f0f0f0;height:450px;background:white;margin-left:15px;margin-bottom:15px;padding:5px;">
-                    <img v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" style="width:100%;height:300px;">
+                  <div class="inlineDiv" v-on:mouseover.self="divMouseOver" v-on:mouseout.self="divMouseOut" :key="portfolio.po_number" style="width:30%;border:1px solid #f0f0f0;height:450px;background:white;margin-left:15px;margin-bottom:15px;padding:5px;">
+                    <img v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" v-on:mouseover.self="imgMouseOver" v-on:mouseout.self="imgMouseOut" style="width:100%;height:300px;">
                     <hr>
                     <table class="poDesc" style="width=100%">
                       <tr>
-                        <td style="width:60%;border-bottom:1px solid #f0f0f0">
+                        <td style="width:60%;border-bottom:1px solid #f0f0f0;font-size:14px;">
                           {{portfolio.user_nickname}}의 {{portfolio.gen_name}} 포트폴리오
                         </td>
                         <td rowspan=2 style="font-weight:bold;font-size:22px;">{{portfolio.per_selected}}%</td>
                       </tr>
                       <tr>
-                        <td style="background:white;"><b>[{{portfolio.po_title}}]</b></td>
+                        <td style="background:white;font-size:14px;"><b>[{{portfolio.po_title}}]</b></td>
                       </tr>
                     </table>
                   </div>
@@ -73,6 +73,18 @@ export default {
       this.$http.post('/api/Main/PortfolioSelect', {'gen_number': this.gen_number}).then((res) => {
         this.portfolioList = res.data
       })
+    },
+    divMouseOver: function (event) {
+      event.target.style.border = '2px solid #46A6F7'
+    },
+    imgMouseOver: function (event) {
+      event.target.parentNode.style.border = '2px solid #46A6F7'
+    },
+    divMouseOut: function (event) {
+      event.target.style.border = '1px solid #f0f0f0'
+    },
+    imgMouseOut: function (event) {
+      event.target.parentNode.style.border = '1px solid #f0f0f0'
     }
   },
   created () {
@@ -105,8 +117,5 @@ img {
 }
 .inlineDiv {
   display: inline-block;
-}
-.inlineDiv:hover{
-  border: 3px solid black;
 }
 </style>
