@@ -1,52 +1,247 @@
-﻿<Main>
-/api/Main/PortfolioSelect
-/api/Main/PortfolioDetail
+﻿**********필독사항**********
+req: 프론트에서 받은 변수명 
+res: 백엔드에서 보내주는 녀석 (누리형님의 주문사항)
+return: vue에서 받을 타입
+※ node에서 '배열'이나 'JSON'은 vue에서 'object'로 인식합니다. (출처구글)
+***************************
+변경사항이 있을시에는
+꼭! 커밋해주세요!!
+***************************
+사용처: Matching (Webtoonist Matching)
+작업자: 이누리,최어진
+***************************
+
+<Main>
+    메인포폴리스트:/api/Main/PortfolioSelect  --완료
+    ▷req: gen_number
+    ▷res:   p.po_number,
+            p.po_title,
+            u.user_id,
+            u.user_nickname,
+            p.created_by,
+            p.updated,
+            u.user_gender,
+            u.user_age,
+            g.gen_name,
+            p.po_type,
+            u.user_type,
+            l.location_name,
+            p.po_view_count,
+            p.po_apply_count,
+            p.po_file_path,
+            p.po_file_name,
+            per_selected
+    ▷return JSON
+
+
+    메인포폴상세:/api/Main/PortfolioDetail --완료
+    ▷req: po_number
+    ▷res: p.po_number,
+            p.po_title,
+            u.user_id,
+            u.user_nickname,
+            p.created_by,
+            p.updated,
+            g.gen_name,
+            p.po_type,
+            p.po_view_count,
+            p.po_apply_count,
+            p.po_file_path,
+            p.po_file_name,
+            per_selected
+    ▷return: Array
+
 
 <로그인>
-/Login(화면)   -- 완료
-/api/Login(로그인 요청)
-/api/Login/ForgotYourId(아이디찾기 요청) -- 완료
-/api/login/ForgotYourPw/(패스워드 찾기 요청) -- 완료
+    /api/Login
+    ▷req: user_id , user_pw
+    ▷res: user_info , message
+    ▷return: JSON
+
+
+    /api/Login/ForgotYourId(아이디찾기 요청) -- 완료
+    ▷req: user_name , user_email
+    ▷res: user_id
+    ▷return: String
+
+    /api/login/ForgotYourPw/(패스워드 찾기 요청) -- 완료
+    ▷req: user_id , user_name, user_email
+    ▷res: 'pw가없습니다.'
+        '입력하신 이메일로 비밀번호를 전송하였습니다.'
+    ▷return: String
+  
+
 
 <회원가입>
-/SignUp/
-/api/SignUp 
-/api/SignUp/idDuplicateCheck -- 완료
-/api/SignUp/emailDuplicateCheck -- 완료
-/api/SignUp/nicknameDuplicateCheck -- 완료
+    /api/SignUp -완료
+    ▷req: user
+    ▷res: '회원가입완료'
+    if(err) {throw err;}
+    ▷return: String
+
+    /api/SignUp/idDuplicateCheck -- 완료
+    ▷req: user_id
+    ▷res: '0' or '1'
+    ▷return: String
+
+    /api/SignUp/emailDuplicateCheck -- 완료
+    ▷req: user_email
+    ▷res: '0' or '1'
+    ▷return: String
+
+
+
+    /api/SignUp/nicknameDuplicateCheck -- 완료
+    ▷req: user_nickname
+    ▷res: '0' or '1'
+    ▷return: String
+
+
 
 <matching>
-검색결과 /api/matching/list
-상세보기 /api/matching/view/:(pk)
-신청하기 /matching/apply/
-             /api/matching/apply/
-             /api/matching/apply/list
+   - 포폴검색결과 /api/matching/list --변수명수정필요(장르,user_type -> po_type) (충돌날까봐 여기서안바꿨어요)
+    ▷req: searchOption
+        searchOption['user_gender']
+        searchOption['po_type']
+        searchOption['genre_number']
+        searchOption['location_number']
+        searchOption['start_age']
+        searchOption['end_age']
+    ▷res:  p.po_number,
+            p.po_title,
+            u.user_id,
+            u.user_nickname,
+            p.created_by,
+            p.updated,
+            u.user_gender,
+            u.user_age,
+            g.gen_name,
+            p.po_type,
+            u.user_type,
+            l.location_name,
+            p.po_view_count,
+            p.po_apply_count,
+            p.po_file_path,
+            p.po_file_name,
+            per_selected
+    ▷return: JSON
 
-수락하기 /api/matching/reply/list
-             /api/matching/reply/view
-             /api/matching/reply/process
+
+   - 포폴상세보기 /api/matching/view/  
+    ▷req: po_number
+    ▷res: p.po_number,
+            p.po_title,
+            u.user_id,
+            u.user_nickname,
+            p.created_by,
+            p.updated,
+            g.gen_name,
+            p.po_type,
+            p.po_view_count,
+            p.po_apply_count,
+            p.po_file_path,
+            p.po_file_name,
+            per_selected
+    ▷return: Array
+
+   - 신청하기 /api/matching/apply/
+    ▷req:
+    ▷res:  
+
+
+
 
 <users>
-유저정보: /api/user/profile
-유저정보수정: /api/user/profile/update
-회원탈퇴: /api/user/terminated
-유저포폴목록: /api/user/portfolio/list
-유저포폴상세: /api/user/portfolio/view
-유저포폴추가: /api/user/portfolio/create
-유저포폴수정: /api/user/portfolio/update
-유저포폴삭제: /api/user/portfolio/delete
+   - 유저정보: /api/user/profile
+    ▷req:
+    ▷res: 누리형님요구사항이필요함
+
+   - 유저정보수정: /api/user/profile/update
+    ▷req:
+    ▷res: 누리형님요구사항이필요함
+
+   - 회원탈퇴: /api/user/terminated
+    ▷req:
+    ▷res: 누리형님요구사항이필요함
+
+   - 유저포폴목록: /api/user/portfolio/list (미진행)
+    ▷req: user_id + 옵션(검색,정렬)
+    ▷res: 누리형님요구사항이필요함
+
+   - 유저포폴상세: /api/user/portfolio/view  (미진행)
+    ▷req: po_number
+    ▷res: 누리형님요구사항이필요함
+
+   - 유저포폴추가: /api/user/portfolio/create -- 완료
+    ▷req: 
+        po_data['user_id']
+        po_data['po_view_count']
+        po_data['po_apply_count']
+        po_data['po_title']
+        po_data['gen_number']
+        po_data['po_type']
+        po_data['po_desc']
+        uploadData
+    ▷res: 없음 (∵res.end())
+    ▷return: 없음 (∵res.end())
+
+   - 유저포폴수정: /api/user/portfolio/update
+    ▷req:
+    ▷res:
+
+   - 유저포폴삭제: /api/user/portfolio/delete
+    ▷req:
+    ▷res:
+
+
+   - 유저Reply목록(수신함): /api/user/matching/reply/list (한화면에 2가지영역)
+    ▷req:
+    ▷res:             
+
+   - 유저Reply상세(읽혀지고, 거절수락 결정)
+    /api/user/matching/reply/view
+    ▷req:
+    ▷res:
+
+   - 유저Reply전송
+    /api/user/matching/reply/
+    ▷req:
+    ▷res:
+
 
 <board>
-/api/board/List
-/api/board/View
-/api/board/Create
-/api/board/Update
-/api/board/Delete
+    /api/board/List
+    ▷req:
+    ▷res:
+
+    /api/board/View
+    ▷req:
+    ▷res:
+
+    /api/board/Create
+    ▷req:
+    ▷res:
+
+    /api/board/Update
+    ▷req:
+    ▷res:
+
+    /api/board/Delete
+    ▷req:
+    ▷res:
 
 <admin>
-메인  /api/admin/
-회원관리 /api/admin/Users/
-분석 /api/admin/Analyst/
+    관리자메인 /api/admin/
+    ▷req:
+    ▷res:
+
+    회원관리 /api/admin/Users/
+    ▷req:
+    ▷res:
+
+    분석 /api/admin/Analyst/
+    ▷req:
+    ▷res:
 
 
 
