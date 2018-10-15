@@ -100,7 +100,7 @@ router.post('/portfolio/create',function(req,res,next){
      //▼파일업로드작업
      uploadedData.mv(`${ToFrontendPath}/${ConvertedFileName}`, function(err) {    
          if (err){
-           res.send('파일업로드실패');
+           res.end();
          }else{ //else시작 
              console.log('파일업로드완료!');
              //▼DB작업
@@ -108,7 +108,7 @@ router.post('/portfolio/create',function(req,res,next){
              console.log('user_id ->',user_id);
              db.query(sql,function(err,data,fields){
                  if(err){
-                      throw err;
+                    res.end();
                  }else{
                      console.log('1차쿼리 성공\n data ->',data);
                      
@@ -135,13 +135,14 @@ router.post('/portfolio/create',function(req,res,next){
                          po_desc],
                          function(err2,data2,fields){
                              if(err2){
-                                 throw err2;
+                                 res.end();
                              }else{
-                                 res.send('DB추가완료!');
-                         }
-                     });
+                                 console.log('DB추가끝');
+                                 res.end();
+                             }
+                     });//추가쿼리끝
                  }            
-             });//쿼리끝
+             });//조회쿼리끝
          }//else끝
      });//업로드 끝
 
