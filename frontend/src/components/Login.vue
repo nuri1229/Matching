@@ -86,7 +86,6 @@ export default {
       })
     },
     fn_signUp () {
-      alert('sign up')
       this.$router.replace(this.$route.query.redirect || '/SignUp')
     }
   },

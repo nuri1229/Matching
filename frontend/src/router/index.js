@@ -7,6 +7,7 @@ import SignUp from '@/components/SignUp'
 import matchingList from '@/components/matchingList'
 import portfolioUpload from '@/components/portfolioUpload'
 import main from '@/components/main'
+import portfolioDetail from '@/components/portfolioDetail'
 
 Vue.use(Router)
 
@@ -45,8 +46,13 @@ export default new Router({
     },
     {
       path: '/user/portfolio/create',
-      name: 'matchingList',
+      name: 'portfolioUpload',
       component: portfolioUpload
+    },
+    {
+      path: '/matching/view',
+      name: 'portfolioDetail',
+      component: portfolioDetail
     }
   ]
 })

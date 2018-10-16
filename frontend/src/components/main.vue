@@ -23,9 +23,9 @@
     <div id="second-block" style="padding-top:10px;">
       <div class="line">
         <div class="margin">
-          <div class="s-12 m-12 l-12 margin-bottom">
+          <div class="s-12 m-12 l-12 margin-bottom" style="padding-left:100px;">
               <template v-for="(portfolio, index) in portfolioList">
-                  <div class="inlineDiv" v-on:mouseover.self="divMouseOver" v-on:mouseout.self="divMouseOut" :key="portfolio.po_number" style="width:30%;border:1px solid #f0f0f0;height:450px;background:white;margin-left:15px;margin-bottom:15px;padding:5px;">
+                  <div class="inlineDiv" v-on:mouseover.self="divMouseOver" v-on:mouseout.self="divMouseOut" :key="portfolio.po_number" v-on:click="portfolioDetail(portfolio.po_number)" >
                     <img v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" v-on:mouseover.self="imgMouseOver" v-on:mouseout.self="imgMouseOut" style="width:100%;height:300px;">
                     <hr>
                     <table class="poDesc" style="width=100%">
@@ -85,6 +85,10 @@ export default {
     },
     imgMouseOut: function (event) {
       event.target.parentNode.style.border = '1px solid #f0f0f0'
+    },
+    portfolioDetail: function (poNumber) {
+      alert(poNumber)
+      this.$router.push({name: 'portfolioDetail', params: {poNumber}})
     }
   },
   created () {
@@ -117,5 +121,12 @@ img {
 }
 .inlineDiv {
   display: inline-block;
+  width: 30%;
+  border: 1px solid #f0f0f0;
+  height: 450px;
+  background: white;
+  margin-left: 20px;
+  margin-bottom: 15px;
+  padding: 5px;
 }
 </style>

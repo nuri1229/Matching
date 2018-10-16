@@ -18,7 +18,8 @@
                         <input type="text" v-model="user.user_id" class="form-control">
                       </td>
                       <td width="40%">
-                        <input type="text" v-model="id_message" readonly style="border: 0px; width:100%" >
+                        {{id_message}}
+                        <!--<input type="text" v-model="id_message" readonly style="border: 0px; width:100%" >-->
                       </td>
                       <td width="10%">
                         <button class="btn btn-dark" @click="idDuplicateCheck(user.user_id)">중복체크</button>

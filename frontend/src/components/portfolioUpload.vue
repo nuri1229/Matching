@@ -86,10 +86,10 @@ export default {
 
       this.$http.defaults.headers.post['Content-Type'] = 'multipart/form-data'
       this.$http.post('/api/user/portfolio/create', uploadData
-      ).then(() => {
-        console.log('SUCCESS!!')
+      ).then((res) => {
+        alert(res.data)
       }).catch(() => {
-        console.log('FAILURE!!')
+        alert('Error')
       })
     },
     handleFilesUpload: function () {
