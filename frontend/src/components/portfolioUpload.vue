@@ -33,9 +33,16 @@
                           <td>
                             파일
                           </td>
-                          <td colspan=3>
+                          <td width="25%">
                             <button class="btn btn-primary" v-on:click="fn_fileButtonClick()">파일첨부</button>
                             <span style="margin-left:20px;">{{selectedFileName}}</span>
+                          </td>
+                          <td>
+                            공개여부
+                          </td>
+                          <td >
+                            <input type="radio" v-model="po_data.po_open_yn" value="Y" style="margin-left:20px;"> 공개
+                            <input type="radio" v-model="po_data.po_open_yn" value="N"> 비공개
                           </td>
                         </tr>
                         <tr>
@@ -68,7 +75,8 @@ export default {
         po_title: '',
         gen_number: '',
         po_type: '',
-        po_desc: ''
+        po_desc: '',
+        po_open_yn: ''
       },
       file: '',
       selectedFileName: '',
@@ -88,6 +96,7 @@ export default {
       this.$http.post('/api/user/portfolio/create', uploadData
       ).then((res) => {
         alert(res.data)
+        alert(res)
       }).catch(() => {
         alert('Error')
       })
@@ -107,6 +116,8 @@ export default {
   },
   mounted () {
     this.po_data.po_type = 'D'
+    this.po_data.gen_number = '1'
+    this.po_data.po_open_yn = 'Y'
   }
 }
 </script>

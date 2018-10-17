@@ -5,17 +5,20 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import VueSession from 'vue-session'
-
+import VModal from 'vue-js-modal'
+ 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 //  http통신 axios
-
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 //  세션
 Vue.use(VueSession)
+
+// 모달
+Vue.use(VModal,{ dynamic: true })
 
 /* eslint-disable no-new */
 new Vue({

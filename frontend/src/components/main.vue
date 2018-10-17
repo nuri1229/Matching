@@ -23,10 +23,10 @@
     <div id="second-block" style="padding-top:10px;">
       <div class="line">
         <div class="margin">
-          <div class="s-12 m-12 l-12 margin-bottom" style="padding-left:100px;">
-              <template v-for="(portfolio, index) in portfolioList">
-                  <div class="inlineDiv" v-on:mouseover.self="divMouseOver" v-on:mouseout.self="divMouseOut" :key="portfolio.po_number" v-on:click="portfolioDetail(portfolio.po_number)" >
-                    <img v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" v-on:mouseover.self="imgMouseOver" v-on:mouseout.self="imgMouseOut" style="width:100%;height:300px;">
+              <template v-for="portfolio in portfolioList">
+                  <div class="s-12 m-12 l-4 margin-bottom inlineDiv" v-on:mouseover.self="divMouseOver" v-on:mouseout.self="divMouseOut" :key="portfolio.po_number" v-on:click="portfolioDetail(portfolio.po_number)" >
+                    <img v-if="portfolio.po_type=='D'" v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" v-on:mouseover.self="imgMouseOver" v-on:mouseout.self="imgMouseOut" style="width:100%;height:300px;">
+                    <iframe v-else v-bind:src="portfolio.po_file_path+'/'+portfolio.po_file_name" v-on:mouseover.self="imgMouseOver" v-on:mouseout.self="imgMouseOut" style="width:100%;height:300px;"/>
                     <hr>
                     <table class="poDesc" style="width=100%">
                       <tr>
@@ -40,9 +40,7 @@
                       </tr>
                     </table>
                   </div>
-                  <br v-if="(index+1)%3==0 && (index+1)>=3" :key="'line'+index">
                 </template>
-          </div>
         </div>
       </div>
     </div>
@@ -87,8 +85,11 @@ export default {
       event.target.parentNode.style.border = '1px solid #f0f0f0'
     },
     portfolioDetail: function (poNumber) {
-      alert(poNumber)
-      this.$router.push({name: 'portfolioDetail', params: {poNumber}})
+      if (this.$session.exists('user_info')) {
+        this.$router.push({name: 'portfolioDetail', params: {poNumber}})
+      } else{
+        alert('로그인 후 이용해주세요')
+      }
     }
   },
   created () {
@@ -101,7 +102,7 @@ export default {
     })
   },
   mounted () {
-    $('td').eq(0).css('border-bottom', '2px solid #46A6F7')
+    $('td').eq(0).css('border-bottom', '1px solid #46A6F7')
   }
 }
 </script>
@@ -120,13 +121,9 @@ img {
   margin-right: auto;
 }
 .inlineDiv {
-  display: inline-block;
-  width: 30%;
   border: 1px solid #f0f0f0;
   height: 450px;
   background: white;
-  margin-left: 20px;
-  margin-bottom: 15px;
   padding: 5px;
 }
 </style>
