@@ -75,6 +75,7 @@ router.post('/portfolio/create',function(req,res,next){
      var genre_number = parseInt(po_data['gen_number']);
      var po_type=po_data['po_type'];
      var po_desc=po_data['po_desc'];
+     var po_open_yn=po_data['po_open_yn'];
     
      //▼포폴파일변수
      var uploadedData = req.files.uploadData; //넘겨온 파일 받는부분
@@ -118,7 +119,7 @@ router.post('/portfolio/create',function(req,res,next){
                      console.log('user_number ->',user_number);
  
  
-                     var sql2= 'insert into tb_portfolio values (?,?,?,?,?,?,?,?,?,?,default,?,default,?,?);';
+                     var sql2= 'insert into tb_portfolio values (?,?,?,?,?,?,?,?,?,?,default,?,default,?,?,?);';
                      db.query(sql2,
                          [po_number,
                          user_number,
@@ -132,13 +133,14 @@ router.post('/portfolio/create',function(req,res,next){
                          po_apply_count,
                          user_nickname,
                          user_nickname,
-                         po_desc],
+                         po_desc,
+                         po_open_yn],
                          function(err2,data2,fields){
                              if(err2){
-                                 res.end();
+                                 res.end('DB추가실패');
                              }else{
                                  console.log('DB추가끝');
-                                 res.end();
+                                 res.end('DB추가완료');
                              }
                      });//추가쿼리끝
                  }            

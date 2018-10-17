@@ -49,7 +49,10 @@ if(gen_number == undefined){
     }
 }
 
-objMatching.getAllportfolios(req,res,FilterCondtions); //암것도없으면 {}로넘어감
+//▼ 최소 옵션
+FilterCondtions["p.po_open_yn"]='Y'; //공개글불러오기
+
+objMatching.getAllportfolios(req,res,FilterCondtions); //암것도없으면 {'p.po_open_yn':'Y'}로넘어감
 
 });
 
