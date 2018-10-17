@@ -133,6 +133,7 @@ exports.getOneportfolio = function(req,res,FilterConditions){
         p.po_apply_count,
         p.po_file_path,
         p.po_file_name,
+        p.po_desc,
         ROUND((p.po_apply_count/p.po_view_count)*100,1) as 'per_selected'
     `;    
     var fromQuery =`from tb_portfolio as p
