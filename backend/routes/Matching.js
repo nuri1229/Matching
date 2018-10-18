@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var objMatching = require('./obj/objMatching.js');
+var db = require('./db/db.js');
 router.get('/search',function(req,res,next){
   console.log('검색창폼 진입OK');
   res.render('search.ejs');
@@ -63,16 +64,78 @@ router.post('/list', function(req, res, next) {
 
 });
 
-//결과물상세보기
+
+
+// api/matching/apply
+router.post('/apply',function(req,res,nex){
+  console.log('신청하기 진입성공!');
+  console.log('req.body->',req.body);
+   //▼공통 변수
+   var AlphabetArr = 
+       ['a','b','c','d','e',
+       'f','g','h','i','j',
+       'k','l','m','n','o',
+       'p','q','r','s','t',
+       'u','v','w','x','y',
+       'z','0','1','2','3','4','5','6','7','8','9'];
+   var apply_number = 'AIDX';
+   var cnt=0;
+   while(cnt< 12){
+       var AlphabetRandomKey = Math.floor(Math.random()*AlphabetArr.length); 
+       //console.log(AlphabetRandomKey);
+       apply_number+=AlphabetArr[AlphabetRandomKey];
+       cnt++;
+   }
+
+  //새변수명
+  var ApplyObject = req.body.apply;
+  console.log('받아온객체 apply->',ApplyObject);
+ /*  var po_number =ApplyObject['po_number'];
+  var apply_user_number  =ApplyObject['login_user_number'];
+  var reply_user_id  =ApplyObject['po_user_id'];
+  var apply_message  =ApplyObject['apply_message']; */
+
+  var po_number = ApplyObject.po_number;
+  var apply_user_number = ApplyObject.login_user_number;
+  var reply_user_id = ApplyObject.po_user_id;
+  var apply_message = ApplyObject.apply_message;
+
+  console.log('새변수명\n ',
+              'apply_number->',apply_number,'\n',
+              'po_number->',po_number,'\n',
+              'apply_user_number ->',apply_user_number,'\n',
+              'reply_user_id ->',reply_user_id,'\n',
+              'apply_message ->',apply_message,'\n');
+
+  var sql = `INSERT INTO tb_apply (apply_number,
+    po_number,
+    apply_user_number,
+    reply_user_number,
+    apply_status,
+    reply_status,
+    apply_message,
+    reply_message,
+    apply_date,
+    reply_date) 
+      VALUES
+      (?,?,?,(select user_number from tb_user where user_id='${reply_user_id}'),DEFAULT,DEFAULT,?,NULL,DEFAULT,NULL)`;
+    console.log('sql->',sql);
+    db.query(sql,[apply_number,po_number,apply_user_number,apply_message],function(err,data,fields){
+        if(err){
+          res.send('failed');
+        }else{
+          res.send('success');
+        }
+    });
+
+  
+});
+
+// api/matching/view
 router.post('/view', function(req, res, next) {
   console.log('작업물상세보기');
   res.send('SqlObject');
 });
 
-
-router.post('/apply',function(req,res,nex){
-  console.log('신청 Process');
-  res.send('.....');
-});
 
   module.exports = router;
