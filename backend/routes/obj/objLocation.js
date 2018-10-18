@@ -20,7 +20,7 @@ function getAllLocation(){
                 result.push(originData);
                 i++;
             }
-            console.log(result);
+           // console.log(result);
             exports.locations = result;
         }
     });
