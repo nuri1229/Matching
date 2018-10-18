@@ -186,7 +186,8 @@ router.get('/profile/terminated', function(req, res, next) {
 router.post('/matching/reply/list',function(req,res,next){
 console.log('api/user/matching/reply/list 요청진입성공');
 var List={};
-    var login_user_number = "'"+req.body.login_user_number+"'";
+    var login_user_number = req.body.user_number;
+    console.log('login_user_number->',login_user_number);
     var sql= `select 
     a.apply_number,
     u.user_nickname,
@@ -205,11 +206,14 @@ console.log('sql ->',sql);
         }else{
             console.log('this is first');
             List['replyList']=replyListData;
+            console.log('result01->',Object.keys(List));
+            console.log(' List[replyList]->', List['replyList']);
+
             var sql2 = `select 
             u.user_nickname,
             p.po_title,
             a.reply_status,
-            a.apply_data
+            a.apply_date
             from  tb_apply as a
             join tb_user as u on a.reply_user_number = u.user_number
             join tb_portfolio as p on a.po_number = p.po_number
@@ -217,6 +221,8 @@ console.log('sql ->',sql);
             db.query(sql2,[login_user_number],function(err,applyListData,fields){
                 console.log('this is second');
                 List['applyList']=applyListData;
+                console.log('result02->',Object.keys(List));
+                console.log(' List[applyList]->', List['applyList']);
                 res.send(List);
             });
         }
