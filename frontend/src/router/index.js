@@ -8,6 +8,7 @@ import matchingList from '@/components/matchingList'
 import portfolioUpload from '@/components/portfolioUpload'
 import main from '@/components/main'
 import portfolioDetail from '@/components/portfolioDetail'
+import reply from '@/components/reply'
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ export default new Router({
       path: '/matching/view',
       name: 'portfolioDetail',
       component: portfolioDetail
+    },
+    {
+      path: '/user/matching/reply/list',
+      name: 'reply',
+      component: reply
     }
   ]
 })

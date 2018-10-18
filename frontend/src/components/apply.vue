@@ -1,15 +1,12 @@
 <template>
-  <div id="apply"> 
-    <div style="border:1px solid #f0f0f0;width:100%">
-      신청메시지<br>
-    <textarea v-model="apply.apply_message"></textarea>
-    <button v-on:click="submit">서브밋</button>
-    <button v-on:click="$emit('close')" class="btn btn-dark">Close</button><br>
-    참고: <br>
-    po_number: {{apply.po_number}}<br>
-    po_user_id: {{apply.po_user_id}}<br>
-    login_user_number: {{apply.login_user_number}}<br>
-    apply_message: {{apply.apply_message}}<br>
+  <div id="apply">
+    <button style="width:100%;" class="btn btn-dark">{{apply.po_user_id}}님께 보낼 신청메시지를 작성해주세요</button>
+    <div style="border:1px solid #f0f0f0;width:95%;padding-top:10px;">
+      <textarea v-model="apply.apply_message" style="height:400px;margin-left:25px;margin-bottom:10px;" class="form-control"></textarea>
+    </div>
+    <div align="center">
+      <button v-on:click="submit" class="btn btn-dark" style="width:20%;margin:auto;">신청하기</button>
+      <button v-on:click="$emit('close')" class="btn" style="width:20%;">Close</button><br>
     </div>
   </div>
 </template>
@@ -27,11 +24,15 @@ export default {
       }
     }
   },
-  props : ['po_number','po_user_id'],
+  props: ['po_number', 'po_user_id'],
   methods: {
     submit: function () {
       this.$http.post('/api/matching/apply/', {'apply': this.apply}).then((res) => {
-        alert(res.data)
+        if (res.data === 'success') {
+          this.alert('신청이 완료되었습니다')
+        } else {
+          this.alert('예기치 못한 오류가 발생하였습니다')
+        }
       })
     }
   }
