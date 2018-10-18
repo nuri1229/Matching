@@ -13,7 +13,8 @@
                 </li>
                 <li><router-link to="/admin/Users">가입유저정보</router-link></li>
                 <li><router-link to="/matching/list">유저검색</router-link></li>
-                <li><router-link v-if="this.$session.exists()" to="/user/portfolio/create">포폴업로드</router-link></li>
+                <li><router-link v-if="this.$session.exists('user_info')" to="/user/portfolio/create">포폴업로드</router-link></li>
+                <li><router-link v-if="this.$session.exists('user_info')" to="/user/matching/reply/list">협업 요청 목록</router-link></li>
               </ul>
            </li>
            <li>
