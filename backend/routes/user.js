@@ -28,7 +28,8 @@ router.post('/terminated',function(req,res,next){
 
 //회원포폴리스트 
 router.get('/portfolio/list',function(req,res,next){
-  console.log('회원정보창입니다');
+ 
+
   res.send('SqlObject');
 });
 
@@ -181,31 +182,33 @@ router.get('/profile/terminated', function(req, res, next) {
 
 });
 
-router.get('/profile/portfolio/list', function(req, res, next) {
- 
+//수신함리스트
+router.post('/matching/reply/list',function(req,res,next){
+console.log('api/user/matching/reply/list 요청진입성공');
+
+    var login_user_number = "'"+req.body.login_user_number+"'";
+    var sql= `select 
+    a.apply_number as AIDX,
+    u.user_nickname as User_Nickname,
+    p.po_title as Po_Title,
+    a.apply_date as Apply_Date
+    from  tb_apply as a
+    join tb_user as u on a.apply_user_number = u.user_number
+    join tb_portfolio as p on a.po_number = p.po_number
+    where a.reply_user_number = ?`;
+console.log('sql ->',sql);
+    db.query(sql,[login_user_number],function(err,data,fields){
+        if(err){
+            console.log(err);
+            res.send('failed');
+        }else{
+            console.log('DB조회완료');
+            res.send(data); //return json
+        }
+    });
 
 });
 
-
-router.get('/profile/portfolio/view', function(req, res, next) {
- 
-
-});
-
-router.get('/profile/portfolio/create', function(req, res, next) {
- 
-
-});
-
-router.get('/profile/portfolio/update', function(req, res, next) {
- 
-
-});
-
-router.get('/profile/portfolio/delete', function(req, res, next) {
- 
-
-});
 
 
 
