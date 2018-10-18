@@ -6,7 +6,7 @@ var objLocation = require('./obj/objLocation.js');
 router.get('/',function(req,res,next){
     console.log('Location 라우터접속');
     var locations = objLocation.locations;
-    console.log('locations = ',locations);
+    //console.log('locations = ',locations);
     res.send(locations);
 });
 

@@ -6,7 +6,7 @@ var objGenre = require('./obj/objGenre.js');
 router.get('/',function(req,res,next){
     console.log('Genre 라우터접속');
     var genres = objGenre.genres;
-    console.log('genres = ',genres);
+    //console.log('genres = ',genres);
     res.send(genres);
 });
 
