@@ -185,28 +185,42 @@ router.get('/profile/terminated', function(req, res, next) {
 //수신함리스트
 router.post('/matching/reply/list',function(req,res,next){
 console.log('api/user/matching/reply/list 요청진입성공');
-
+var List={};
     var login_user_number = "'"+req.body.login_user_number+"'";
     var sql= `select 
-    a.apply_number as AIDX,
-    u.user_nickname as User_Nickname,
-    p.po_title as Po_Title,
-    a.apply_date as Apply_Date
+    a.apply_number,
+    u.user_nickname,
+    p.po_title,
+    p.po_type,
+    a.apply_date
     from  tb_apply as a
     join tb_user as u on a.apply_user_number = u.user_number
     join tb_portfolio as p on a.po_number = p.po_number
     where a.reply_user_number = ?`;
 console.log('sql ->',sql);
-    db.query(sql,[login_user_number],function(err,data,fields){
+    db.query(sql,[login_user_number],function(err,replyListData,fields){
         if(err){
             console.log(err);
             res.send('failed');
         }else{
-            console.log('DB조회완료');
-            res.send(data); //return json
+            console.log('this is first');
+            List['replyList']=replyListData;
+            var sql2 = `select 
+            u.user_nickname,
+            p.po_title,
+            a.reply_status,
+            a.apply_data
+            from  tb_apply as a
+            join tb_user as u on a.reply_user_number = u.user_number
+            join tb_portfolio as p on a.po_number = p.po_number
+            where a.apply_user_number = ?`;
+            db.query(sql2,[login_user_number],function(err,applyListData,fields){
+                console.log('this is second');
+                List['applyList']=applyListData;
+                res.send(List);
+            });
         }
     });
-
 });
 
 
