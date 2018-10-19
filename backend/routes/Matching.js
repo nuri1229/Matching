@@ -74,8 +74,8 @@ var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?'
     db.query(getApplyCountSQL,[po_number],function(err,data,fileds){
         var NewApplyCount = data[0].po_apply_count +1 ;
         var updateApplyCountSQL='update tb_portfolio set po_view_count=? where po_number=?';
-        db.query(updateApplyCountSQL,[NewApplyCount,po_number],function(err,data,fields){
-            if(err){
+        db.query(updateApplyCountSQL,[NewApplyCount,po_number],function(err2,data,fields){
+            if(err2){
                 console.log('applycount수정실패');
                 next();
             }else{
