@@ -62,15 +62,33 @@ router.post('/PortfolioDetail',function(req,res,next){
 console.log('포폴상세보기진입성공');
 var po_number= req.body.po_number;
 console.log('req.body.po_number ->',po_number);
-var FilterCondtions = {};
-
-if(po_number == undefined){
-
-}else{
-    FilterCondtions["p.po_number"]=po_number;
-}
-
-objMatching.getOneportfolio(req,res,FilterCondtions);
+var getViewCountSQL='select po_view_count from tb_portfolio where po_number=?';
+    db.query(getViewCountSQL,[po_number],function(err,data,fileds){
+        var NewViewCount = data[0].po_view_count +1 ;
+        var updateViewCountSQL='update tb_portfolio set po_view_count=? where po_number=?';
+        db.query(updateViewCountSQL,[NewViewCount,po_number],function(err,data,fields){
+            if(err){
+                console.log('viewcount수정실패');
+                next();
+            }else{
+                console.log('viewcount수정성공');
+                console.log('newviewcount->',NewViewCount);
+                next();
+            }
+        });
+    });
+},function(req,res,next){
+    var po_number= req.body.po_number;
+    console.log('req.body.po_number ->',po_number);
+    var FilterCondtions = {};
+    
+    if(po_number == undefined){
+    
+    }else{
+        FilterCondtions["p.po_number"]=po_number;
+    }
+    
+    objMatching.getOneportfolio(req,res,FilterCondtions);
 
 });
 
