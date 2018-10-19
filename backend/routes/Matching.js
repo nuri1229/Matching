@@ -67,7 +67,25 @@ router.post('/list', function(req, res, next) {
 
 
 // api/matching/apply
-router.post('/apply',function(req,res,nex){
+router.post('/apply',function(req,res,next){
+  var po_number = ApplyObject.po_number;
+  console.log('req.body.po_number ->',po_number);
+var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?';
+    db.query(getApplyCountSQL,[po_number],function(err,data,fileds){
+        var NewApplyCount = data[0].po_apply_count +1 ;
+        var updateApplyCountSQL='update tb_portfolio set po_view_count=? where po_number=?';
+        db.query(updateApplyCountSQL,[NewApplyCount,po_number],function(err,data,fields){
+            if(err){
+                console.log('applycount수정실패');
+                next();
+            }else{
+                console.log('applycount수정성공');
+                console.log('NewApplyCount->',NewApplyCount);
+                next();
+            }
+        });
+    });
+},function(req,res,nex){
   console.log('신청하기 진입성공!');
   console.log('req.body->',req.body);
    //▼공통 변수
