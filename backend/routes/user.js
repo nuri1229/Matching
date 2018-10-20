@@ -310,7 +310,7 @@ router.post('/matching/reply',function(req,res,next){
     var reply_status = ApplyObject.reply_status;//뷰에서 넘어온 객체이름으로하기
     var apply_status = 'completed';
     var reply_message = ApplyObject.reply_message;//뷰에서 넘어온 객체이름으로 수정하기
-    var updateReplyStatusSQL = 'update tb_apply set reply_status=?,apply_status=?,reply_message=? where apply_number=?';
+    var updateReplyStatusSQL = 'update tb_apply set reply_status=?,apply_status=?,reply_message=?,reply_date= now() where apply_number=?';
     db.query(updateReplyStatusSQL,[reply_status,apply_status,reply_message,apply_number],function(err2,data2,fields){
         if(err2){
             console.log('수락(accept),거절(deny) 혹은 송신상태완료(completed)또는  message를수정하는데 실패하였습니다.');
