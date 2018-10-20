@@ -216,7 +216,8 @@ var List={};
     p.po_title,
     p.po_type,
     a.apply_status,
-    a.apply_date
+    a.apply_date,
+    a.apply_message
     from  tb_apply as a
     join tb_user as u on a.apply_user_number = u.user_number
     join tb_portfolio as p on a.po_number = p.po_number
@@ -238,7 +239,6 @@ console.log('sql ->',sql);
             a.reply_status,
             a.apply_status,
             a.apply_date,
-            a.apply_message
             from  tb_apply as a
             join tb_user as u on a.reply_user_number = u.user_number
             join tb_portfolio as p on a.po_number = p.po_number
