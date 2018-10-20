@@ -6,7 +6,8 @@ import router from './router'
 import axios from 'axios'
 import VueSession from 'vue-session'
 import VModal from 'vue-js-modal'
- 
+import vueMoment from 'vue-moment'
+
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -18,7 +19,10 @@ Vue.config.productionTip = false
 Vue.use(VueSession)
 
 // 모달
-Vue.use(VModal,{ dynamic: true })
+Vue.use(VModal, { dynamic: true })
+
+// dateformat
+Vue.use(vueMoment)
 
 /* eslint-disable no-new */
 new Vue({
