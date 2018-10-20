@@ -299,10 +299,11 @@ var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_numbe
       수락했을때 상대방의 포폴어플라이카운트올려야할지?
 */
 router.post('/matching/reply',function(req,res,next){
-    var apply_number = req.body.apply_number;//뷰에서 넘어온객체이름으로하기
-    var reply_status = req.body.reply_status;//뷰에서 넘어온 객체이름으로하기
+    var ApplyObject = req.body.apply;
+    var apply_number = ApplyObject.apply_number;//뷰에서 넘어온객체이름으로하기
+    var reply_status = ApplyObject.reply_status;//뷰에서 넘어온 객체이름으로하기
     var apply_status = 'completed';
-    var reply_message = req.body.reply_message;//뷰에서 넘어온 객체이름으로 수정하기
+    var reply_message = ApplyObject.reply_message;//뷰에서 넘어온 객체이름으로 수정하기
     var updateReplyStatusSQL = 'update tb_apply set reply_status=?,apply_status=?,reply_message=? where apply_number=?';
     db.query(updateReplyStatusSQL,[reply_status,apply_status,reply_message,apply_number],function(err2,data2,fields){
         if(err2){
