@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var objMatching = require('./obj/objMatching.js');
+var db = require('./db/db.js');
 
 //포폴리스트갖고오기
 router.post('/PortfolioSelect',function(req,res,next){
