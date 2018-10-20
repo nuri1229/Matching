@@ -4,6 +4,7 @@ var objUsers = require('./obj/objUsers.js');
 const fileUpload = require('express-fileupload');
 var db = require('./db/db.js');
 var fs= require('fs');
+var objMatching = require('./obj/objMatching.js');
 
 
 router.use(fileUpload());
@@ -147,10 +148,7 @@ router.post('/portfolio/create',function(req,res,next){
                  }            
              });//조회쿼리끝
          }//else끝
-     });//업로드 끝
-
-   
-    
+     });//업로드 끝   
 });
 
 
@@ -167,9 +165,27 @@ router.get('/portfolio/delete',function(req,res,next){
 });
 
 
-router.get('/profile', function(req, res, next) {
- console.log('여기는 프로필');
 
+/*
+프로세스명: 유저프로필
+작성날짜: 2018년 10월 19일(금)
+작성자:최어진
+*/
+router.get('/profile', function(req, res, next) {
+    console.log('여기는 프로필진입성공!');
+    var user_nubmer = req.body.user_number;
+    var getUserInfoSQL=`select * from tb_user where user_number=?`;
+
+    db.query(getUserInfoSQL,[user_nubmer],function(err,data,fields){
+        if(err){
+            console.log('프로필정보를 가져오는데 실패하였습니다.');
+            res.send();
+        }else{
+            console.log('프로필정보를 가져오는데 성공하였습니다.');
+            res.send(data);
+
+        }
+    });
 });
 
 router.get('/profile/update', function(req, res, next) {
@@ -182,7 +198,13 @@ router.get('/profile/terminated', function(req, res, next) {
 
 });
 
-//수신함리스트
+/*
+프로세스명:수신함리스트
+작성날짜:2018년 10월 18일(목)
+작성자:최어진
+메모: 한화면에2개 표현할거라서 객체2개 필요함
+    각각의 리스트가져올때 옵션을 어떻게줄지 생각필요
+*/
 router.post('/matching/reply/list',function(req,res,next){
 console.log('api/user/matching/reply/list 요청진입성공');
 var List={};
@@ -193,11 +215,12 @@ var List={};
     u.user_nickname,
     p.po_title,
     p.po_type,
+    a.apply_status,
     a.apply_date
     from  tb_apply as a
     join tb_user as u on a.apply_user_number = u.user_number
     join tb_portfolio as p on a.po_number = p.po_number
-    where a.reply_user_number = ?`;
+    where a.reply_user_number = ?`; //옵션을 어떻게줄지
 console.log('sql ->',sql);
     db.query(sql,[login_user_number],function(err,replyListData,fields){
         if(err){
@@ -213,11 +236,12 @@ console.log('sql ->',sql);
             u.user_nickname,
             p.po_title,
             a.reply_status,
+            a.apply_status,
             a.apply_date
             from  tb_apply as a
             join tb_user as u on a.reply_user_number = u.user_number
             join tb_portfolio as p on a.po_number = p.po_number
-            where a.apply_user_number = ?`;
+            where a.apply_user_number = ?`; //옵션을 어떻게줄지
             db.query(sql2,[login_user_number],function(err,applyListData,fields){
                 console.log('this is second');
                 List['applyList']=applyListData;
@@ -229,8 +253,68 @@ console.log('sql ->',sql);
     });
 });
 
+/*
+프로세스명:수신함상세보기
+작성날짜:2018년 10월 19일(금)
+작성자:최어진
+메모: 
+ 요청자의포폴모두보기(공개상태는 공개,비공개 모두)
+ Vue화면단 완성시 테스트필요
 
+ 상세보기할때 view카운트올릴지말지,
+*/
 
+router.post('/matching/reply/view',function(req,res,next){
+console.log('replyView진입성공');
+console.log('읽음표시수정작업들어갑니다~');
+var apply_number = req.body.apply_number;//vue에서 날라온변수로바꾸기
+var reply_status = 'pending';
+var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_number=?';
+    db.query(updateReplyStatusSQL,[reply_status,apply_number],function(err,data,fields){
+        if(err){
+            console.log('읽음상태 미결정으로 고치는데 실패하였습니다.');
+            next();
+        }else{
+            console.log('성공: reply_status=\'none\' -> \'pending\'로 수정하는데 성공하였습니다.');
+            next();
+        }
+    });
+},function(req,res,next){
+    var apply_number = req.body.apply_number;
+    var selectApplyUserNumberSQL='select apply_user_number from tb_apply where apply_number=?';
+    db.query(selectApplyUserNumberSQL,[apply_number],function(err2,data2,fields2){
+        var user_number = data2[0].user_number;
+        var FilterCondtions = {};
+        FilterCondtions["p.user_number"]=user_number; 
+        objMatching.getAllportfolios(req,res,FilterCondtions);
+    });    
+});
 
+/*
+프로세스명:답장하기
+작성날짜:2018년 10월 19일(금)
+작성자:최어진
+메모: Vue화면단 완성시 테스트필요
+      수락했을때 상대방의 포폴어플라이카운트올려야할지?
+*/
+router.post('/matching/reply',function(req,res,next){
+    var apply_number = req.body.apply_number;//뷰에서 넘어온객체이름으로하기
+    var reply_status = req.body.reply_status;//뷰에서 넘어온 객체이름으로하기
+    var apply_status = 'completed';
+    var reply_message = req.body.reply_message;//뷰에서 넘어온 객체이름으로 수정하기
+    var updateReplyStatusSQL = 'update tb_apply set reply_status=?,apply_status=?,reply_message=? where apply_number=?';
+    db.query(updateReplyStatusSQL,[reply_status,apply_status,reply_message,apply_number],function(err2,data2,fields){
+        if(err2){
+            console.log('수락(accept),거절(deny) 혹은 송신상태완료(completed)또는  message를수정하는데 실패하였습니다.');
+            res.send('failed');
+        }else{
+            console.log('성공: 수락(accept),거절(deny),송신상태완료(completed)로,message를 수정하는데 성공하였습니다. ');
+            res.send('success');
+        }
+    });
+});
 
 module.exports = router;
+
+
+
