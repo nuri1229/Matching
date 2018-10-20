@@ -66,8 +66,40 @@ router.post('/list', function(req, res, next) {
 
 
 
-// api/matching/apply
+//api/matching/apply
+/*
+프로세스명: 신청하기
+세부단계
+    1.요청중복체크 단계
+    2.어플라이카운트올리는단계
+    3.어플라이테이블에 추가하는단계
+작성자:최어진
+*/
 router.post('/apply',function(req,res,next){
+    console.log('apply진입성공! \n 1.중복체크단계입니다!');
+    var ApplyObject = req.body.apply;
+    var po_number = ApplyObject.po_number;
+    var apply_user_number = ApplyObject.login_user_number;
+    console.log('ApplyObject->',ApplyObject);
+    var whetherApplyStatusDuplicated= `select apply_status from tb_apply where po_number=? and apply_user_number=?`;
+    db.query(whetherApplyStatusDuplicated,[po_number,apply_user_number],function(err,apply_status_data,fields){
+        if(err){
+            console.log('신청하기중복체킹에서 오류발생하였습니다.');
+            res.send('error');
+        }else{
+            var flag = apply_status_data[0].apply_status;
+            if(flag ==='sending'){
+                console.log('중복신청되어있습니다.');
+                res.send('duplicate');
+            }else{
+                console.log('중복체크 통과');
+                next();
+            }
+        }
+    });
+
+},function(req,res,next){
+  console.log('2. po_apply_count 증가시키는 단계입니다!');
   var ApplyObject = req.body.apply;
   var po_number = ApplyObject.po_number;
   console.log('req.body.po_number ->',po_number);
@@ -87,7 +119,7 @@ var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?'
         });
     });
 },function(req,res,nex){
-  console.log('신청하기 진입성공!');
+  console.log('3. 신청하기 단계입니다!');
   console.log('req.body->',req.body);
    //▼공통 변수
    var AlphabetArr = 
