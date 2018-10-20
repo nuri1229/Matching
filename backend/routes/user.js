@@ -303,7 +303,9 @@ var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_numbe
       수락했을때 상대방의 포폴어플라이카운트올려야할지?
 */
 router.post('/matching/reply',function(req,res,next){
+    console.log('답장하기잘들어옴');
     var ApplyObject = req.body.apply;
+    console.log('ApplyObject->',ApplyObject);
     var apply_number = ApplyObject.apply_number;//뷰에서 넘어온객체이름으로하기
     var reply_status = ApplyObject.reply_status;//뷰에서 넘어온 객체이름으로하기
     var apply_status = 'completed';

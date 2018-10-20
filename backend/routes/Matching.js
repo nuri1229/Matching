@@ -68,6 +68,7 @@ router.post('/list', function(req, res, next) {
 
 // api/matching/apply
 router.post('/apply',function(req,res,next){
+  var ApplyObject = req.body.apply;
   var po_number = ApplyObject.po_number;
   console.log('req.body.po_number ->',po_number);
 var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?';
