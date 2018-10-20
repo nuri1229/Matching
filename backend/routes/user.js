@@ -217,11 +217,15 @@ var List={};
     p.po_type,
     a.apply_status,
     a.apply_date,
-    a.apply_message
+    a.apply_message,
+    APS.avgPerSelected as user_selected_per
     from  tb_apply as a
     join tb_user as u on a.apply_user_number = u.user_number
     join tb_portfolio as p on a.po_number = p.po_number
-    where a.reply_user_number = ?`; //옵션을 어떻게줄지
+    join (select user_number,AVG(Round(po_apply_count/po_view_count*100,1)) as avgPerSelected
+ from tb_portfolio group by user_number) as APS on u.user_number = APS.user_number
+    where a.reply_user_number = ?`;
+
 console.log('sql ->',sql);
     db.query(sql,[login_user_number],function(err,replyListData,fields){
         if(err){
