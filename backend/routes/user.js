@@ -224,7 +224,7 @@ var List={};
     join tb_portfolio as p on a.po_number = p.po_number
     join (select user_number,AVG(Round(po_apply_count/po_view_count*100,1)) as avgPerSelected
  from tb_portfolio group by user_number) as APS on u.user_number = APS.user_number
-    where a.reply_user_number = ?`;
+    where a.reply_user_number = ? and apply_status = 'sending'`;//답변하지않은항목들만
 
 console.log('sql ->',sql);
     db.query(sql,[login_user_number],function(err,replyListData,fields){
@@ -246,7 +246,8 @@ console.log('sql ->',sql);
             from  tb_apply as a
             join tb_user as u on a.reply_user_number = u.user_number
             join tb_portfolio as p on a.po_number = p.po_number
-            where a.apply_user_number = ?`; //옵션을 어떻게줄지
+            where a.apply_user_number = ?
+            order by  reply_status asc,apply_date desc;`; //accept,deny,none 순으로정렬, 날짜순정렬
             db.query(sql2,[login_user_number],function(err,applyListData,fields){
                 console.log('this is second');
                 List['applyList']=applyListData;
