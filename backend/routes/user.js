@@ -238,6 +238,7 @@ console.log('sql ->',sql);
             console.log(' List[replyList]->', List['replyList']);
 
             var sql2 = `select 
+            a.apply_number,
             u.user_nickname,
             p.po_title,
             a.reply_status,
