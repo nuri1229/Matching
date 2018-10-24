@@ -87,13 +87,15 @@ router.post('/apply',function(req,res,next){
             console.log('신청하기중복체킹에서 오류발생하였습니다.');
             res.send('error');
         }else{
-            var flag = apply_status_data[0].apply_status;
-            if(flag ==='sending'){
-                console.log('중복신청되어있습니다.');
-                res.send('duplicate');
-            }else{
+            if(apply_status_data[0]===undefined){
                 console.log('중복체크 통과');
                 next();
+            }else{
+                var flag = apply_status_data[0].apply_status;
+                if(flag ==='sending'){
+                    console.log('중복신청되어있습니다.');
+                    res.send('duplicate');
+                }
             }
         }
     });
