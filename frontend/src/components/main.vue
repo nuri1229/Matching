@@ -87,7 +87,7 @@ export default {
     portfolioDetail: function (poNumber) {
       if (this.$session.exists('user_info')) {
         this.$router.push({name: 'portfolioDetail', params: {poNumber}})
-      } else{
+      } else {
         alert('로그인 후 이용해주세요')
       }
     }
@@ -98,7 +98,6 @@ export default {
     })
     this.$http.post('/api/Main/PortfolioSelect', {'gen_number': this.gen_number}).then((res) => {
       this.portfolioList = res.data
-      //alert(this.portfolioList.length)
     })
   },
   mounted () {

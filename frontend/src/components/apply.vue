@@ -28,10 +28,13 @@ export default {
   methods: {
     submit: function () {
       this.$http.post('/api/matching/apply/', {'apply': this.apply}).then((res) => {
-        if (res.data === 'success') {
-          this.alert('신청이 완료되었습니다')
+        var result = res.data
+        if (result === 'success') {
+          alert('신청이 완료되었습니다')
+        } else if (result === 'duplicate') {
+          alert('중복신청은 불가합니다')
         } else {
-          this.alert('예기치 못한 오류가 발생하였습니다')
+          alert('예기치 못한 오류가 발생하였습니다')
         }
       })
     }

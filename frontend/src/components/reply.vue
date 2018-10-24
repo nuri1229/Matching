@@ -1,27 +1,28 @@
 <template>
   <div id="reply">
-    <div id="first-block">
+    <div id="first-block" style="padding-bottom:10px;padding-top:40px;">
       <div class="line">
         <div class="margin">
-          <div class="s-12 m-12 l-12">
+          <div class="s-12 m-12 l-12" style="overflow-y:scroll;height:400px;">
           <div style="color:#606060;margin-bottom:15px;">
-            {{this.$session.get('user_info').user_nickname}}님, 답변이 필요한 <span style="font-size:19px;font-weight:bold;">{{replyList.length}}</span>건의 협업 요청이 있습니다
+            <span style="font-size:19px;font-weight:bold;">{{replyList.length}}</span>건의 협업 요청이 있습니다
           </div>
           <template v-for="reply in replyList">
-            <table v-bind:key="reply.apply_number">
-              <tr style="line-height:40px;">
-                <td style="color:#808080;" width="85%">
-                  <span style="color:#46A6F7;font-size:24px;font-weight:bold;">{{reply.user_nickname}}</span>(선택률: {{reply.user_selected_per}}%)님이
-                  당신의 포트폴리오(<span style="color:#000000;font-weight:bold;">{{reply.po_title}}</span>)를 보고 협업요청을 하였습니다</td>
-                <td style="text-align:center;">
-                  <div>{{ new Date() | moment("YYYY/MM/DD hh:mm:SS A") }}</div>
+            <table v-bind:key="reply.apply_number" >
+              <tr>
+                <td style="color:#808080;" width="90%">
+                  <span style="color:#46A6F7;font-size:24px;font-weight:bold;">{{reply.user_nickname}}</span>(선택률: {{reply.user_selected_per}}%)님이 <span style="color:#000000;font-weight:bold;">{{reply.po_title}}</span>에 대해 협업요청을 하였습니다</td>
+                <td style="text-align:center;padding-top:0px;padding-bottom:0px;">
+                  <div>
+                    <button v-on:click="acceptReply(reply.apply_number)" class="btn btn-dark" style="width:90%;margin-bottom:5px;">수락</button><br>
+                    <button v-on:click="denyReply(reply.apply_number)" class="btn btn-danger" style="width:90%;">거절</button>
+                  </div>
                 </td>
               </tr>
               <tr style="margin-bottom:10px;">
                 <td>{{reply.apply_message}}</td>
                 <td style="background:white;border-top:1px solid #f0f0f0">
-                  <button v-on:click="acceptReply(reply.apply_number)" class="btn btn-dark" style="width:44%;">수락</button>
-                  <button v-on:click="denyReply(reply.apply_number)" class="btn btn-danger" style="width:44%;">거절</button>
+                    {{ reply.apply_date | moment("YYYY/MM/DD HH:mm") }}
                 </td>
               </tr>
             </table>
@@ -30,20 +31,46 @@
         </div>
       </div>
     </div>
-    <div id="second-block">
+    <div id="second-block" style="padding-top:40px;">
       <div class="line">
         <div class="margin">
-          <div class="s12 m-12 l-12">
-            내가 협업을 요청한 사람들
-          </div>
-        </div>
-      </div>
-      <div class="line">
-        <div class="margin">
-          <div class="s-12 m-12 l-12">
-            user_nickname님께 보낸 당신의 협업 요청은 현재 미확인 상태(not_read) 입니다<br>
-            user_nickname2님께 보낸 당신의 협업 요청 요청은 현재 거절(denied)되었습니다<br>
-            user_nickname3님께 보낸 당신의 협업 요청에 대해 XXX님이 고민 중(not_reply)입니다<br>
+          <div class="s-12 m-12 l-12" style="overflow-y:scroll;height:350px;">
+            <div style="color:#606060;margin-bottom:15px;">
+            답변을 기다리고 있는 <span style="font-size:19px;font-weight:bold;">{{applyList.length}}</span>건의 내 요청이 있습니다
+            </div>
+            <template v-for="apply in applyList">
+              <table :key="apply.apply_number">
+                <tr>
+                  <td><span style="color:#000000;font-weight:bold;">{{apply.apply_date | moment("YYYY/MM/DD hh:mm")}}</span>에 <span style="color:#46A6F7;font-size:24px;font-weight:bold;padding-left:10px;padding-right:10px;">{{apply.user_nickname}}</span>님께 보낸 당신의 협업 요청은</td>
+                  <td rowspan=2 width="10%">
+                    <button v-if="apply.apply_status=='completed' && apply.reply_status=='accept'"
+                            class="btn btn-primary status">승낙</button>
+                    <button v-else-if="apply.apply_status=='sending' && apply.reply_status=='none'"
+                            class="btn btn-dark status">읽지않음</button>
+                    <button v-else-if="apply.apply_status=='completed' && apply.reply_status=='deny'"
+                            class="btn btn-danger status">거절</button>
+                    <button v-else class="btn btn-warning status"
+                            v-on:click="applyCancel(apply.apply_number)" style="font-weight:bold;">답변대기중</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span v-if="apply.apply_status=='completed' && apply.reply_status=='accept'">
+                      승낙되었습니다. 우측 버튼을 눌러 상대방의 연락처를 확인하세요
+                    </span>
+                    <span v-else-if="apply.apply_status=='sending' && apply.reply_status=='none'">
+                      읽지 않은 상태입니다. 좀만 더 기다려주세요. 우측 버튼을 클릭하면 요청을 취소할 수 있습니다
+                    </span>
+                    <span v-else-if="apply.apply_status=='complete' && apply.reply_status=='deny'">
+                      거절당했습니다. 포트폴리오를 조금 더 다듬어보세요
+                    </span>
+                    <span v-else >
+                      답변 대기 중입니다. 우측 버튼을 클릭하면 요청을 취소할 수 있습니다
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </template>
           </div>
         </div>
       </div>
@@ -75,7 +102,7 @@ export default {
       if (confirm('해당 요청을 승낙하시겠습니까?')) {
         var apply = {
           'apply_number': applyNumber,
-          'apply_status': 'accept'
+          'reply_status': 'accept'
         }
         this.$http.post('/api/user/matching/reply', {'apply': apply}).then((res) => {
           alert(res.data)
@@ -90,14 +117,22 @@ export default {
       if (confirm('해당 요청을 거절하시겠습니까?')) {
         var apply = {
           'apply_number': applyNumber,
-          'apply_status': 'deny'
+          'reply_status': 'deny'
         }
         this.$http.post('/api/user/matching/reply/', {'apply': apply}).then((res) => {
           alert(res.data)
         })
         this.$http.post('/api/user/matching/reply/list', {'user_number': this.$session.get('user_info').user_number}).then((res) => {
+
           this.applyList = res.data.applyList
           this.replyList = res.data.replyList
+        })
+      }
+    },
+    applyCancel: function (applyNumber) {
+      if (confirm('협업요청을 취소하시겠습니까?')) {
+        this.$http.post('/api/user/matching/cancel', {'apply_number': applyNumber}).then((res) => {
+          alert(res.data)
         })
       }
     }
@@ -109,5 +144,9 @@ export default {
 table {
   border-collapse: separate;
   border-spacing: 0 15px;
+}
+.status{
+  width:100%;
+  line-height:60px;
 }
 </style>
