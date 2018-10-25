@@ -327,15 +327,6 @@ var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_numbe
 
 */
 router.post('/matching/reply',function(req,res,next){
-    /* 0.접속자 확인하기 */
-    /*
-    접속자가 요청결과에서 수락된걸 확인하고 버튼을누르면 바로 상대방유저정보 보여주기
-
-    
-    
-    */
-
-},function(req,res,next){
     console.log('답장하기잘들어옴');
     console.log('1.취소요청변화여부 검사시작');
     var ApplyObject = req.body.apply;
@@ -420,7 +411,8 @@ var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where app
 프로세스명: 매칭수락완료시, 상대방 정보 넘겨주기
 상태: 테스트
 */
-router.post("/api/matching/UserInfo",function(req,res,next){
+router.post("/matching/UserInfo",function(req,res,next){
+    console.log('매칭유저인포진입성공!');
 
     var ApplyObject = req.body.apply;
     var apply_number = ApplyObject.apply_number; //apply_user_number,reply_user_number 하고 reply_status가 다있음
