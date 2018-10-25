@@ -414,9 +414,13 @@ var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where app
 router.post("/matching/UserInfo",function(req,res,next){
     console.log('매칭유저인포진입성공!');
 
-    var ApplyObject = req.body.apply;
-    var apply_number = ApplyObject.apply_number; //apply_user_number,reply_user_number 하고 reply_status가 다있음
-    var user_number = ApplyObject.user_number;//현재 로그인 유저넘버
+    //var ApplyObject = req.body.apply;
+    //console.log('ApplyObject->',ApplyObject);
+    var apply_number = req.body.apply_number; //apply_user_number,reply_user_number 하고 reply_status가 다있음
+    var user_number = req.body.user_number;//현재 로그인 유저넘버
+
+    console.log('apply_number ->',apply_number);
+    console.log('user_number ->',user_number);
 
     var selectByApplyNumberSQL=`
     select apply_user_number,
@@ -435,20 +439,25 @@ router.post("/matching/UserInfo",function(req,res,next){
                 console.log('ChkDataFlag -> undefined');
                 res.send('undefined');
             }else{
-            
-                
+        
                 var apply_user_number = ChkDataFlag[0].apply_user_number;//비교기준값
                 var reply_user_number = ChkDataFlag[0].reply_user_number;//비교기준값
-                var which_user_number;
+                //var which_user_number;
+                var subSQL;
                 if(user_number === apply_user_number){ //로그인유저가 송신자라면
-                    which_user_number ='reply_user_number'; //수신자가알고싶어
+                   
+                    subSQL = `(select reply_user_number from tb_apply where apply_number=?)`; //수신자가알고싶어
                 }
 
                 if(user_number === reply_user_number){//로그인 유저가 수신자라면
-                    which_user_number ='apply_user_number'; //송신자가 알고싶어
+                   
+                    subSQL = `(select apply_user_number from tb_apply where apply_number=?)`; //송신자가알고싶어
                 }
+
+                console.log('subSQL->',subSQL);
                 console.log('정보넘기는작업시작합니다~');
-                var getApplierInfoSQL=`
+
+                var getUserInfoSQL=`
                 select u.user_number,
                 u.user_id,
                 u.user_nickname,
@@ -457,21 +466,23 @@ router.post("/matching/UserInfo",function(req,res,next){
                 u.location_number,
                 l.location_name 
                 from tb_user as u 
-                join tb_location as l on u.location_number = l.location_number
-                where u.user_number = (select ? from tb_apply where apply_number=?);`;
-                db.query(getApplierInfoSQL,[which_user_number,apply_number],function(err,ApplierInfoData,fields){
+                join tb_location as l on u.location_number = l.location_number                
+                where u.user_number =`+subSQL;
+                console.log('getApplierInfoSQL->',getUserInfoSQL);
+                db.query(getUserInfoSQL,[apply_number],function(err,UserInfoData,fields){
                     if(err){//쿼리Error
                         console.log('신청자 정보 가져오기 쿼리실행에 오류발생');
                         res.send('error');
                     }else{//쿼리성공
                         console.log('신청자 정보 가져오기 쿼리실행 성공');
-                        if(ApplierInfoData[0]===undefined){//성공,만족하는 데이타 없음
-                            console.log('undefined');                        
+                        if(UserInfoData[0]===undefined){//성공,만족하는 데이타 없음
+                            console.log('undefined');      
+                            res.send('undefined');
                         }else{//성공,데이타 있음
-                            var Applier_Info ={};
-                            Applier_Info = ApplierInfoData[0];
-                            console.log('Applier_Info->',Applier_Info);
-                            res.send(Applier_Info);
+                            var user_Info ={};
+                            user_Info = UserInfoData[0];
+                            console.log('user_Info->',user_Info);
+                            res.send(user_Info);
                         }
                     }
                 });
