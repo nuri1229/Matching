@@ -165,7 +165,7 @@ export default {
         'apply_number': applyNumber,
         'user_number': this.$session.get('user_info').user_number
       }
-      this.$http.post('api/user/matching/UserInfo', apply).then((res) => {
+      this.$http.post('/api/user/matching/UserInfo', apply).then((res) => {
         alert(res.data)
       })
     }
