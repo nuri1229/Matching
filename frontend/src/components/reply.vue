@@ -15,7 +15,7 @@
                   <span style="color:#46A6F7;font-size:24px;font-weight:bold;cursor:pointer;" v-on:click="portfolioModalOn(reply.apply_number)">{{reply.user_nickname}}</span>(선택률: {{reply.user_selected_per}}%)님이 <span style="color:#000000;font-weight:bold;">{{reply.po_title}}</span>에 대해 협업요청을 하였습니다</td>
                 <td style="text-align:center;padding-top:0px;padding-bottom:0px;">
                   <div>
-                    <template v-if="reply.apply_status=='completed' && reply.reply_status=='accepy'">
+                    <template v-if="reply.apply_status=='completed' && reply.reply_status=='accept'">
                       <button v-on:click="getUserInfo(reply.apply_number)" class="btn btn-primary status">연락처확인</button>
                     </template>
                     <template v-else>
