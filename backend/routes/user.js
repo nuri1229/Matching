@@ -221,15 +221,16 @@ var List={};
     p.po_title,
     p.po_type,
     a.apply_status,
+   a.reply_status,
     a.apply_date,
     a.apply_message,
     APS.avgPerSelected as user_selected_per
-    from  tb_apply as a
+from  tb_apply as a
     join tb_user as u on a.apply_user_number = u.user_number
     join tb_portfolio as p on a.po_number = p.po_number
     join (select user_number,AVG(Round(po_apply_count/po_view_count*100,1)) as avgPerSelected
  from tb_portfolio group by user_number) as APS on u.user_number = APS.user_number
-    where a.reply_user_number = ? and apply_status = 'sending'`;//답변하지않은항목들만
+     where a.reply_user_number = ? and apply_status != 'cancel' AND reply_status !='deny';`;
 
 console.log('sql ->',sql);
     db.query(sql,[login_user_number],function(err,replyListData,fields){
@@ -326,6 +327,15 @@ var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_numbe
 
 */
 router.post('/matching/reply',function(req,res,next){
+    /* 0.접속자 확인하기 */
+    /*
+    접속자가 요청결과에서 수락된걸 확인하고 버튼을누르면 바로 상대방유저정보 보여주기
+
+    
+    
+    */
+
+},function(req,res,next){
     console.log('답장하기잘들어옴');
     console.log('1.취소요청변화여부 검사시작');
     var ApplyObject = req.body.apply;
@@ -338,7 +348,7 @@ router.post('/matching/reply',function(req,res,next){
             res.send('failed');
         }else{//쿼리성공
             console.log('성공적으로 쿼리완료 ');
-            if(cancelFlag[0]==='undefined'){//빈값
+            if(cancelFlag[0]===undefined){//빈값
                 console.log('cancel flag is undefined');
                 res.send('failed');
             }else{//빈값이아닐때
@@ -369,43 +379,8 @@ router.post('/matching/reply',function(req,res,next){
         else{//else01(S)
             console.log('요청번호:',apply_number,' apply_staus -> completed 수정완료하였습니다~ \n',
                         'reply_message->',reply_message,'로 수정완료하였습니다~');
-            /* 작업란(B) */
-           console.log('수락/거부에 따라 정보넘길지말지 확인들어갑니다~');
-            if(reply_status==='accept'){//if02:accept(S)
-                console.log('수락하기 이므로 정보넘기는작업 시작합니다~');
-                var getApplierInfoSQL=`
-                select u.user_number,
-                u.user_id,
-                u.user_nickname,
-                u.user_phone,
-                u.user_age,
-                u.location_number,
-                l.location_name 
-                from tb_user as u 
-                join tb_location as l on u.location_number = l.location_number
-                where u.user_number = (select apply_user_number from tb_apply where apply_number=?);`;
-                db.query(getApplierInfoSQL,[apply_number],function(err,ApplierInfoData,fields){
-                    if(err){//쿼리Error
-                        console.log('신청자 정보 가져오기 쿼리실행에 오류발생');
-                        res.send('error');
-                    }else{//쿼리성공
-                        console.log('신청자 정보 가져오기 쿼리실행 성공');
-                        if(ApplierInfoData[0]==='undefined'){//성공,만족하는 데이타 없음
-                            console.log('undefined');                        
-                        }else{//성공,데이타 있음
-                            var Applier_Info ={};
-                            Applier_Info = ApplierInfoData[0];
-                            console.log('Applier_Info->',Applier_Info);
-                            res.send(Applier_Info);
-                        }
-                    }
-                });
-           }//if02:accept(E)      
-           if(reply_status==='deny'){//if02:deny
-            console.log('거절하기 요청받았어요~');
-            res.send('succes');
-           }//if02:deny            
-            
+            console.log('reply_status ->',reply_status,'로 수정되었습니다');
+            res.send('success');
         }//else01(E)
     });
 });
@@ -414,40 +389,7 @@ router.post('/matching/reply',function(req,res,next){
 프로세스명: 요청취소
 필요변수: apply_number
 주요기능: apply_status값이 sending->cancel로 변경
-
-문제상황: 소켓io가 아니기때문에 다음상황을 만나게됬습니다.
-다음2가지 상황을대비하기위해 추가코딩이필요합니다.
-두사람 신청자A,답장자B가 있습니다.
-상황1) A가 신청취소를하여 DB에서는 apply_status값이 sending->cancel로  바뀝니다.
-    하지만,새로고침하지않다면 옛날 화면을 받고있는B가 거절하기라던지,상세보기라던지,수락한다던지 하게되면 DB에서 최종적으로는 cancel->complete 로 바뀌게됩니다.
-    그러면 apply_status ='cancle'인 녀석은 가져오고싶지않았는데, 최종작업이 cancle->complete로 되니까 가져오게되는거죠.
-    그러면, A: "어뭐야? 나 이거 취소했는데?? 취소요청이 안됬네?" 가되버립니다 
-    그리고 나중에 complete,accept로 함께진행하고있거나 진행했던 녀석들을 조회해올건데, 거기서 분명 취소한 녀석도 존재한단겁니다.
-
-
-그렇다면 반대상황일때는 어떨까요?
-상황2) 답장자B가 수락,거절,읽음 을하였습니다.  그래서 DB는 sending->complete로 바뀌었고 reply_status는 변경이됩니다.
-      하지만 요청자A가 아직까지 변경되기전 화면을가지고있다면 어떨까요?
-      최종적으로는 complete->cancle 로 바뀌게됩니다.
-    그리고 마찬가지로 complete,accept로 함께진행하고있거나 진행했던 녀석들을 조회해올건데,
-    요청자입장에서는 당혹하는거지요.. B: "어?! 나 수락했는데 왜없지..??";
-
-해결방법: 답장시(/api/user/matching/reply)에 아직까지 이 요청이 sending인지 를 확인해봅니다. 그래서 실제DB에서는이미 cancel로 바뀌어있으면, 이미 취소된요청입니다. 하고 거기서끝내는거죠.
-그외에추가사항: 취소된요청사항은 applyList에서 안나타나게 where절에 sending or complete로 구체적이게 넣습니다.
-             그리고 또한, 요청취소를 하게되면 해당 포폴의 po_apply_count 를 -1 시킵니다.
-
-작업내용:
-/api/user/matching/reply : select apply_status from tb_apply where apply_number  
-                            if(apply_status ==='cancel') {
-                            console.log('already canceled before');
-                            res.send('failed');
-                          }
-
-/matching/reply/list: sql2부분에서  where a.apply_user_number = ?
-                                            ▼
-                                    where a.apply_user_number = ? and a.apply_status = 'sending' or a.apply_status = 'complete' 로 변경
-
-
+추가기능: 이미 completed된거에 대해서는 취소못하게
 */
 router.post("/matching/cancel",function(req,res,next){
 console.log('요청취소진입성공!');
@@ -464,7 +406,7 @@ var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where app
     res.send('failed');
     }else{
 
-    console.log('DB 취소요청 작업실패');
+    console.log('DB 취소요청 작업성공');
     res.send('success');
 
     }
@@ -472,6 +414,81 @@ var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where app
     });
 
 });
+
+
+/*
+프로세스명: 매칭수락완료시, 상대방 정보 넘겨주기
+상태: 테스트
+*/
+router.post("/api/matching/UserInfo",function(req,res,next){
+
+    var ApplyObject = req.body.apply;
+    var apply_number = ApplyObject.apply_number; //apply_user_number,reply_user_number 하고 reply_status가 다있음
+    var user_number = ApplyObject.user_number;//현재 로그인 유저넘버
+
+    var selectByApplyNumberSQL=`
+    select apply_user_number,
+    reply_user_number,
+    reply_status
+     from tb_apply where apply_number = ?`;
+
+     db.query(selectByApplyNumberSQL,[apply_number],function(err,ChkDataFlag,fields){
+
+        if(err){
+            console.log('error발생');
+            res.send('failed');
+        }else{
+
+            if(ChkDataFlag[0]===undefined){
+                console.log('ChkDataFlag -> undefined');
+                res.send('undefined');
+            }else{
+            
+                var reply_status = ChkDataFlag[0].reply_status;//작업진행기준값
+                var apply_user_number = ChkDataFlag[0].apply_user_number;//비교기준값
+                var reply_user_number = ChkDataFlag[0].reply_user_number;//비교기준값
+                var which_user_number;
+                if(user_number === apply_user_number){ //로그인유저가 송신자라면
+                    which_user_number ='reply_user_number'; //수신자가알고싶어
+                }
+
+                if(user_number === reply_user_number){//로그인 유저가 수신자라면
+                    which_user_number ='apply_user_number'; //송신자가 알고싶어
+                }
+                console.log('정보넘기는작업시작합니다~');
+                var getApplierInfoSQL=`
+                select u.user_number,
+                u.user_id,
+                u.user_nickname,
+                u.user_phone,
+                u.user_age,
+                u.location_number,
+                l.location_name 
+                from tb_user as u 
+                join tb_location as l on u.location_number = l.location_number
+                where u.user_number = (select ? from tb_apply where apply_number=?);`;
+                db.query(getApplierInfoSQL,[which_user_number,apply_number],function(err,ApplierInfoData,fields){
+                    if(err){//쿼리Error
+                        console.log('신청자 정보 가져오기 쿼리실행에 오류발생');
+                        res.send('error');
+                    }else{//쿼리성공
+                        console.log('신청자 정보 가져오기 쿼리실행 성공');
+                        if(ApplierInfoData[0]===undefined){//성공,만족하는 데이타 없음
+                            console.log('undefined');                        
+                        }else{//성공,데이타 있음
+                            var Applier_Info ={};
+                            Applier_Info = ApplierInfoData[0];
+                            console.log('Applier_Info->',Applier_Info);
+                            res.send(Applier_Info);
+                        }
+                    }
+                });
+            }
+        }
+  
+     });
+});
+
 module.exports = router;
 
 
