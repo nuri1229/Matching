@@ -95,6 +95,9 @@ router.post('/apply',function(req,res,next){
                 if(flag ==='sending'){
                     console.log('중복신청되어있습니다.');
                     res.send('duplicate');
+                }else{
+                    console.log('중복체크통과');
+                    next();
                 }
             }
         }
@@ -106,7 +109,7 @@ router.post('/apply',function(req,res,next){
   var po_number = ApplyObject.po_number;
   console.log('req.body.po_number ->',po_number);
 var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?';
-    db.query(getApplyCountSQL,[po_number],function(err,data,fileds){
+    db.query(getApplyCountSQL,[po_number],function(err,data,fields){
         var NewApplyCount = data[0].po_apply_count +1 ;
         var updateApplyCountSQL='update tb_portfolio set po_view_count=? where po_number=?';
         db.query(updateApplyCountSQL,[NewApplyCount,po_number],function(err2,data,fields){
