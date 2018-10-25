@@ -436,7 +436,7 @@ router.post("/matching/UserInfo",function(req,res,next){
                 res.send('undefined');
             }else{
             
-                var reply_status = ChkDataFlag[0].reply_status;//작업진행기준값
+                
                 var apply_user_number = ChkDataFlag[0].apply_user_number;//비교기준값
                 var reply_user_number = ChkDataFlag[0].reply_user_number;//비교기준값
                 var which_user_number;
