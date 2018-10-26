@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var objUsers = require('./obj/objUsers.js');
 const fileUpload = require('express-fileupload');
 var db = require('./db/db.js');
 var fs= require('fs');
@@ -271,27 +270,68 @@ console.log('sql ->',sql);
 작성날짜:2018년 10월 19일(금)
 작성자:최어진
 메모: 
- 요청자의포폴모두보기(공개상태는 공개,비공개 모두)
- Vue화면단 완성시 테스트필요
-
- 상세보기할때 view카운트올릴지말지,
+ 요청자의포폴모두보기(공개상태는 공개,비공개 모두)(테스트완료)
 */
 
 router.post('/matching/reply/view',function(req,res,next){
-console.log('replyView진입성공');
-console.log('읽음표시수정작업들어갑니다~');
-var apply_number = req.body.apply_number;//vue에서 날라온변수로바꾸기
-var reply_status = 'pending';
-var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_number=?';
-    db.query(updateReplyStatusSQL,[reply_status,apply_number],function(err,data,fields){
+    console.log('replyView진입성공');
+    //pending처리 할지안할지 체킹단계(테스트필요)
+    var apply_number = req.body.apply_number;
+    var checkingReplyStatusSQL=`select apply_status,reply_status from tb_apply where apply_number=?`;
+    db.query(checkingReplyStatusSQL,[apply_number],function(err,ChkReplyStatusFlag,fields){
         if(err){
-            console.log('읽음상태 미결정으로 고치는데 실패하였습니다.');
-            next();
+            res.send('failed');
         }else{
-            console.log('성공: reply_status=\'none\' -> \'pending\'로 수정하는데 성공하였습니다.');
-            next();
+            if(ChkReplyStatusFlag[0]===undefined){
+                res.send('undefined');
+            }else{
+                if(ChkReplyStatusFlag[0].apply_status==='sending' && ChkReplyStatusFlag[0].reply_status==='pending'){//내가 미결정상태에서 읽어본경우
+                    //객체뿌려주기
+                    var selectApplyUserNumberSQL='select apply_user_number from tb_apply where apply_number=?';
+                    db.query(selectApplyUserNumberSQL,[apply_number],function(err2,data2,fields2){
+                        var user_number = data2[0].user_number;
+                        var FilterCondtions = {};
+                        FilterCondtions["p.user_number"]=user_number; 
+                        objMatching.getAllportfolios(req,res,FilterCondtions);
+                    });    
+                }
+
+                if(ChkReplyStatusFlag[0].apply_status==='completed' && ChkReplyStatusFlag[0].reply_status==='accept'){//서로 협업중인경우
+                    //객체뿌려주기
+                    var selectApplyUserNumberSQL='select apply_user_number from tb_apply where apply_number=?';
+                    db.query(selectApplyUserNumberSQL,[apply_number],function(err2,data2,fields2){
+                        var user_number = data2[0].user_number;
+                        var FilterCondtions = {};
+                        FilterCondtions["p.user_number"]=user_number; 
+                        objMatching.getAllportfolios(req,res,FilterCondtions);
+                    });    
+                }
+
+                if(ChkReplyStatusFlag[0].apply_status==='completed' && ChkReplyStatusFlag[0].reply_status==='deny'){//내가 거절한경우
+                    res.send('stop');
+                }
+
+                if(ChkReplyStatusFlag[0].apply_status==='sending' && ChkReplyStatusFlag[0].reply_status==='none'){ //내가아직 안읽었을때
+                    //읽음처리해주고 객체뿌려주기
+                    next();
+                }
+            }
         }
     });
+},function(req,res,next){
+    console.log('읽음표시수정작업들어갑니다~');    
+    var apply_number = req.body.apply_number;//vue에서 날라온변수로바꾸기
+    var reply_status = 'pending';
+    var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_number=?';
+        db.query(updateReplyStatusSQL,[reply_status,apply_number],function(err,data,fields){
+            if(err){
+                console.log('읽음상태 미결정으로 고치는데 실패하였습니다.');
+                next();
+            }else{
+                console.log('성공: reply_status=\'none\' -> \'pending\'로 수정하는데 성공하였습니다.');
+                next();
+            }
+        });
 },function(req,res,next){
     var apply_number = req.body.apply_number;
     var selectApplyUserNumberSQL='select apply_user_number from tb_apply where apply_number=?';
@@ -409,7 +449,7 @@ var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where app
 
 /*
 프로세스명: 매칭수락완료시, 상대방 정보 넘겨주기
-상태: 테스트
+상태: 테스트완료
 */
 router.post("/matching/UserInfo",function(req,res,next){
     console.log('매칭유저인포진입성공!');
