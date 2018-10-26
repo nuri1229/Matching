@@ -74,9 +74,32 @@ router.post('/list', function(req, res, next) {
     2.어플라이카운트올리는단계
     3.어플라이테이블에 추가하는단계
 작성자:최어진
+추가기능: 본인포폴에는 신청못하게(테스트완료)
 */
 router.post('/apply',function(req,res,next){
-    console.log('apply진입성공! \n 1.중복체크단계입니다!');
+    console.log('apply진입성공! \n 0.본인인증단계입니다!\n');
+    var ApplyObject = req.body.apply;
+    var po_number = ApplyObject.po_number;
+    var apply_user_number = ApplyObject.login_user_number;
+    var whetherLoggerisApplier=`select user_number from tb_portfolio where po_number=?`;
+    db.query(whetherLoggerisApplier,[po_number],function(err,ChkFlag,fields){
+        if(err){
+            res.send('failed');
+        }else{
+            if(ChkFlag[0]===undefined){
+                res.send('undefined');
+            }else{
+                if(ChkFlag[0].user_number ===apply_user_number){
+                    console.log('본인입니다');
+                    res.send('unauthorized');
+                }else{
+                    next();
+                }
+            }
+        }
+    });
+},function(req,res,next){
+    console.log(' 1.중복체크단계입니다!');
     var ApplyObject = req.body.apply;
     var po_number = ApplyObject.po_number;
     var apply_user_number = ApplyObject.login_user_number;
