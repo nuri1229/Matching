@@ -534,6 +534,38 @@ router.post("/matching/UserInfo",function(req,res,next){
      });
 });
 
+/*
+프로세스명: 나와협업중인사람들목록보기(승낙인애들만보기)
+넘겨받을변수명:유저넘버
+넘기는칼럼:apply_number(pk),apply_user_number(fk),reply_user_number(fk),po_number(fk)
+참고사항: 아직 어떻게 데이터 가공할지 의견을 못받아서 일단, 요청자,답장자 상관없이 보냄(누리형님한테 여쭤봐서 새로수정)
+        일단은 작동하나 테스트만(테스트미완료)
+*/
+
+router.post('/matching/together',function(req,res,next){
+    console.log('나와협업중인사람들목록보기 진입성공');
+    var user_nubmer = req.body.login_user_number;//vue완성되면 새로조정
+    console.log('user_nubmer ->',user_nubmer);
+    var togetherListSQL=`
+    select apply_number,apply_user_number,reply_user_number,po_number from tb_apply
+        where (apply_user_number=? or reply_user_number=?)
+ 	            and (apply_status='completed' and reply_status='accept');`;
+    db.query(togetherListSQL,[user_nubmer,user_nubmer],function(err,result,fields){
+        if(err){
+            console.log('failed');
+            res.send('failed');
+        }else{
+            if(result===undefined){
+                console.log('undefined');
+                res.send('undefined')
+            }else{
+                console.log('result->',result);
+                res.send(result);
+            }
+        }
+    });
+});
+
 module.exports = router;
 
 
