@@ -302,7 +302,7 @@ router.post('/matching/reply/view',function(req,res,next){
                     console.log('거절한요청');
                     res.send('unauthorized');
                 }
-                if(ChkReplyStatusFlag[0].apply_status==='cancel'){//내가 요청자가 취소한경우
+                if(ChkReplyStatusFlag[0].apply_status==='cancel'){//요청자가 취소한경우
                     console.log('요청자가 요청을 취소하여 더이상 포폴셀렉할수없음');
                     res.send('unauthorized');
                 }
