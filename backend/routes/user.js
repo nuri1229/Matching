@@ -413,7 +413,6 @@ router.post('/matching/reply',function(req,res,next){
 프로세스명: 요청취소
 필요변수: apply_number
 주요기능: apply_status값이 sending->cancel로 변경
-추가기능: 이미 completed된거에 대해서는 취소못하게
 */
 router.post("/matching/cancel",function(req,res,next){
 console.log('요청취소진입성공!');
@@ -425,18 +424,28 @@ console.log('apply_number->',apply_number);
 var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where apply_number=?`;
 
     db.query(apply_status_cancle_SQL,[apply_number],function(err,result,fields){
-    if(err){
-    console.log('DB에 취소요청 수정작업실패');
-    res.send('failed');
-    }else{
-
-    console.log('DB 취소요청 작업성공');
-    res.send('success');
-
-    }
-
+        if(err){
+        console.log('DB에 취소요청 수정작업실패');
+        res.send('failed');
+        }else{
+        console.log('DB 취소요청 작업성공');
+        next();
+        }
     });
-
+},function(req,res,next){
+    var ApplyObject = req.body.apply;
+    var apply_number =ApplyObject.apply_number;
+    var po_apply_count_minusSQL=`update tb_portfolio set po_apply_count=po_apply_count-1 
+    where po_number=(select po_number from tb_apply where apply_number=?);`;
+    db.query(po_apply_count_minusSQL,[apply_number],function(err2,result2,fields2){
+        if(err){
+            console.log('error');
+            res.send('failed');
+        }else{
+            console.log('po_apply_count 1감소 성공');
+            res.send('success');
+        }
+    });
 });
 
 
