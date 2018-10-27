@@ -282,19 +282,24 @@ router.post('/matching/reply/view',function(req,res,next){
     db.query(checkingReplyStatusSQL,[apply_number],function(err,ChkReplyStatusFlag,fields){
         console.log('pending으로 바꿔야할지말지 체킹들어갑니다~');
         if(err){
+            console.log('failed');
             res.send('failed');
         }else{
             if(ChkReplyStatusFlag[0]===undefined){
+                console.log('undefined');
                 res.send('undefined');
             }else{
                 if(ChkReplyStatusFlag[0].apply_status==='sending' && ChkReplyStatusFlag[0].reply_status==='pending'){//내가 미결정상태에서 읽어본경우
+                    console.log('미결정,이미 적어도한번 읽어봄');
                     next();
                 }
 
                 if(ChkReplyStatusFlag[0].apply_status==='completed' && ChkReplyStatusFlag[0].reply_status==='accept'){//서로 협업중인경우
+                    console.log('협업중');
                     next();
                 }
                 if(ChkReplyStatusFlag[0].apply_status==='completed' && ChkReplyStatusFlag[0].reply_status==='deny'){//내가 거절한경우
+                    console.log('거절한요청');
                     res.send('unauthorized');
                 }
                 if(ChkReplyStatusFlag[0].apply_status==='sending' && ChkReplyStatusFlag[0].reply_status==='none'){ //내가아직 안읽었을때
