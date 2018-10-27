@@ -320,7 +320,7 @@ router.post('/matching/reply/view',function(req,res,next){
     var apply_number = req.body.apply_number;
     var selectApplyUserNumberSQL='select apply_user_number from tb_apply where apply_number=?';
     db.query(selectApplyUserNumberSQL,[apply_number],function(err2,data2,fields2){
-        var user_number = data2[0].user_number;
+        var user_number = data2[0].apply_user_number;
         var FilterCondtions = {};
         FilterCondtions["p.user_number"]=user_number; 
         objMatching.getAllportfolios(req,res,FilterCondtions);
