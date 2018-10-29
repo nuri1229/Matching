@@ -506,7 +506,8 @@ router.post("/matching/UserInfo",function(req,res,next){
                 u.user_phone,
                 u.user_age,
                 u.location_number,
-                l.location_name 
+                l.location_name ,
+                u.user_sns
                 from tb_user as u 
                 join tb_location as l on u.location_number = l.location_number                
                 where u.user_number =`+subSQL;
