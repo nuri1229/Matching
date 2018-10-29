@@ -12,7 +12,7 @@
             <table v-bind:key="reply.apply_number" >
               <tr>
                 <td style="color:#808080;" width="90%">
-                  <span style="color:#46A6F7;font-size:24px;font-weight:bold;cursor:pointer;" v-on:click="portfolioModalOn(reply.apply_number)">{{reply.user_nickname}}</span>(선택률: {{reply.user_selected_per}}%)님이 <span style="color:#000000;font-weight:bold;">{{reply.po_title}}</span>에 대해 협업요청을 하였습니다</td>
+                  <span style="color:#46A6F7;font-size:24px;font-weight:bold;cursor:pointer;" v-on:click="portfolioModalOn(reply.apply_number, reply.user_nickname)">{{reply.user_nickname}}</span>(선택률: {{reply.user_selected_per}}%)님이 <span style="color:#000000;font-weight:bold;">{{reply.po_title}}</span>에 대해 협업요청을 하였습니다</td>
                 <td style="text-align:center;padding-top:0px;padding-bottom:0px;">
                   <div>
                     <template v-if="reply.apply_status=='completed' && reply.reply_status=='accept'">
@@ -60,8 +60,9 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td style="line-height:50px;">
                     <span v-if="apply.apply_status=='completed' && apply.reply_status=='accept'">
+
                       승낙되었습니다. 우측 버튼을 눌러 상대방의 연락처를 확인하세요
                     </span>
                     <span v-else-if="apply.apply_status=='sending' && apply.reply_status=='none'">
@@ -86,6 +87,7 @@
 
 <script>
 import userPortfolio from './userPortfolio.vue'
+import userInfo from './userInfo.vue'
 export default {
   name: 'reply',
   data () {
@@ -146,28 +148,28 @@ export default {
         })
       }
     },
-    portfolioModalOn: function (applyNumber) {
-      alert('포폴모달온')
+    portfolioModalOn: function (applyNumber, userNickname) {
       this.$modal.show(userPortfolio, {
-        po_number: applyNumber
+        'applyNumber': applyNumber,
+        'userNickname': userNickname
       }, {
         draggable: false,
-        width: 900,
-        height: 500,
+        width: 1300,
+        height: 600,
         clickToClose: false
       })
-      // this.$http.post('/api/Main/PortfolioSelect', {'apply_number': applyNumber}).then((res) => {
-      // alert(res.data)
-      // })
     },
     getUserInfo: function (applyNumber) {
-      var apply = {
+      this.$modal.show(userInfo, {
         'apply_number': applyNumber,
         'user_number': this.$session.get('user_info').user_number
-      }
-      this.$http.post('/api/user/matching/UserInfo', apply).then((res) => {
-        alert(res.data)
+      }, {
+        draggable: false,
+        width: 400,
+        height: 350,
+        clickToClose: false
       })
+
     }
   }
 }
