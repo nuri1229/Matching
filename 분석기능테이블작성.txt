@@ -1,0 +1,66 @@
+﻿관리자:admin
+이용자:user
+
+
+tb_Analyst ( for user,admin)
+
+■분석기능■
+
+1.선택된 장르분석(장르선택율) + 특정장르를 선택한 유저들의 정보분석(나이,성별,지역,타입)
+
+2.특정포폴을 상세보기한 유저들의 정보분석
+
+→예시)포폴A를 상세보기한 유저들의 평균나이,성비,지역분포
+
+3.시간,기간대별 접속유저정보분석(연령대,성비,지역)
+
+4.가장많이 사용된 검색옵션(for user,admin)
+
+
+
+◆테이블설계◆
+pk,로그인정보(유저정보),검색옵션(상대유저정보+포폴정보),시간
+
+analyst_number,login_user_number,search_gen_number,search_user_gender,search_po_tpye,search_user_age,search_location_number,visited_po_number,created
+
+◆기능구현SQL방식◆
+
+저장프로시저 사용
+
+1번기능) 장르선택시 ,login_user_number,search_gen_number,created 에 인서트작업시행(로그인안하면null추가,나머지칼럼모두null추가)
+	 유저정보조회시, login_user_number를 이용하여 JOIN 후에 유저정보분석(※login_user_num is not null인경우만 실행)
+
+2번기능) 특정포폴선택시, login_user_number,visited_po_number,created 에 인서트작업시행(※login_user_number있는 row만 유저분석자료로이용)(로그인안하면null추가,나머지칼럼모두null추가)
+	 유저정보조회시, login_user_number를 이용하여 JOIN 후에 유저정보분석(※login_user_num is not null인경우만 실행)
+
+3번기능) 유저정보조회시, login_user_number를 이용하여 JOIN 후에 유저정보분석(※login_user_num is not null인경우만 실행)
+
+
+
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+더미데이터만들기
+
+(I)로그인유저넘버없을때,장르가 전체일때(0)
+
+(II)로그인유저넘버있을때,
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+조인해서 select문하나만든다.
+
+
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+
+
+■가장많이 조회된 포폴■(for user)
+
+
+
+■신청률분석■
+시간대별 + 신청수 조회분석

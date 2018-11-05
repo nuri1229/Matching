@@ -1,0 +1,11 @@
+select 
+a.apply_number as AIDX,
+u.user_nickname as User_Nickname,
+p.po_title as Po_Title,
+a.apply_date as Apply_Date
+from  tb_apply as a
+join tb_user as u on a.apply_user_number = u.user_number
+join tb_portfolio as p on a.po_number = p.po_number
+where a.reply_user_number = 'aaaaaaaa00000001';
+
+select user_nickname from tb_user;
