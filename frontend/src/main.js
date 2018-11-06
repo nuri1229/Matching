@@ -7,6 +7,7 @@ import axios from 'axios'
 import VueSession from 'vue-session'
 import VModal from 'vue-js-modal'
 import vueMoment from 'vue-moment'
+import store from './store'
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -29,5 +30,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  store
 })

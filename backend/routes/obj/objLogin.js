@@ -37,10 +37,36 @@ exports.CheckId_Pw = function(req,res,ID,PW){
                 result["user_info"]=sess.user_info;
                 result["message"]=message;
 
-               
+                var jwt=require('jsonwebtoken')
+                var secret='MATCHING_WEB'
 
-                console.log(result);
-                res.send(result);
+                const p = new Promise((resolve, reject) => {
+                    jwt.sign(
+                        {
+                            _id: sess.user_info.user_id,
+                            username: sess.user_info.user_nickname
+                        }, 
+                        secret, 
+                        {
+                            expiresIn: '7d',
+                            issuer: 'velopert.com',
+                            subject: 'userInfo'
+                        }, (err, token) => {
+                            if (err) reject(err)
+                            resolve(token) 
+                        })     
+                })
+                p.then((resolvedData) => {
+
+                    console.log(resolvedData);
+                    result["token"]=resolvedData;
+                    var a=jwt.verify(result.token, secret)
+                    console.log(a)
+                    res.send(result)
+                })
+
+                //console.log(result);
+                //res.send(result);
             }
         }
     });
