@@ -113,15 +113,22 @@ FROM (SELECT
 GROUP BY search_gen_number
 ORDER BY search_gen_number asc;
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+/*오늘 방문포폴 순위 TOP5(완성)*/
+SELECT VISITED_PO_NUMBER,rank
+FROM	(SELECT    VISITED_PO_NUMBER,
+	           QTY,
+	           IF(QTY=@_last_age,@curRank:=@curRank,@curRank:=@_sequence) AS rank,
+	           @_sequence:=@_sequence+1,
+				  @_last_age:=QTY
+	FROM  (SELECT 
+			VISITED_PO_NUMBER,
+			COUNT(*) AS QTY
+			FROM tb_analyst
+			WHERE DATE(CREATED) = DATE(NOW())
+			GROUP BY VISITED_PO_NUMBER) as sub1,
+	      (SELECT @curRank := 1, @_sequence:=1, @_last_age:=0) r
+	ORDER BY  QTY desc) as sub2
+where rank<=5;
 		
 /* 재료 테이블 
 
