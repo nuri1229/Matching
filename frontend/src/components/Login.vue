@@ -41,6 +41,7 @@ export default {
   name: 'Login',
   methods: {
     fn_login (userId, userPw) {
+
       this.$http.defaults.headers.post['Content-Type'] = 'application/json'
       this.$http.post('/api/Login', {
         'user_id': userId, 'user_pw': userPw
@@ -49,11 +50,14 @@ export default {
         if (result.message === 'success') {
           this.$session.start()
           this.$session.set('user_info', result.user_info)
+          alert(result.token)
+          this.$session.set('token', result.token)
           this.$router.replace(this.$route.query.redirect || '/')
         } else {
           alert('Login Failed')
         }
       })
+      /* */
     },
     modalControl1 () {
       if (this.searchIdModal) {
