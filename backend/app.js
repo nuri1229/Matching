@@ -16,6 +16,7 @@ var LocationRouter = require('./routes/Location');
 var GenreRouter = require('./routes/Genre');
 var UserRouter = require('./routes/user');
 var MainRouter = require('./routes/Main');
+var AnalystRouter = require('./routes/Analyst');
 /* Import Router(E) */
 
 var app = express();
@@ -46,6 +47,7 @@ app.use('/api/Location', LocationRouter);
 app.use('/api/Genre', GenreRouter);
 app.use('/api/user',UserRouter);
 app.use('/api/Main',MainRouter);
+app.use('/api/Analyst',AnalystRouter);
 /* 라우팅동작구문(E) */
 
 
