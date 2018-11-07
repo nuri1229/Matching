@@ -8,6 +8,7 @@ import VueSession from 'vue-session'
 import VModal from 'vue-js-modal'
 import vueMoment from 'vue-moment'
 import store from './store'
+import VueGoogleCharts from 'vue-google-charts'
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -24,6 +25,9 @@ Vue.use(VModal, { dynamic: true })
 
 // dateformat
 Vue.use(vueMoment)
+
+// google-chart
+Vue.use(VueGoogleCharts)
 
 /* eslint-disable no-new */
 new Vue({

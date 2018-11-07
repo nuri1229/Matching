@@ -9,6 +9,7 @@ import portfolioUpload from '@/components/portfolioUpload'
 import main from '@/components/main'
 import portfolioDetail from '@/components/portfolioDetail'
 import reply from '@/components/reply'
+import analytics from '@/components/analytics'
 
 Vue.use(Router)
 
@@ -59,6 +60,11 @@ export default new Router({
       path: '/user/matching/reply/list',
       name: 'reply',
       component: reply
+    },
+    {
+      path: '/Analyst/',
+      name: 'analyst',
+      component: analytics
     }
   ]
 })
