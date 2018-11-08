@@ -57,21 +57,24 @@ SELECT
   
 
 /*오늘 방문포폴 순위 TOP5(완성)*/
-SELECT VISITED_PO_NUMBER,rank
-FROM	(SELECT    VISITED_PO_NUMBER,
+SELECT visited_po_number,gen_name,rank
+FROM	(SELECT    VISITED_PO_NUMBER,gen_name,
 	           QTY,
 	           IF(QTY=@_last_age,@curRank:=@curRank,@curRank:=@_sequence) AS rank,
 	           @_sequence:=@_sequence+1,
 				  @_last_age:=QTY
 	FROM  (SELECT 
-			VISITED_PO_NUMBER,
+			a.visited_po_number,g.gen_name,
 			COUNT(*) AS QTY
-			FROM tb_analyst
-			WHERE DATE(CREATED) = DATE(NOW())
-			GROUP BY VISITED_PO_NUMBER) as sub1,
+			FROM tb_analyst a
+			JOIN tb_portfolio p on a.visited_po_number = p.po_number
+			JOIN tb_genre g on p.gen_number = g.gen_number
+			WHERE DATE(a.created) = DATE(NOW())
+			GROUP BY a.visited_po_number) as sub1,
 	      (SELECT @curRank := 1, @_sequence:=1, @_last_age:=0) r
 	ORDER BY  QTY desc) as sub2
-where rank<=5;
+WHERE rank<=5;
+select * from tb_analyst;
 
 
 
@@ -99,16 +102,18 @@ group by search_gen_number
 having search_gen_number=1;
 
 -- 장르별평균나이 	
-SELECT t.search_gen_number,truncate(avg(t.user_age),2)as value 
+SELECT t.search_gen_number,t.gen_name,truncate(avg(t.user_age),2)as value 
 		FROM
             (SELECT
                 search_gen_number,
+                g.gen_name,
                 login_user_number,
                 u.user_age,
                 u.user_gender,
                 u.user_type,
                 l.location_name
             FROM tb_analyst a
+				JOIN tb_genre g on a.search_gen_number = g.gen_number
             JOIN tb_user u on a.login_user_number = u.user_number
             JOIN tb_location l on u.location_number = l.location_number
             GROUP BY search_gen_number,login_user_number
