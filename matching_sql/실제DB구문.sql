@@ -57,14 +57,22 @@ SELECT
   
 
 /*오늘 방문포폴 순위 TOP5(완성)*/
-SELECT visited_po_number,gen_name,rank
-FROM	(SELECT    VISITED_PO_NUMBER,gen_name,
+SELECT visited_po_number,
+		 po_title,
+		 gen_name,
+		 rank
+FROM	(SELECT   
+				  visited_po_number,
+				  po_title,
+				  gen_name,
 	           QTY,
 	           IF(QTY=@_last_age,@curRank:=@curRank,@curRank:=@_sequence) AS rank,
 	           @_sequence:=@_sequence+1,
 				  @_last_age:=QTY
 	FROM  (SELECT 
-			a.visited_po_number,g.gen_name,
+			a.visited_po_number,
+			p.po_title,
+			g.gen_name,
 			COUNT(*) AS QTY
 			FROM tb_analyst a
 			JOIN tb_portfolio p on a.visited_po_number = p.po_number
@@ -74,7 +82,7 @@ FROM	(SELECT    VISITED_PO_NUMBER,gen_name,
 	      (SELECT @curRank := 1, @_sequence:=1, @_last_age:=0) r
 	ORDER BY  QTY desc) as sub2
 WHERE rank<=5;
-select * from tb_analyst;
+
 
 
 
@@ -90,6 +98,7 @@ select * from tb_analyst;
 /*
 	파이차트 눌렀을대 부르는 쿼리문
 	키값은 search_gen_number
+	단, 장르별검색비율에서 0 인녀석들의 키값은 넘기지않는다.
 */
 
 
@@ -101,26 +110,25 @@ join tb_genre g on a.search_gen_number = g.gen_number
 group by search_gen_number
 having search_gen_number=1;
 
--- 장르별평균나이 	
+-- 장르별평균나이  (화면단에서 파이차트그릴때 0인애들은 안나오도록)(아니면 클릭이안되도록)
 SELECT t.search_gen_number,t.gen_name,truncate(avg(t.user_age),2)as value 
-		FROM
-            (SELECT
-                search_gen_number,
-                g.gen_name,
-                login_user_number,
-                u.user_age,
-                u.user_gender,
-                u.user_type,
-                l.location_name
-            FROM tb_analyst a
-				JOIN tb_genre g on a.search_gen_number = g.gen_number
-            JOIN tb_user u on a.login_user_number = u.user_number
-            JOIN tb_location l on u.location_number = l.location_number
-            GROUP BY search_gen_number,login_user_number
-            ORDER BY search_gen_number asc)as t
-        
-        GROUP BY t.search_gen_number
-        HAVING search_gen_number=7;
+FROM
+   (SELECT
+       search_gen_number,
+       g.gen_name,
+       login_user_number,
+       u.user_age,
+       u.user_gender,
+       u.user_type,
+       l.location_name
+   FROM tb_analyst a
+	JOIN tb_genre g on a.search_gen_number = g.gen_number
+   JOIN tb_user u on a.login_user_number = u.user_number
+   JOIN tb_location l on u.location_number = l.location_number
+   GROUP BY search_gen_number,login_user_number
+   ORDER BY search_gen_number asc)as t
+GROUP BY t.search_gen_number
+HAVING search_gen_number=1;
 
 -- 성비,타입비율        
  SELECT 
@@ -145,7 +153,7 @@ FROM (SELECT
         GROUP BY search_gen_number,login_user_number
         ORDER BY search_gen_number asc) as t
 GROUP BY search_gen_number
-HAVING search_gen_number=7
+HAVING search_gen_number=1
 ORDER BY search_gen_number asc;
 
 
@@ -187,4 +195,28 @@ FROM (SELECT
 GROUP BY search_gen_number
 HAVING search_gen_number=7
 ORDER BY search_gen_number asc;
+
+
+-- 특정장르별 연령대분포
+SELECT 
+	 search_gen_number,
+    gen_name,
+    truncate(sum(case when user_age between 10 and 19 then 1 else 0 end)/count(*) *100 ,2) as '10대',
+    truncate(sum(case when user_age between 20 and 29 then 1 else 0 end)/count(*) *100 ,2) as '20대',
+    truncate(sum(case when user_age between 30 and 39 then 1 else 0 end)/count(*) *100 ,2) as '30대',
+    truncate(sum(case when user_age between 40 and 49 then 1 else 0 end)/count(*) *100 ,2) as '40대',
+    truncate(sum(case when user_age between 50 and 59 then 1 else 0 end)/count(*) *100 ,2) as '50대',
+    truncate(sum(case when user_age between 60 and 69 then 1 else 0 end)/count(*) *100 ,2) as '60대',
+    truncate(sum(case when user_age between 70 and 79 then 1 else 0 end)/count(*) *100 ,2) as '70대'
+FROM (SELECT 
+			a.search_gen_number,
+			g.gen_name,
+			a.login_user_number,
+			u.user_age
+		FROM tb_analyst a
+		JOIN tb_user u on a.login_user_number = u.user_number
+		JOIN tb_genre g on a.search_gen_number = g.gen_number
+		WHERE a.search_gen_number =1
+		GROUP BY a.search_gen_number,a.login_user_number
+		ORDER BY a.search_gen_number asc,u.user_age asc,a.login_user_number asc) sub1;
 

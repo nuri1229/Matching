@@ -169,6 +169,17 @@ ORDER BY search_gen_number asc)as t
 group by t.search_gen_number;
 
 
+-- 장르별 유저연령대분포도(재료테이블)
+
+
+select a.search_gen_number,g.gen_name,a.login_user_number,u.user_age
+from tb_analyst a
+join tb_user u on a.login_user_number = u.user_number
+join tb_genre g on a.search_gen_number = g.gen_number
+WHERE a.search_gen_number =1
+group by a.search_gen_number,a.login_user_number
+order by a.search_gen_number asc,u.user_age asc,a.login_user_number asc ;
+
 
 
 
