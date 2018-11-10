@@ -2,15 +2,24 @@
   <div id="analyst">
     <div id="first-block">
       <div class="line">
-        <div class="margin">
+        <div class="margin" v-if="flag">
           <div class="s-12 m-12 l-12 margin-bottom">
             <h4><b>장르별 인기도</b></h4>
-            <div v-if="flag">
             <GChart type="PieChart" :data="genreScore" :options="chartOptions2.chart" :events="chartEvents" ref="pChart"/>
-            </div>
-            <div v-else>
-              <GChart type="ColumnChart" :data="sample" :options="chartOptions.chart" :events="chartEvents" ref="pChart2"/>
-            </div>
+          </div>
+        </div>
+        <div class="margin" v-else>
+          <div class="s-12 m-12 l-4 margin-bottom">
+            <h4><b>남녀 성비</b></h4>
+            <GChart type="PieChart" :data="genderForgenre" :options="chartOptions3.chart" :events="chartEvents"/>
+          </div>
+          <div class="s-12 m-12 l-4 margin-bottom">
+            <h4><b>조회 유저 타입</b></h4>
+            <GChart type="PieChart" :data="userTypeForGenre" :options="chartOptions4.chart" :events="chartEvents" />
+          </div>
+          <div class="s-12 m-12 l-4 margin-bottom">
+            <h4><b>검색유저 지역분포</b></h4>
+            <GChart type="PieChart" :data="locationForGenre" :options="chartOptions5.chart" :events="chartEvents"/>
           </div>
         </div>
       </div>
@@ -44,12 +53,6 @@ export default {
   data () {
     return {
       // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ['장르', '평균연령'],
-        ['일상', 1000],
-        ['로맨스', 1170]
-
-      ],
       chartOptions: {
         chart: {
           bar: {groupWidth: '50%'},
@@ -69,26 +72,80 @@ export default {
           pieSliceText: 'label'
         }
       },
+      chartOptions3: {
+        chart: {
+          legend: { position: 'bottom' },
+          height: 400,
+          chartArea: {'width': '90%', 'height': '80%'},
+          backgroundColor: { fill: 'transparent' },
+          pieSliceText: 'label',
+          pieHole: 0.4,
+          colors: ['#46A6F7', '#FFE91E']
+        }
+      },
+      chartOptions4: {
+        chart: {
+          legend: { position: 'bottom' },
+          height: 400,
+          chartArea: {'width': '90%', 'height': '80%'},
+          backgroundColor: { fill: 'transparent' },
+          pieSliceText: 'label',
+          pieHole: 0.4,
+          colors: ['#41B883', '#35495E']
+        }
+      },
+      chartOptions5: {
+        chart: {
+          legend: { position: 'bottom' },
+          height: 400,
+          chartArea: {'width': '90%', 'height': '80%'},
+          backgroundColor: { fill: 'transparent' },
+          pieSliceText: 'label',
+          pieHole: 0.4
+        }
+      },
       avgUserAge: [],
       poList: [],
+      genderForgenre: [],
+      userTypeForGenre: [],
+      locationForGenre: [],
       genreScore: [],
       chartEvents: {
         'select': () => {
-          const table = this.$refs.pChart.chartObject
-          const selection = table.getSelection()
-          var item = selection[0]
-          // alert(item.row)
-          // alert(this.genreScore[item.row + 1][0])
-          var genName = this.genreScore[item.row + 1][0]
-          alert(genName)
-          this.$http.post('/api/Analyst/view', {gen_name: genName}).then((res) =>
-            alert(res.data)
-          )
-          //this.sample = this.chartData
-          //this.flag = false
-          //alert(typeof(selection))
-          //alert(selection)
-          // alert(this.poList.length)
+          if (this.flag === true) {
+            const table = this.$refs.pChart.chartObject
+            const selection = table.getSelection()
+            var item = selection[0]
+
+            var genName = this.genreScore[item.row + 1][0]
+
+            this.$http.post('/api/Analyst/view', {gen_name: genName}).then((res) => {
+              // 성비 파이차트
+              var array = []
+              array.push(['성별', '성비'])
+              array.push(['남성', parseFloat(res.data.result3.MaleClickerRatio)])
+              array.push(['여성', parseFloat(res.data.result3.FemaleClickerRatio)])
+              this.genderForgenre = array
+              // 작가타입 파이차트
+              array = []
+              array.push(['작가타입', '분포'])
+              array.push(['스토리작가', parseFloat(res.data.result3.DrawingClickerRatio)])
+              array.push(['그림작가', parseFloat(res.data.result3.StoryClickerRatio)])
+              this.userTypeForGenre = array
+              // 검색유저 지역분포
+              array = []
+              array.push(['지역', '분포'])
+              for (var key in res.data.result4) {
+                if (key !== 'search_gen_number') {
+                  if (key !== 'gen_name') {
+                    array.push([key, parseFloat(res.data.result4[key])])
+                  }
+                }
+              }
+              this.locationForGenre = array
+            })
+          }
+          this.flag = !this.flag
         },
         sample: []
       },
@@ -97,10 +154,7 @@ export default {
   },
   created () {
     this.$http.post('/api/Analyst/').then((res) => {
-      //console.log('result', res.data)
-      //console.log('result1', res.data.result1)
-      //console.log('result2', res.data.result2)
-      //console.log('result3', res.data.result3)
+
       this.poList = res.data.result3
       var array = []
       var json = res.data.result2
