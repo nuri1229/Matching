@@ -246,10 +246,12 @@ function DoTinkerTheResult(){
           그런데, JSON을 만드는과정에서 gen_name을 넘기고싶은데 서버작업자가 DB실력이 부족하여 gen_name을 찍어낼 능력이없음
 */
 router.post('/view',function(req,res,next){
-    var gen_name = req.body('gen_name');
+    var gen_name = req.body.gen_name;
+    console.log('gen_name',gen_name)
     console.log('분석들어옴');
     var count = 0;
     var result ={};
+    console.log('1.result ->',result);
     
     // ▼특정장르 검색비율 (작성: 2018-11-09)
     db.query(`
@@ -260,11 +262,15 @@ router.post('/view',function(req,res,next){
             FROM tb_analyst a
             JOIN tb_genre g ON a.search_gen_number = g.gen_number
             GROUP BY search_gen_number
-            HAVING gen_name=${gen_name};`,
+            HAVING gen_name='${gen_name}';`,
             function(err1,perSel_BY_GENRE,fields1){ 
+                    console.log('perSel_BY_GENRE->',perSel_BY_GENRE);
                 var result1={};
+                
                     result1=perSel_BY_GENRE[0];
+                    console.log('2.result1 ->',result1);
                     result['result1']=result1;
+                    console.log('3.result ->',result);
                     count+=1;
                 return;
             }
@@ -289,12 +295,13 @@ router.post('/view',function(req,res,next){
                     GROUP BY created,search_gen_number,login_user_number
                     ORDER BY created,search_gen_number,login_user_number) as sub1
             GROUP BY search_gen_number
-            HAVING gen_name=${gen_name};`,
+            HAVING gen_name='${gen_name}';`,
             function(err2,avg_login_user_age_BY_GENRE,fields2){
                 var result2={};
                     result2=avg_login_user_age_BY_GENRE[0];//있으면그대로넣는다
-                   
                     result['result2']=result2;
+                    console.log('4.result ->',result2);
+                    console.log('5.result ->',result);
                     count+=1;
                 return;
             }
@@ -324,11 +331,13 @@ router.post('/view',function(req,res,next){
                         GROUP BY created,search_gen_number,login_user_number
                         ORDER BY created,search_gen_number,login_user_number) as t
                 GROUP BY search_gen_number
-                HAVING gen_name=${gen_name}`,
+                HAVING gen_name='${gen_name}'`,
         function(err3,gender_type_ratio_BY_GENRE,fields3){
             var result3={};               
                 result3=gender_type_ratio_BY_GENRE[0];
+                console.log('6.result3 ->',result3);
                 result['result3']=result3;
+                console.log('7.result ->',result);
                 count+=1;
             return;
         }
@@ -373,11 +382,13 @@ router.post('/view',function(req,res,next){
          GROUP BY created,search_gen_number,login_user_number
          ORDER BY created,search_gen_number,login_user_number) as t
  GROUP BY search_gen_number
- HAVING gen_name=${gen_name};`,
+ HAVING gen_name='${gen_name}';`,
    function(err4,locaionRatio_BY_GENRE,fields4){
         var result4={};    
-            result4=locaionRatio_BY_GENRE[0];    
+            result4=locaionRatio_BY_GENRE[0];
+            console.log('7.result4 ->',result4);    
             result['result4']=result4;
+            console.log('8.result ->',result);
         count+=1;
         return;
            
@@ -408,12 +419,14 @@ router.post('/view',function(req,res,next){
                 GROUP BY created,search_gen_number,login_user_number
                 ORDER BY created,search_gen_number,login_user_number) as sub1
             GROUP BY search_gen_number
-            HAVING gen_name = ${gen_name};
+            HAVING gen_name = '${gen_name}';
    `,
    function(err5,ages_ratio_BY_GENRE,fields5){
         var result5={};
             result5 = ages_ratio_BY_GENRE[0];
+            console.log('9.result5 ->',result5);
             result['result5']=result5;
+            console.log('10.result ->',result);
         count+=1;
         return;
    });
