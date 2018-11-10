@@ -246,7 +246,7 @@ function DoTinkerTheResult(){
           그런데, JSON을 만드는과정에서 gen_name을 넘기고싶은데 서버작업자가 DB실력이 부족하여 gen_name을 찍어낼 능력이없음
 */
 router.post('/view',function(req,res,next){
-    var gen_number = req.body('gen_name');
+    var gen_name = req.body('gen_name');
     console.log('분석들어옴');
     var count = 0;
     var result ={};
