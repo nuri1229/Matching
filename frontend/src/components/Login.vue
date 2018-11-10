@@ -8,23 +8,23 @@
                       <h3>LOGIN</h3>
                       <hr>
                       <span>ID </span><span class="searchButton" @click="modalControl1()">Forgot Your ID?</span>
-                      <modal v-if="searchIdModal" @close="searchIdModal = false" >
+                      <div v-if="searchIdModal" @close="searchIdModal = false" >
                         <div style="width: 100%; padding:20px 0px 20px 0px;">
                           <input type="text" class="form-control modal-input" placeholder="성명을 입력하세요" v-model="user_name"/>
                           <input type="text" class="form-control modal-input" placeholder="가입시 사용한 이메일주소를 입력하세요" v-model="user_email"/>
                           <button class="btn btn-primary modal-button" @click="searchId(user_name,user_email)">아이디찾기</button>
                         </div>
-                      </modal>
+                      </div>
                       <input type="text" class="form-control main-input" placeholder="ID를 입력하세요" v-model="user_id" />
                       <span>Password </span><span class="searchButton" @click="modalControl2()">Forgot Your Password?</span>
-                      <modal v-if="searchPwModal" @close="searchPwModal = false" >
+                      <div v-if="searchPwModal" @close="searchPwModal = false" >
                         <div style="width: 100%; padding:20px 0px 20px 0px;">
                           <input type="text" class="form-control modal-input" placeholder="아이디를 입력하세요" v-model="user_id"/>
                           <input type="text" class="form-control modal-input" placeholder="성명을 입력하세요" v-model="user_name"/>
                           <input type="text" class="form-control modal-input" placeholder="가입시 사용한 이메일주소를 입력하세요" v-model="user_email"/>
                           <button class="btn btn-primary modal-button" @click="searchPw(user_id,user_name,user_email)">비밀번호찾기</button>
                         </div>
-                      </modal>
+                      </div>
                       <input type="text" class="form-control main-input" placeholder="패스워드를 입력하세요" v-model="user_pw" />
                       <button class="btn btn-default" id="SignIn" @click="fn_login(user_id, user_pw)">Sign In</button>
                       <button class="btn btn-success" id="SignUp" @click="fn_signUp()">Sign Up</button>
@@ -41,7 +41,6 @@ export default {
   name: 'Login',
   methods: {
     fn_login (userId, userPw) {
-
       this.$http.defaults.headers.post['Content-Type'] = 'application/json'
       this.$http.post('/api/Login', {
         'user_id': userId, 'user_pw': userPw
