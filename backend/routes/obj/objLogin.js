@@ -118,10 +118,11 @@ exports.searchPw=function(req,res,userId,userName,userEmail){
     var sql='select user_pw from tb_user where user_id=? and user_name=? and user_email=?';
     db.query(sql,[user_id,user_name,user_email],function(err,data,fields){
         console.log('data ->',data);
+        
         if(data.length==0){
             res.send('pw가없습니다.');
         }else{
-
+            var user_pw = data[0].user_pw;
             var smtpTransport = nodemailer.createTransport({  
                 service: 'Gmail',
                 auth: {
@@ -134,7 +135,7 @@ exports.searchPw=function(req,res,userId,userName,userEmail){
                 from: '관리자 <johannesedelstein@gmail.com>',
                 to: `${user_email}`,
                 subject: `${user_id}님 요청하신 비밀번호찾기입니다.`,
-                text: '본인이 요청하신경우가 아닌경우, 도용된사례이오니 비밀번호를 변경해주시기바랍니다. '
+                text: `비밀번호는 ${user_pw} 입니다. 본인이 요청하신경우가 아닌경우, 도용된사례이오니 비밀번호를 변경해주시기바랍니다. `
             };
             
             smtpTransport.sendMail(mailOptions, function(error, response){
