@@ -17,7 +17,7 @@ router.post('/',function(req,res,next){
                     GROUP_CONCAT(if(tt.gen_name = '개그', value, NULL)) AS '개그',
                     GROUP_CONCAT(if(tt.gen_name = '판타지', value, NULL)) AS '판타지',
                     GROUP_CONCAT(if(tt.gen_name = '시대극', value, NULL)) AS '시대극',
-                    GROUP_CONCAT(if(tt.gen_name = '학원', value, NULL)) AS '학원물',
+                    GROUP_CONCAT(if(tt.gen_name = '학원', value, NULL)) AS '학원',
                     GROUP_CONCAT(if(tt.gen_name = '멜로', value, NULL)) AS '멜로', 
                     GROUP_CONCAT(if(tt.gen_name = '스포츠', value, NULL)) AS '스포츠'
                 FROM
