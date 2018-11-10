@@ -235,8 +235,29 @@ FROM(
 GROUP BY search_gen_number
 HAVING search_gen_number =1;
 
+/*
+■ ■ ■ ■ ■ ■  추가 분석구문  ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+*/
+-- 로그인유저가 , 오늘조회한 포트폴리오 내역남기는 쿼리 (기본정렬 :최신순으로)
+-- 추가기능넣어야하는거 : 1.많이본 포트폴리오 분석, 2. 검색조회비율 높은순 TOP3, 가장많이 찾아본 상대방  3.해당포폴과 현재작업중인지 
+-- parameter는 login_user_number
 
-
+SELECT 
+	login_user_number,
+	visited_po_number,
+	po_title,
+	gen_name as po_gen_name,
+	user_nickname as po_user_nickname,
+	a.created as view_date,
+	search_gen_number
+FROM tb_analyst a
+JOIN tb_genre g ON search_gen_number = gen_number
+JOIN tb_portfolio p ON visited_po_number = po_number
+JOIN tb_user u ON p.user_number = u.user_number
+WHERE login_user_number = 'aaaaaaaa00000002' 
+GROUP BY visited_po_number 
+HAVING date(a.created) = date(now())
+ORDER BY a.created desc;
 
 
 /*******************************************************************************************
