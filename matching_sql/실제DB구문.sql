@@ -110,7 +110,7 @@ select
 from tb_analyst a
 join tb_genre g on a.search_gen_number = g.gen_number
 group by search_gen_number
-having search_gen_number=1;
+having gen_name='일상';
 
 
 -- 특정장르별 평균나이: return은 1 row (작성: 2018-11-09)
@@ -132,7 +132,7 @@ FROM(SELECT
 		GROUP BY created,search_gen_number,login_user_number
 		ORDER BY created,search_gen_number,login_user_number) as sub1
 GROUP BY search_gen_number
-HAVING search_gen_number=1;
+HAVING gen_name='일상';
 
 
 -- 성비,타입비율(완성)(작성: 2018-11-09)        
@@ -158,7 +158,7 @@ FROM (
 		GROUP BY created,search_gen_number,login_user_number
 		ORDER BY created,search_gen_number,login_user_number) as t
 GROUP BY search_gen_number
-HAVING search_gen_number=1;
+HAVING gen_name='일상';
 
 
 
@@ -200,7 +200,7 @@ FROM (
 		GROUP BY created,search_gen_number,login_user_number
 		ORDER BY created,search_gen_number,login_user_number) as t
 GROUP BY search_gen_number
-HAVING search_gen_number=1;
+HAVING gen_name='일상';
 
 
 
@@ -233,7 +233,7 @@ FROM(
 		GROUP BY created,search_gen_number,login_user_number
 		ORDER BY created,search_gen_number,login_user_number) as sub1
 GROUP BY search_gen_number
-HAVING search_gen_number =1;
+HAVING gen_name ='일상';
 
 /*
 ■ ■ ■ ■ ■ ■  추가 분석구문  ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 

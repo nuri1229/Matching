@@ -246,7 +246,7 @@ function DoTinkerTheResult(){
           그런데, JSON을 만드는과정에서 gen_name을 넘기고싶은데 서버작업자가 DB실력이 부족하여 gen_name을 찍어낼 능력이없음
 */
 router.post('/view',function(req,res,next){
-    var search_gen_number = req.body('search_gen_number');
+    var gen_number = req.body('gen_name');
     console.log('분석들어옴');
     var count = 0;
     var result ={};
@@ -260,7 +260,7 @@ router.post('/view',function(req,res,next){
             FROM tb_analyst a
             JOIN tb_genre g ON a.search_gen_number = g.gen_number
             GROUP BY search_gen_number
-            HAVING search_gen_number=${search_gen_number};`,
+            HAVING gen_name=${gen_name};`,
             function(err1,perSel_BY_GENRE,fields1){ 
                 var result1={};
                     result1=perSel_BY_GENRE[0];
@@ -289,7 +289,7 @@ router.post('/view',function(req,res,next){
                     GROUP BY created,search_gen_number,login_user_number
                     ORDER BY created,search_gen_number,login_user_number) as sub1
             GROUP BY search_gen_number
-            HAVING search_gen_number=${search_gen_number};`,
+            HAVING gen_name=${gen_name};`,
             function(err2,avg_login_user_age_BY_GENRE,fields2){
                 var result2={};
                     result2=avg_login_user_age_BY_GENRE[0];//있으면그대로넣는다
@@ -324,7 +324,7 @@ router.post('/view',function(req,res,next){
                         GROUP BY created,search_gen_number,login_user_number
                         ORDER BY created,search_gen_number,login_user_number) as t
                 GROUP BY search_gen_number
-                HAVING search_gen_number=${search_gen_number}`,
+                HAVING gen_name=${gen_name}`,
         function(err3,gender_type_ratio_BY_GENRE,fields3){
             var result3={};               
                 result3=gender_type_ratio_BY_GENRE[0];
@@ -373,7 +373,7 @@ router.post('/view',function(req,res,next){
          GROUP BY created,search_gen_number,login_user_number
          ORDER BY created,search_gen_number,login_user_number) as t
  GROUP BY search_gen_number
- HAVING search_gen_number=${search_gen_number};`,
+ HAVING gen_name=${gen_name};`,
    function(err4,locaionRatio_BY_GENRE,fields4){
         var result4={};    
             result4=locaionRatio_BY_GENRE[0];    
@@ -408,7 +408,7 @@ router.post('/view',function(req,res,next){
                 GROUP BY created,search_gen_number,login_user_number
                 ORDER BY created,search_gen_number,login_user_number) as sub1
             GROUP BY search_gen_number
-            HAVING search_gen_number = ${search_gen_number};
+            HAVING gen_name = ${gen_name};
    `,
    function(err5,ages_ratio_BY_GENRE,fields5){
         var result5={};
