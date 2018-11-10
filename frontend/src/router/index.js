@@ -62,7 +62,7 @@ export default new Router({
       component: reply
     },
     {
-      path: '/Analyst/',
+      path: '/Analyst',
       name: 'analyst',
       component: analytics
     }
