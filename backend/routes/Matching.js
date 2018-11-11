@@ -18,7 +18,8 @@ router.post('/list', function(req, res, next) {
       var reqSearchOption  = req.body.searchOption;
      
       var reqGender = reqSearchOption['user_gender'];
-      var reqType =reqSearchOption['po_type']; 
+      var reqPoType =reqSearchOption['po_type'];  //매칭화면에서는 undefined 이겠네
+      var reqUserType =reqSearchOption['user_type']; //메인에서는 undefined 일거고
       var reqGenre = reqSearchOption['genre_number']; 
       var reqLocation = reqSearchOption['location_number']; 
       var reqStart_age = reqSearchOption['start_age']; 
@@ -26,6 +27,10 @@ router.post('/list', function(req, res, next) {
       console.log('최소나이에 미입력했니? ->',reqStart_age == 0,'matchingList.vue에서  type=\'number\'로 받은 reqStart_age가 json의담긴후 꺼내올때 타입은무엇이니?  ->',typeof(reqStart_age));
       console.log('최대연령에 미입력했니? ->',reqEnd_age == 0,'matchingList.vue에서 type=\'number\'로 받은 reqStart_age가 json의담긴후 꺼내올때 타입은무엇이니?  ->',typeof(reqEnd_age));
       console.log('reqGender 가 \'\'니?->',reqGender==='');
+      console.log('reqUserType 가 \'\'니?->',reqUserType===''); //매칭화면에서 유저타입조회
+      console.log('reqUserType 가 undefined 니?->',reqUserType); //메인화면 검증용
+      console.log('reqPoType 가 \'\'니?->',reqPoType===''); //메인화면에서 포폴조회
+      console.log('reqPoType 가 undefined 니?->',reqPoType); //매칭화면 검증용
       console.log('reqGenre 가 \'\'니?->',reqGenre==='');
       console.log('reqLocation 가 \'\'니?->',reqLocation==='');
 
@@ -35,7 +40,8 @@ router.post('/list', function(req, res, next) {
       if(reqLocation != undefined){ }//지역 */
 
       if(reqGender!=='')FilterCondtions["u.user_gender"]= reqGender; //matchingList.vue 에서 searchOption 에서 기본으로 ''로줌. trim이필요없음.
-      if(reqType!=='')FilterCondtions["p.po_type"]= reqType;
+      if(reqPoType!=='' && reqPoType !== undefined)FilterCondtions["p.po_type"]= reqPoType;
+      if(reqUserType!=='' && reqUserType !== undefined)FilterCondtions["u.user_type"]= reqUserType;
       if(reqGenre!=='')FilterCondtions["g.gen_number"]=reqGenre;
       if(reqLocation!=='')FilterCondtions["u.location_number"]=reqLocation;
      
