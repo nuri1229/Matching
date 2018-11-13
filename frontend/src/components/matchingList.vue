@@ -12,7 +12,7 @@
                     <td width="10%">장르</td>
                     <td colspan=3>
                       <span v-for="genre in genreList" :key="genre.gen_number" style="margin-right:10px;">
-                          <input type="radio" v-bind:value="genre.gen_number">
+                          <input type="radio" v-model="searchOption.genre_number" v-bind:value="genre.gen_number">
                           <label>{{ genre.gen_name }}</label>
                       </span>
                     </td>
@@ -31,10 +31,10 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>타입</td>
+                    <td>유저타입</td>
                     <td>
-                      <input type="radio" v-model="searchOption.po_type" value="S"> 스토리
-                      <input type="radio" v-model="searchOption.po_type" value="D"> 그림
+                      <input type="radio" v-model="searchOption.user_type" value="S"> 스토리
+                      <input type="radio" v-model="searchOption.user_type" value="D"> 그림
                     </td>
                     <td>지역</td>
                     <td>

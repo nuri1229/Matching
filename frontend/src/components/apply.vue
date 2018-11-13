@@ -33,7 +33,9 @@ export default {
           alert('신청이 완료되었습니다')
         } else if (result === 'duplicate') {
           alert('중복신청은 불가합니다')
-        } else {
+        } else if (result === 'unauthorized'){
+          alert('본인작품에는 신청할 수 없습니다.');
+        }else{
           alert('예기치 못한 오류가 발생하였습니다')
         }
       })

@@ -1,5 +1,4 @@
-var db = require('../db/db.js');
-
+var pool = require('../db/database');
 exports.InsertUser = function (req,res,UserObject){
     console.log('인서트함수들어옴, 받아온객체내용 ->',UserObject);
     
@@ -36,24 +35,28 @@ exports.InsertUser = function (req,res,UserObject){
         }
         console.log(user_number);
    
-    var sql = 'insert into tb_user values(?,?,?,?,?,?,?,?,?,?,?,?,?,default,?,default,?);';
-    db.query(sql,[user_number,
-                user_id,
-                user_pw,
-                user_name,
-                user_nickname,
-                user_email,
-                user_phone,
-                user_sns,
-                user_age,
-                location_number,
-                user_gender,
-                user_desc,
-                user_type,
-                user_nickname,
-                user_nickname],
-                function(err,data,fields){
-                    if(err) {throw err;}
-                    else {res.send('회원가입완료');}
-                });
+
+
+    try {
+        var sql = 'insert into tb_user values(?,?,?,?,?,?,?,?,?,?,?,?,?,default,?,default,?);';
+        pool.query(sql,[user_number,
+                    user_id,
+                    user_pw,
+                    user_name,
+                    user_nickname,
+                    user_email,
+                    user_phone,
+                    user_sns,
+                    user_age,
+                    location_number,
+                    user_gender,
+                    user_desc,
+                    user_type,
+                    user_nickname,
+                    user_nickname]);
+        res.send('회원가입완료');
+    } catch(err) {
+    throw new Error(err)
+    }
 }
+

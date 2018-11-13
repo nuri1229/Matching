@@ -1,13 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var objGenre = require('./obj/objGenre.js');
+var pool = require('./db/database');
 
-//모든장르받기 
-router.get('/',function(req,res,next){
-    console.log('Genre 라우터접속');
-    var genres = objGenre.genres;
-    //console.log('genres = ',genres);
-    res.send(genres);
-});
+// ※ async / await  쓰기위해서는, 노드버젼은 반드시 8.x 이상이어야합니다 
+router.get('/', async function(req, res, next) 
+{
+   
+    try {
+        var getAllGenresDataSQL = 'SELECT gen_number,gen_name,icon_name FROM tb_genre WHERE icon_name is not null;';
+        var data = await pool.query(getAllGenresDataSQL)       
+        console.log(data);
+        res.send(data);
+
+    } catch(err) {
+    throw new Error(err)
+    }
+
+})
 
 module.exports = router;

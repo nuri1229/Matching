@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db = require('./db/db.js');
-
+var pool = require('./db/database');
 
 //3가지항목
 router.post('/',function(req,res,next){
@@ -27,7 +26,7 @@ router.post('/',function(req,res,next){
                     JOIN tb_genre g ON a.search_gen_number = g.gen_number
                     GROUP BY search_gen_number) as tt;`;
     
-    db.query(sql_01,function(err1,data1,fields1){
+    pool.query(sql_01,function(err1,data1,fields1){
         var result1=data1[0];
         result['result1']=result1;
         count+=1;
@@ -63,7 +62,7 @@ router.post('/',function(req,res,next){
                             group by created,search_gen_number,login_user_number
                             order by created,search_gen_number,login_user_number) as sub1
                       GROUP BY search_gen_number) sub2;`;
-    db.query(sql_02,function(err2,data2,fields2){
+    pool.query(sql_02,function(err2,data2,fields2){
         var result2=data2[0];
         result['result2']=result2;
         count+=1;
@@ -97,7 +96,7 @@ router.post('/',function(req,res,next){
                               (SELECT @curRank := 1, @_sequence:=1, @_last_age:=0) r
                         ORDER BY  QTY desc) as sub2
                 WHERE rank<=5;`;
-    db.query(sql_03,function(err3,data3,fields3){
+    pool.query(sql_03,function(err3,data3,fields3){
         var result3=data3;
         if(result3 === undefined){
             result3 = 'data is empty';
@@ -131,7 +130,7 @@ router.post('/',function(req,res,next){
                 GROUP BY visited_po_number 
                 HAVING date(a.created) = date(now())
                 ORDER BY a.created desc;`;
-        db.query(sql_04,function(err4,data4,fields4){
+        pool.query(sql_04,function(err4,data4,fields4){
             var result4= data4
             if(result4 === undefined){
                 result4 = 'data is empty';
@@ -254,7 +253,7 @@ router.post('/view',function(req,res,next){
     console.log('1.result ->',result);
     
     // ▼특정장르 검색비율 (작성: 2018-11-09)
-    db.query(`
+    pool.query(`
             SELECT 
                 search_gen_number '장르번호',
                 gen_name as '장르명',
@@ -276,7 +275,7 @@ router.post('/view',function(req,res,next){
             }
     );
     // ▼특정장르 검색유저 평균나이 (작성: 2018-11-09)
-    db.query(`
+    pool.query(`
             SELECT 
                 search_gen_number as '장르번호',
                 gen_name as '장르명',
@@ -308,7 +307,7 @@ router.post('/view',function(req,res,next){
         );
 
         // ▼특정장르검색유저 성비율,타입비율 (작성: 2018-11-09)
-        db.query(`
+        pool.query(`
                 SELECT 
                     search_gen_number,
                     gen_name,
@@ -344,7 +343,7 @@ router.post('/view',function(req,res,next){
     );
 
     // ▼특정장르검색유저의 지역분포비율 (작성: 2018-11-09)
-    db.query(`
+    pool.query(`
     SELECT 
     search_gen_number,
     gen_name,
@@ -394,7 +393,7 @@ router.post('/view',function(req,res,next){
            
    });
    // ▼특정장르에대한 검색유저 연령대 비율
-   db.query(`
+   pool.query(`
             SELECT 
                 search_gen_number,
                 gen_name,
@@ -441,5 +440,16 @@ router.post('/view',function(req,res,next){
 
 
 });//라우터끝
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;
