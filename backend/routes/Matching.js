@@ -1,24 +1,65 @@
 var express = require('express');
 var router = express.Router();
 var objMatching = require('./obj/objMatching.js');
-var db = require('./db/db.js');
+var pool = require('./db/database');
 router.get('/search',function(req,res,next){
   console.log('검색창폼 진입OK');
   res.render('search.ejs');
 });
 
-//검색결과보기
-router.post('/list', function(req, res, next) {
+//검색결과보기(메인에서는 이거안씀)
+router.post('/list',function(req,res,next){
+    console.log(' 분석테이블데이터추가단계 진입');
+    if( Object.keys(req.body).length == 0){  //초기 로드시
+        console.log('초기화면 req.body 내용물 갯수 => ',req.body);
+        next();
+    }else{
+        var reqSearchOption  = req.body.searchOption;
+        console.log('분석추가단계에있는 옵션검색->',reqSearchOption);
+        var reqGenre = reqSearchOption['genre_number'];
+        var reqGender = reqSearchOption['user_gender'];
+        //var reqPoType =reqSearchOption['po_type'];  //매칭화면에서는 undefined 이겠네 ,아직 옵션이없음
+        var reqUserType =reqSearchOption['user_type']; 
+        var reqLocation = reqSearchOption['location_number']; 
+
+        (reqGenre === '')? reqGenre = null: reqGenre= reqGenre;
+        (reqGender === '')?reqGender=null: reqGender=reqGender;
+        (reqLocation === '')?reqLocation=null:reqLocation = reqLocation;
+        (reqUserType === '')? reqUserType= null: reqUserType =reqUserType;
+    
+        console.log('reqGenre',reqGenre);
+        console.log('reqGender',reqGender);
+        console.log('reqUserType',reqUserType);
+        console.log('reqLocation',reqLocation);
+        var analystInsertSQL=`
+            insert into tb_analyst (search_gen_number,
+            search_user_gender,
+            search_location_number,
+            search_user_type) 
+            values (?,?,?,?);
+        `;
+        pool.query(analystInsertSQL,[reqGenre,reqGender,reqLocation,reqUserType],function(err01,data01,fields01){
+
+            if(err01){
+                console.log('에러발생');
+                console.log(err01);
+                next();
+            }else{
+                console.log('추가완료');
+                next();
+            }
+        });
+    }
+},function(req, res, next) {
     console.log(' 매칭 리스트 진입');
     var FilterCondtions = {};
-
     if( Object.keys(req.body).length == 0){  //초기 로드시
       console.log('초기화면 req.body 내용물 갯수 => ',req.body);
     }else{//검색조건가동
       var reqSearchOption  = req.body.searchOption;
      
       var reqGender = reqSearchOption['user_gender'];
-      var reqPoType =reqSearchOption['po_type'];  //매칭화면에서는 undefined 이겠네
+      //var reqPoType =reqSearchOption['po_type'];  //매칭화면에서는 undefined 이겠네
       var reqUserType =reqSearchOption['user_type']; //메인에서는 undefined 일거고
       var reqGenre = reqSearchOption['genre_number']; 
       var reqLocation = reqSearchOption['location_number']; 
@@ -29,8 +70,8 @@ router.post('/list', function(req, res, next) {
       console.log('reqGender 가 \'\'니?->',reqGender==='');
       console.log('reqUserType 가 \'\'니?->',reqUserType===''); //매칭화면에서 유저타입조회
       console.log('reqUserType 가 undefined 니?->',reqUserType); //메인화면 검증용
-      console.log('reqPoType 가 \'\'니?->',reqPoType===''); //메인화면에서 포폴조회
-      console.log('reqPoType 가 undefined 니?->',reqPoType); //매칭화면 검증용
+      //console.log('reqPoType 가 \'\'니?->',reqPoType===''); //메인화면에서 포폴조회
+      //console.log('reqPoType 가 undefined 니?->',reqPoType); //매칭화면 검증용
       console.log('reqGenre 가 \'\'니?->',reqGenre==='');
       console.log('reqLocation 가 \'\'니?->',reqLocation==='');
 
@@ -40,7 +81,7 @@ router.post('/list', function(req, res, next) {
       if(reqLocation != undefined){ }//지역 */
 
       if(reqGender!=='')FilterCondtions["u.user_gender"]= reqGender; //matchingList.vue 에서 searchOption 에서 기본으로 ''로줌. trim이필요없음.
-      if(reqPoType!=='' && reqPoType !== undefined)FilterCondtions["p.po_type"]= reqPoType;
+      //if(reqPoType!=='' && reqPoType !== undefined)FilterCondtions["p.po_type"]= reqPoType;
       if(reqUserType!=='' && reqUserType !== undefined)FilterCondtions["u.user_type"]= reqUserType;
       if(reqGenre!=='')FilterCondtions["g.gen_number"]=reqGenre;
       if(reqLocation!=='')FilterCondtions["u.location_number"]=reqLocation;
@@ -88,7 +129,7 @@ router.post('/apply',function(req,res,next){
     var po_number = ApplyObject.po_number;
     var apply_user_number = ApplyObject.login_user_number;
     var whetherLoggerisApplier=`select user_number from tb_portfolio where po_number=?`;
-    db.query(whetherLoggerisApplier,[po_number],function(err,ChkFlag,fields){
+    pool.query(whetherLoggerisApplier,[po_number],function(err,ChkFlag,fields){
         if(err){
             res.send('failed');
         }else{
@@ -111,7 +152,7 @@ router.post('/apply',function(req,res,next){
     var apply_user_number = ApplyObject.login_user_number;
     console.log('ApplyObject->',ApplyObject);
     var whetherApplyStatusDuplicated= `select apply_status from tb_apply where po_number=? and apply_user_number=?`;
-    db.query(whetherApplyStatusDuplicated,[po_number,apply_user_number],function(err,apply_status_data,fields){
+    pool.query(whetherApplyStatusDuplicated,[po_number,apply_user_number],function(err,apply_status_data,fields){
         if(err){
             console.log('신청하기중복체킹에서 오류발생하였습니다.');
             res.send('error');
@@ -138,10 +179,10 @@ router.post('/apply',function(req,res,next){
   var po_number = ApplyObject.po_number;
   console.log('req.body.po_number ->',po_number);
 var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?';
-    db.query(getApplyCountSQL,[po_number],function(err,data,fields){
+    pool.query(getApplyCountSQL,[po_number],function(err,data,fields){
         var NewApplyCount = data[0].po_apply_count +1 ;
         var updateApplyCountSQL='update tb_portfolio set po_view_count=? where po_number=?';
-        db.query(updateApplyCountSQL,[NewApplyCount,po_number],function(err2,data,fields){
+        pool.query(updateApplyCountSQL,[NewApplyCount,po_number],function(err2,data,fields){
             if(err2){
                 console.log('applycount수정실패');
                 next();
@@ -205,7 +246,7 @@ var getApplyCountSQL='select po_apply_count from tb_portfolio where po_number=?'
       VALUES
       (?,?,?,(select user_number from tb_user where user_id='${reply_user_id}'),DEFAULT,DEFAULT,?,NULL,DEFAULT,NULL)`;
     console.log('sql->',sql);
-    db.query(sql,[apply_number,po_number,apply_user_number,apply_message],function(err,data,fields){
+    pool.query(sql,[apply_number,po_number,apply_user_number,apply_message],function(err,data,fields){
         if(err){
           res.send('failed');
         }else{

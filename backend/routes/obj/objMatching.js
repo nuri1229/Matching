@@ -1,4 +1,6 @@
-var db = require('../db/db.js');
+var pool = require('../db/database');
+
+
 
 exports.getAllportfolios = function(req,res,FilterConditions){
     console.log('getAllprotfolios succefully access!!');
@@ -41,7 +43,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
         console.log(sql);
 
         //query실행
-        db.query(sql,function(err,data,fields){
+            pool.query(sql,function(err,data,fields){
             if(err){
                 throw err;
             }else{
@@ -101,7 +103,7 @@ exports.getAllportfolios = function(req,res,FilterConditions){
 
 
             //query실행
-            db.query(sql,function(err,data,fields){
+                pool.query(sql,function(err,data,fields){
                 console.log('쿼리결과',data);
                 res.send(data);
             });
@@ -149,7 +151,7 @@ exports.getOneportfolio = function(req,res,FilterConditions){
         console.log(sql);
 
         //query실행
-        db.query(sql,function(err,data,fields){
+            pool.query(sql,function(err,data,fields){
             if(err){
                 throw err;
             }else{
@@ -209,7 +211,7 @@ exports.getOneportfolio = function(req,res,FilterConditions){
 
 
             //query실행
-            db.query(sql,function(err,data,fields){
+             pool.query(sql,function(err,data,fields){
                 console.log('쿼리결과',data);
                 res.send(data);
             });
@@ -218,3 +220,5 @@ exports.getOneportfolio = function(req,res,FilterConditions){
             
     }  
 }
+
+

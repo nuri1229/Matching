@@ -1,10 +1,10 @@
-var db = require('../db/db.js');
+var pool = require('../db/database');
 var nodemailer = require('nodemailer');
 var sess;
 
 exports.CheckId_Pw = function(req,res,ID,PW){
     var sql = 'select * from tb_user where user_id=? and user_pw=?';
-    db.query(sql,[ID,PW],function(err,data,fields){
+    pool.query(sql,[ID,PW],function(err,data,fields){
         
         if(err){
             throw err;
@@ -82,7 +82,7 @@ exports.searchId=function(req,res,userName,userEmail){
     console.log('req.body.user_email =',user_email);
 
     var sql= 'select user_id from tb_user where user_name=? and user_email=?';
-    db.query(sql,[user_name,user_email],function(err,data,fields){
+    pool.query(sql,[user_name,user_email],function(err,data,fields){
         
         if(err){
             throw err;
@@ -116,7 +116,7 @@ exports.searchPw=function(req,res,userId,userName,userEmail){
     console.log('req.body.user_email =',user_email);
 
     var sql='select user_pw from tb_user where user_id=? and user_name=? and user_email=?';
-    db.query(sql,[user_id,user_name,user_email],function(err,data,fields){
+    pool.query(sql,[user_id,user_name,user_email],function(err,data,fields){
         console.log('data ->',data);
         
         if(data.length==0){
@@ -157,5 +157,3 @@ exports.searchPw=function(req,res,userId,userName,userEmail){
     });
 
 }
-
-

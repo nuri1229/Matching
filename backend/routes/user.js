@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const fileUpload = require('express-fileupload');
-var db = require('./db/db.js');
+var pool = require('./db/database');
 var fs= require('fs');
 var objMatching = require('./obj/objMatching.js');
 
@@ -108,7 +108,7 @@ router.post('/portfolio/create',function(req,res,next){
              //▼DB작업
              var sql =`select * from tb_user where user_id='${user_id}'`; 
              console.log('user_id ->',user_id);
-             db.query(sql,function(err,data,fields){
+             pool.query(sql,function(err,data,fields){
                  if(err){
                     res.end();
                  }else{
@@ -121,7 +121,7 @@ router.post('/portfolio/create',function(req,res,next){
  
  
                      var sql2= 'insert into tb_portfolio values (?,?,?,?,?,?,?,?,?,?,default,?,default,?,?,?);';
-                     db.query(sql2,
+                     pool.query(sql2,
                          [po_number,
                          user_number,
                          genre_number,
@@ -175,7 +175,7 @@ router.get('/profile', function(req, res, next) {
     var user_nubmer = req.body.user_number;
     var getUserInfoSQL=`select * from tb_user where user_number=?`;
 
-    db.query(getUserInfoSQL,[user_nubmer],function(err,data,fields){
+    pool.query(getUserInfoSQL,[user_nubmer],function(err,data,fields){
         if(err){
             console.log('프로필정보를 가져오는데 실패하였습니다.');
             res.send();
@@ -232,7 +232,7 @@ from  tb_apply as a
      where a.reply_user_number = ? and apply_status != 'cancel' AND reply_status !='deny';`;
 
 console.log('sql ->',sql);
-    db.query(sql,[login_user_number],function(err,replyListData,fields){
+    pool.query(sql,[login_user_number],function(err,replyListData,fields){
         if(err){
             console.log(err);
             res.send('failed');
@@ -254,7 +254,7 @@ console.log('sql ->',sql);
             join tb_portfolio as p on a.po_number = p.po_number
             where a.apply_user_number = ? and a.apply_status = 'sending' or a.apply_status = 'completed'
             order by  reply_status asc,apply_date desc;`; //accept,deny,none 순으로정렬, 날짜순정렬
-            db.query(sql2,[login_user_number],function(err,applyListData,fields){
+            pool.query(sql2,[login_user_number],function(err,applyListData,fields){
                 console.log('this is second');
                 List['applyList']=applyListData;
                 console.log('result02->',Object.keys(List));
@@ -279,7 +279,7 @@ router.post('/matching/reply/view',function(req,res,next){
     //pending처리 할지안할지 체킹단계(테스트필요)
     var apply_number = req.body.apply_number;
     var checkingReplyStatusSQL=`select apply_status,reply_status from tb_apply where apply_number=?`;
-    db.query(checkingReplyStatusSQL,[apply_number],function(err,ChkReplyStatusFlag,fields){
+    pool.query(checkingReplyStatusSQL,[apply_number],function(err,ChkReplyStatusFlag,fields){
         console.log('pending으로 바꿔야할지말지 체킹들어갑니다~');
         if(err){
             console.log('failed');
@@ -311,7 +311,7 @@ router.post('/matching/reply/view',function(req,res,next){
                     console.log('읽음표시수정작업들어갑니다~');    
                     var reply_status = 'pending';
                     var updateReplyStatusSQL = 'update tb_apply set reply_status=? where apply_number=?';
-                        db.query(updateReplyStatusSQL,[reply_status,apply_number],function(err,data,fields){
+                        pool.query(updateReplyStatusSQL,[reply_status,apply_number],function(err,data,fields){
                             if(err){
                                 console.log('읽음상태 미결정으로 고치는데 실패하였습니다.');
                                 next();
@@ -328,7 +328,7 @@ router.post('/matching/reply/view',function(req,res,next){
     console.log('포폴리스트갖고옵니다~');
     var apply_number = req.body.apply_number;
     var selectApplyUserNumberSQL='select apply_user_number from tb_apply where apply_number=?';
-    db.query(selectApplyUserNumberSQL,[apply_number],function(err2,data2,fields2){
+    pool.query(selectApplyUserNumberSQL,[apply_number],function(err2,data2,fields2){
         var user_number = data2[0].apply_user_number;
         var FilterCondtions = {};
         FilterCondtions["p.user_number"]=user_number; 
@@ -365,7 +365,7 @@ router.post('/matching/reply',function(req,res,next){
     var ApplyObject = req.body.apply;
     var apply_number =ApplyObject.apply_number;
     var checkCancelSQL=`select apply_status from tb_apply where apply_number =?`;
-    db.query(checkCancelSQL,[apply_number],function(err,cancelFlag,fields){
+    pool.query(checkCancelSQL,[apply_number],function(err,cancelFlag,fields){
         console.log('query성공적으로 마침');
         if(err){//쿼리오류
             console.log('error in checkCancel');
@@ -395,7 +395,7 @@ router.post('/matching/reply',function(req,res,next){
     var apply_status = 'completed';//요청상태 (sending->completed)
     var reply_message = ApplyObject.reply_message;//답장메시지
     var updateReplyStatusSQL = 'update tb_apply set reply_status=?,apply_status=?,reply_message=?,reply_date= now() where apply_number=?';
-    db.query(updateReplyStatusSQL,[reply_status,apply_status,reply_message,apply_number],function(err2,data2,fields){
+    pool.query(updateReplyStatusSQL,[reply_status,apply_status,reply_message,apply_number],function(err2,data2,fields){
         if(err2){ //if01(S)
             console.log('수락(accept),거절(deny) 혹은 송신상태완료(completed)또는  message를수정하는데 실패하였습니다.');
             res.send('failed');
@@ -423,7 +423,7 @@ console.log('apply_number->',apply_number);
 
 var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where apply_number=?`;
 
-    db.query(apply_status_cancle_SQL,[apply_number],function(err,result,fields){
+    pool.query(apply_status_cancle_SQL,[apply_number],function(err,result,fields){
         if(err){
         console.log('DB에 취소요청 수정작업실패');
         res.send('failed');
@@ -437,7 +437,7 @@ var apply_status_cancle_SQL=`update tb_apply set apply_status='cancel' where app
     var apply_number =ApplyObject.apply_number;
     var po_apply_count_minusSQL=`update tb_portfolio set po_apply_count=po_apply_count-1 
     where po_number=(select po_number from tb_apply where apply_number=?);`;
-    db.query(po_apply_count_minusSQL,[apply_number],function(err2,result2,fields2){
+    pool.query(po_apply_count_minusSQL,[apply_number],function(err2,result2,fields2){
         if(err){
             console.log('error');
             res.send('failed');
@@ -470,7 +470,7 @@ router.post("/matching/UserInfo",function(req,res,next){
     reply_status
      from tb_apply where apply_number = ?`;
 
-     db.query(selectByApplyNumberSQL,[apply_number],function(err,ChkDataFlag,fields){
+     pool.query(selectByApplyNumberSQL,[apply_number],function(err,ChkDataFlag,fields){
 
         if(err){
             console.log('error발생');
@@ -512,7 +512,7 @@ router.post("/matching/UserInfo",function(req,res,next){
                 join tb_location as l on u.location_number = l.location_number                
                 where u.user_number =`+subSQL;
                 console.log('getApplierInfoSQL->',getUserInfoSQL);
-                db.query(getUserInfoSQL,[apply_number],function(err,UserInfoData,fields){
+                pool.query(getUserInfoSQL,[apply_number],function(err,UserInfoData,fields){
                     if(err){//쿼리Error
                         console.log('신청자 정보 가져오기 쿼리실행에 오류발생');
                         res.send('error');
@@ -551,7 +551,7 @@ router.post('/matching/together',function(req,res,next){
     select apply_number,apply_user_number,reply_user_number,po_number from tb_apply
         where (apply_user_number=? or reply_user_number=?)
  	            and (apply_status='completed' and reply_status='accept');`;
-    db.query(togetherListSQL,[user_nubmer,user_nubmer],function(err,result,fields){
+    pool.query(togetherListSQL,[user_nubmer,user_nubmer],function(err,result,fields){
         if(err){
             console.log('failed');
             res.send('failed');

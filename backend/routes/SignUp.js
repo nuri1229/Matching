@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var db = require('./db/db.js');
 var objSignUP = require('./obj/objSignUp.js');
 var pool = require('./db/database');
 
